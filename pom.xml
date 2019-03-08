@@ -43,7 +43,7 @@
           <failOnViolation>true</failOnViolation>
           <violationSeverity>warning</violationSeverity>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          <configLocation>checkstyle-config/checkstyle-checker.xml</configLocation>
+          <configLocation>checkstyle-checker.xml</configLocation>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
         </configuration>
