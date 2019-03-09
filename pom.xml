@@ -61,7 +61,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>pl.coderstrust.ChristmasTree</mainClass>
+              <mainClass>pl.coderstrust.Application</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -71,6 +71,11 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.2</version>
+        <configuration>
+          <excludes>
+            <exclude>pl/coderstrust/Application.class</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <id>jacoco-report</id>
