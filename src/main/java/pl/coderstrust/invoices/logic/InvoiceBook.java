@@ -15,8 +15,12 @@ public class InvoiceBook {
     this.database = database;
   }
 
-  public Collection<Invoice> getAllInvoices() throws DatabaseOperationException {
-    return database.getAllInvoices();
+  public Collection<Invoice> getAllInvoices() throws InvoiceBookException {
+    try {
+      return database.getAllInvoices();
+    } catch (DatabaseOperationException exception) {
+      throw new InvoiceBookException("Invoice Base doesn't exist", exception);
+    }
   }
 
   public Invoice saveInvoice(Invoice invoice) throws InvoiceBookException {
@@ -25,8 +29,8 @@ public class InvoiceBook {
     }
     try {
       return database.saveInvoice(invoice);
-    } catch (DatabaseOperationException e) {
-      throw new InvoiceBookException("Couldn't save Invoice", e);
+    } catch (DatabaseOperationException exception) {
+      throw new InvoiceBookException("Couldn't save Invoice", exception);
     }
   }
 
@@ -36,8 +40,8 @@ public class InvoiceBook {
     }
     try {
       return database.removeInvoice(id);
-    } catch (DatabaseOperationException e) {
-      throw new InvoiceBookException("No invoice with given id to remove", e);
+    } catch (DatabaseOperationException exception) {
+      throw new InvoiceBookException("No invoice with given id to remove", exception);
     }
   }
 
@@ -47,17 +51,17 @@ public class InvoiceBook {
     }
     try {
       return database.getInvoice(id);
-    } catch (DatabaseOperationException e) {
-      throw new InvoiceBookException("No invoice with id", e);
+    } catch (DatabaseOperationException exception) {
+      throw new InvoiceBookException("No invoice with id", exception);
     }
   }
 
   public Collection<Invoice> getInvoicesBetweenDates(LocalDate fromDate, LocalDate toDate)
       throws InvoiceBookException {
     try {
-      return database.getInvoicesInBetweenDates(fromDate, toDate);
-    } catch (DatabaseOperationException e) {
-      throw new InvoiceBookException("Couldn't get invoices", e);
+      return database.getInvoicesBetweenDates(fromDate, toDate);
+    } catch (DatabaseOperationException exception) {
+      throw new InvoiceBookException("Couldn't get invoices", exception);
     }
   }
 }

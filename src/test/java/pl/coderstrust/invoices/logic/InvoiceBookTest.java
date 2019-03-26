@@ -27,7 +27,8 @@ public class InvoiceBookTest {
   private Database database;
 
   @Test
-  public void shouldReturnEmptyInvoicesListWhenInitialize() throws DatabaseOperationException {
+  public void shouldReturnEmptyInvoicesListWhenInitialize()
+      throws DatabaseOperationException, InvoiceBookException {
     InvoiceBook invoiceBook = new InvoiceBook(database);
     when(database.getAllInvoices()).thenReturn(Arrays.asList());
 
@@ -56,7 +57,7 @@ public class InvoiceBookTest {
     Invoice invoice = new Invoice(1, "2/10/2018", null, null, null, null, null, null);
     InvoiceBook invoiceBook = new InvoiceBook(database);
 
-    when(database.removeInvoice(invoice.getId())).thenReturn(null);
+    when(database.removeInvoice(invoice.getId())).thenReturn(invoice);
 
     Invoice result = invoiceBook.removeInvoice(invoice.getId());
 
@@ -82,7 +83,7 @@ public class InvoiceBookTest {
     InvoiceBook invoiceBook = new InvoiceBook(database);
     Collection<Invoice> invoicesBetweenDates = new ArrayList<>();
 
-    when(database.getInvoicesInBetweenDates(any(), any())).thenReturn(invoicesBetweenDates);
+    when(database.getInvoicesBetweenDates(any(), any())).thenReturn(invoicesBetweenDates);
 
     Collection<Invoice> result = invoiceBook
         .getInvoicesBetweenDates(LocalDate.of(2010, 11, 1), LocalDate.now());

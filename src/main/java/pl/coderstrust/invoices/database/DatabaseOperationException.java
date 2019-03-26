@@ -1,7 +1,6 @@
 package pl.coderstrust.invoices.database;
 
-public class DatabaseOperationException extends Exception{
-
+public class DatabaseOperationException extends Exception {
   public DatabaseOperationException() {
     super();
   }

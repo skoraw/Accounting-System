@@ -14,8 +14,8 @@ public class Invoice {
   private Company buyer;
   private List<InvoiceEntry> entries;
 
-  public Invoice(Object id, String number, LocalDate issueDate, String issuePlace, LocalDate sellDate,
-      Company seller, Company buyer, List<InvoiceEntry> entries) {
+  public Invoice(Object id, String number, LocalDate issueDate, String issuePlace,
+      LocalDate sellDate, Company seller, Company buyer, List<InvoiceEntry> entries) {
     this.id = id;
     this.number = number;
     this.issueDate = issueDate;
@@ -24,6 +24,12 @@ public class Invoice {
     this.seller = seller;
     this.buyer = buyer;
     this.entries = entries;
+  }
+
+  public Invoice(Invoice invoice) {
+    this(invoice.getId(),invoice.getNumber(),invoice.getIssueDate(),
+        invoice.getIssuePlace(),invoice.getSellDate(), invoice.getSeller(),
+        invoice.getBuyer(),invoice.getEntries());
   }
 
   public Object getId() {
@@ -91,15 +97,15 @@ public class Invoice {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
 
-    Invoice invoice = (Invoice) o;
+    Invoice invoice = (Invoice) obj;
 
     if (id != null ? !id.equals(invoice.id) : invoice.id != null) {
       return false;

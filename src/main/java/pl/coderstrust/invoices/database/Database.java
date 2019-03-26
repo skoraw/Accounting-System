@@ -1,8 +1,10 @@
 package pl.coderstrust.invoices.database;
 
+import pl.coderstrust.invoices.model.Invoice;
+
 import java.time.LocalDate;
 import java.util.Collection;
-import pl.coderstrust.invoices.model.Invoice;
+
 
 public interface Database {
 
@@ -12,8 +14,8 @@ public interface Database {
 
   Invoice getInvoice(Object id) throws DatabaseOperationException;
 
-  Collection<Invoice> getInvoicesInBetweenDates(LocalDate fromDate, LocalDate toDate) throws DatabaseOperationException;
+  Collection<Invoice> getInvoicesBetweenDates(LocalDate fromDate, LocalDate toDate)
+      throws DatabaseOperationException;
 
   Invoice removeInvoice(Object id) throws DatabaseOperationException;
-
 }
