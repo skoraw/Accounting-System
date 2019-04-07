@@ -1,15 +1,16 @@
 package pl.coderstrust.invoices.database;
 
+import pl.coderstrust.invoices.model.Invoice;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import pl.coderstrust.invoices.model.Invoice;
 
 public class InMemoryDatabase implements Database {
 
-  private final Map<Object, Invoice> invoices = new HashMap<>();
+  private final Map<Long, Invoice> invoices = new HashMap<>();
 
   @Override
   public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
@@ -17,13 +18,16 @@ public class InMemoryDatabase implements Database {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
     Invoice cloneInvoice = new Invoice(invoice);
-    invoices.put(cloneInvoice.getId(), cloneInvoice);
+    if (!(cloneInvoice.getId() instanceof Long)) {
+      throw new IllegalArgumentException("Id must be number Long type");
+    }
+    invoices.put((Long) cloneInvoice.getId(), cloneInvoice);
     return cloneInvoice;
   }
 
   @Override
   public Collection<Invoice> getAllInvoices() throws DatabaseOperationException {
-    Map<Object, Invoice> copyListOfInvoices = new HashMap<>(invoices);
+    Map<Long, Invoice> copyListOfInvoices = new HashMap<>(invoices);
     return copyListOfInvoices.values();
   }
 
@@ -43,7 +47,7 @@ public class InMemoryDatabase implements Database {
       throws DatabaseOperationException {
     Collection<Invoice> invoicesByDate = new ArrayList<>();
     for (Invoice invoice : invoices.values()) {
-      if (fromDate.isAfter(invoice.getSellDate()) && toDate.isBefore(invoice.getSellDate())) {
+      if (invoice.getSellDate().isAfter(fromDate) && invoice.getSellDate().isBefore(toDate)) {
         invoicesByDate.add(new Invoice(invoice));
       }
     }
