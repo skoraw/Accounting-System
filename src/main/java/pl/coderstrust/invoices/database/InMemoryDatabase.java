@@ -22,7 +22,7 @@ public class InMemoryDatabase implements Database {
       throw new IllegalArgumentException("Id must be number Long type");
     }
     invoices.put((Long) cloneInvoice.getId(), cloneInvoice);
-    return cloneInvoice;
+    return new Invoice(cloneInvoice);
   }
 
   @Override
@@ -62,7 +62,8 @@ public class InMemoryDatabase implements Database {
     if (invoices.isEmpty()) {
       throw new DatabaseOperationException("List of invoices is empty");
     }
+    Invoice removedInvoice = new Invoice(invoices.get(id));
     invoices.remove(id);
-    return new Invoice(invoices.get(id));
+    return removedInvoice;
   }
 }

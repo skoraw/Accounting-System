@@ -1,20 +1,64 @@
 package pl.coderstrust.invoices.model;
 
+import java.util.prefs.Preferences;
+
 public class Company {
-  private Object id;
+
   private String name;
   private String taxIdentificationNumber;
   private String street;
   private String postalCode;
   private String town;
 
-  public Company(String name, String taxIdentificationNumber, String street,
+  private Company(String name, String taxIdentificationNumber, String street,
       String postalCode, String town) {
     this.name = name;
     this.taxIdentificationNumber = taxIdentificationNumber;
     this.street = street;
     this.postalCode = postalCode;
     this.town = town;
+  }
+
+  public static class CompanyBuilder {
+
+    private String name;
+    private String taxIdentificationNumber;
+    private String street;
+    private String postalCode;
+    private String town;
+
+    public CompanyBuilder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public CompanyBuilder taxIdentificationNumber(String taxIdentificationNumber) {
+      this.taxIdentificationNumber = taxIdentificationNumber;
+      return this;
+    }
+
+    public CompanyBuilder street(String street) {
+      this.street = street;
+      return this;
+    }
+
+    public CompanyBuilder postalCode(String postalCode) {
+      this.postalCode = postalCode;
+      return this;
+    }
+
+    public CompanyBuilder town(String town) {
+      this.town = town;
+      return this;
+    }
+
+    public Company build() {
+      return new Company(name, taxIdentificationNumber, street, postalCode, town);
+    }
+  }
+
+  public static CompanyBuilder builder() {
+    return new CompanyBuilder();
   }
 
   public String getName() {

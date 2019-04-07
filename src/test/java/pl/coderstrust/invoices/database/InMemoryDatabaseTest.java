@@ -16,32 +16,78 @@ public class InMemoryDatabaseTest {
   @Test
   public void shouldSaveInvoiceInList() throws DatabaseOperationException {
     Database database = new InMemoryDatabase();
-    Invoice invoiceToAdd = new Invoice(2L, "2/10/2018", null, null, null, null, null, null);
+    Invoice invoiceToAdd = Invoice.builder()
+        .id(1L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2018, 11, 27))
+        .seller(null)
+        .entries(null)
+        .build();
 
     Invoice addedInvoice = database.saveInvoice(invoiceToAdd);
 
-    assertEquals(invoiceToAdd.getNumber(), addedInvoice.getNumber());
+    assertEquals(invoiceToAdd.getId(), addedInvoice.getId());
     assertNotNull(addedInvoice.getId());
+  }
+
+  @Test
+  public void shouldCheckIfInvoiceWasCopied() throws DatabaseOperationException {
+    Database database = new InMemoryDatabase();
+    Invoice invoice = Invoice.builder()
+        .id(3L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2018, 11, 27))
+        .seller(null)
+        .entries(null)
+        .build();
+    Invoice inv = database.saveInvoice(invoice);
+    inv.setId(7L);
+
+    Invoice result = database.getInvoice(3L);
+    assertEquals(3L, result.getId());
   }
 
   @Test
   public void shouldReturnCollectionOfInvoices() throws DatabaseOperationException {
     Database database = new InMemoryDatabase();
-    Invoice invoice = new Invoice(1L, "2/10/2018", null, null, null, null, null, null);
+    Invoice invoice = Invoice.builder()
+        .id(1L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2018, 11, 27))
+        .seller(null)
+        .entries(null)
+        .build();
     database.saveInvoice(invoice);
     Collection<Invoice> expectedInvoiceList = new ArrayList<>();
     expectedInvoiceList.add(invoice);
 
     Collection<Invoice> resultInvoiceList = database.getAllInvoices();
 
-    assertThat(resultInvoiceList, contains(expectedInvoiceList));
-    //hamcrest matcher
+    assertThat(resultInvoiceList, contains(expectedInvoiceList.toArray()));
   }
 
   @Test
   public void shouldGetInvoiceFromMemoryDatabase() throws DatabaseOperationException {
     Database database = new InMemoryDatabase();
-    Invoice invoice = new Invoice(1L, "2/10/2018", null, null, null, null, null, null);
+    Invoice invoice = Invoice.builder()
+        .id(1L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2018, 11, 27))
+        .seller(null)
+        .entries(null)
+        .build();
     Invoice invoice1 = database.saveInvoice(invoice);
     Object id = invoice1.getId();
 
@@ -53,12 +99,36 @@ public class InMemoryDatabaseTest {
   @Test
   public void shouldReturnInvoicesBetweenDates() throws DatabaseOperationException {
     Database database = new InMemoryDatabase();
-    Invoice invoice = new Invoice(1L, "2/10/2018", null, null, LocalDate.of(2018, 11, 27), null,
-        null, null);
-    Invoice invoice2 = new Invoice(2L, "2/10/2018", null, null, LocalDate.of(2016, 9, 19), null,
-        null, null);
-    Invoice invoice3 = new Invoice(3L, "2/10/2018", null, null, LocalDate.of(1999, 11, 7), null,
-        null, null);
+    Invoice invoice = Invoice.builder()
+        .id(1L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2018, 11, 27))
+        .seller(null)
+        .entries(null)
+        .build();
+    Invoice invoice2 = Invoice.builder()
+        .id(2L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(1999, 11, 7))
+        .seller(null)
+        .entries(null)
+        .build();
+    Invoice invoice3 = Invoice.builder()
+        .id(3L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2016, 9, 19))
+        .seller(null)
+        .entries(null)
+        .build();
     database.saveInvoice(invoice);
     database.saveInvoice(invoice2);
     database.saveInvoice(invoice3);
@@ -72,8 +142,16 @@ public class InMemoryDatabaseTest {
   @Test
   public void shouldRemoveInvoiceFromMemoryDatabase() throws DatabaseOperationException {
     Database database = new InMemoryDatabase();
-    Invoice invoice = new Invoice(2L, "2/10/2018", null, null, LocalDate.of(2018, 11, 27), null,
-        null, null);
+    Invoice invoice = Invoice.builder()
+        .id(2L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.now())
+        .seller(null)
+        .entries(null)
+        .build();
     Invoice addedInvoice = database.saveInvoice(invoice);
 
     Invoice removedInvoice = database.removeInvoice(addedInvoice.getId());

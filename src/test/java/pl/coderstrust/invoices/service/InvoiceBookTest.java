@@ -1,4 +1,4 @@
-package pl.coderstrust.invoices.logic;
+package pl.coderstrust.invoices.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,8 +40,26 @@ public class InvoiceBookTest {
   @Test
   public void shouldAddInvoiceToDatabase() throws DatabaseOperationException, InvoiceBookException {
     Database database = mock(InMemoryDatabase.class);
-    Invoice invoice = new Invoice(1, "2/10/2018", null, null, null, null, null, null);
-    Invoice savedInvoice = new Invoice(2, null, null, null, null, null, null, null);
+    Invoice invoice = Invoice.builder()
+        .id(1L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2018, 11, 27))
+        .seller(null)
+        .entries(null)
+        .build();
+    Invoice savedInvoice = Invoice.builder()
+        .id(2L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2018, 11, 27))
+        .seller(null)
+        .entries(null)
+        .build();
     InvoiceBook invoiceBook = new InvoiceBook(database);
 
     when(database.saveInvoice(invoice)).thenReturn(savedInvoice);
@@ -54,12 +72,21 @@ public class InvoiceBookTest {
   @Test
   public void shouldRemoveInvoiceFromList()
       throws InvoiceBookException, DatabaseOperationException {
-    Invoice invoice = new Invoice(1, "2/10/2018", null, null, null, null, null, null);
+    Invoice invoice = Invoice.builder()
+        .id(1L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2018, 11, 27))
+        .seller(null)
+        .entries(null)
+        .build();
     InvoiceBook invoiceBook = new InvoiceBook(database);
 
-    when(database.removeInvoice(invoice.getId())).thenReturn(invoice);
+    when(database.removeInvoice(invoice.getId())).thenReturn(null);
 
-    Invoice result = invoiceBook.removeInvoice(invoice.getId());
+    Invoice result = invoiceBook.removeInvoice((Long) invoice.getId());
 
     verify(database).removeInvoice(invoice.getId());
     assertNull(result);
@@ -67,12 +94,21 @@ public class InvoiceBookTest {
 
   @Test
   public void shouldReturnInvoiceById() throws DatabaseOperationException, InvoiceBookException {
-    Invoice invoice = new Invoice(1, "2/10/2018", null, null, null, null, null, null);
+    Invoice invoice = Invoice.builder()
+        .id(1L)
+        .number("23/11/2019")
+        .buyer(null)
+        .issueDate(LocalDate.now())
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2018, 11, 27))
+        .seller(null)
+        .entries(null)
+        .build();
     InvoiceBook invoiceBook = new InvoiceBook(database);
 
     when(database.getInvoice(invoice.getId())).thenReturn(invoice);
 
-    Invoice result = invoiceBook.getInvoice(invoice.getId());
+    Invoice result = invoiceBook.getInvoice((Long) invoice.getId());
 
     assertEquals(invoice, result);
   }
