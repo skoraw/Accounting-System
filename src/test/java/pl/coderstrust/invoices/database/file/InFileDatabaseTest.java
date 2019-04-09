@@ -1,5 +1,6 @@
 package pl.coderstrust.invoices.database.file;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
