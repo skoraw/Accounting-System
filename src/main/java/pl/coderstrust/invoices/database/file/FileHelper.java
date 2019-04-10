@@ -26,7 +26,6 @@ public class FileHelper {
   }
 
 
-
   public Collection<Invoice> readAll() {
     try (Scanner scanner = new Scanner(new File(filePath))) {
       Collection<Invoice> list = new ArrayList<>();
@@ -53,33 +52,6 @@ public class FileHelper {
         if (invoiceList.get(i).getId().equals(id)) {
           return invoiceList.get(i);
         }
-      }
-    } else {
-      throw new IllegalArgumentException("Invoice with given id not exists");
-    }
-    return null;
-  }
-
-  public Invoice remove(Object id) {
-    if (id == null) {
-      throw new IllegalArgumentException("Invoice cannot be null");
-    }
-    if (isInvoiceID(id)) {
-      List<Invoice> invoices = (ArrayList<Invoice>) readAll();
-      try (BufferedWriter bufferedWriter = new BufferedWriter(
-          new FileWriter(filePath))) {
-        Invoice invoice = new Invoice();
-        for (int i = 0; i < invoices.size(); i++) {
-          if (!invoices.get(i).getId().equals(id)) {
-            bufferedWriter.write(converter.objectToString(invoices.get(i)));
-            bufferedWriter.newLine();
-          } else {
-            invoice = invoices.get(i).deepCopy(invoices.get(i));
-          }
-        }
-        return invoice;
-      } catch (IOException exception) {
-        exception.printStackTrace();
       }
     } else {
       throw new IllegalArgumentException("Invoice with given id not exists");
@@ -143,14 +115,40 @@ public class FileHelper {
     }
   }
 
-  public void addInvoice(Invoice invoice) {
+  public void addInvoice(String line) {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath, true))) {
-      String line = converter.objectToString(invoice);
       bufferedWriter.append(line);
       bufferedWriter.newLine();
     } catch (IOException exception) {
       exception.printStackTrace();
     }
+  }
+
+  public void rewriteFile(List<String> list) {
+    try (BufferedWriter bufferedWriter = new BufferedWriter(
+        new FileWriter(filePath))) {
+      for (int i = 0; i < list.size(); i++) {
+        bufferedWriter.write(list.get(i));
+        bufferedWriter.newLine();
+      }
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  public Collection<String> readAllLines() {
+    try (Scanner scanner = new Scanner(new File(filePath))) {
+      Collection<String> list = new ArrayList<>();
+      String line = "";
+      while (scanner.hasNext()) {
+        line = scanner.nextLine();
+        list.add(line);
+      }
+      return list;
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+    return null;
   }
 }

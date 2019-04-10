@@ -2,7 +2,9 @@ package pl.coderstrust.invoices.database.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import pl.coderstrust.invoices.database.Database;
 import pl.coderstrust.invoices.database.DatabaseOperationException;
 import pl.coderstrust.invoices.model.Invoice;
@@ -38,7 +40,7 @@ public class InFileDatabase implements Database {
         copiedInvoice.setId(maxId);
       }
       String id = String.valueOf(copiedInvoice.getId());
-      fileHelper.addInvoice(copiedInvoice);
+      fileHelper.addInvoice(converter.objectToString(copiedInvoice));
       idFileHelper.setNewId(id);
       return copiedInvoice;
     }
@@ -63,7 +65,27 @@ public class InFileDatabase implements Database {
 
   @Override
   public Invoice removeInvoice(Object id) throws DatabaseOperationException {
-
-    return null;
+    if (id == null) {
+      throw new IllegalArgumentException("Invoice cannot be null");
+    }
+    if (fileHelper.isInvoiceID(id)) {
+      Invoice invoice = new Invoice();
+      List<String> stringList = (ArrayList<String>) fileHelper.readAllLines();
+      List<Invoice> invoicesList = (ArrayList<Invoice>) converter
+          .stringListToInvoicesList(stringList);
+      for (int i = 0; i < invoicesList.size(); i++) {
+        if (invoicesList.get(i).getId().equals(id)) {
+          invoice = invoicesList.get(i);
+          invoicesList.remove(i);
+        }
+        //jezeli usuwam ostatnia fakture to zmniejsz id
+      }
+      stringList.clear();
+      stringList = (List<String>) converter.invoicesListToStringList(invoicesList);
+      fileHelper.rewriteFile(stringList);
+      return invoice;
+    } else {
+      throw new IllegalArgumentException("Invoice with given id not exists");
+    }
   }
 }
