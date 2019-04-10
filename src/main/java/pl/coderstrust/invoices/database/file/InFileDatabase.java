@@ -1,5 +1,6 @@
 package pl.coderstrust.invoices.database.file;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.util.Collection;
 import pl.coderstrust.invoices.database.Database;
@@ -11,16 +12,19 @@ public class InFileDatabase implements Database {
   private static final String invoicesPath = "F:\\projects\\project-10-tomasz-wiktor\\src\\main\\resources\\invoices.txt";
   private static final String invoicesIdPath = "F:\\projects\\project-10-tomasz-wiktor\\src\\main\\resources\\id.txt";
 
-  private Configuration configuration;
+  private Converter converter;
   private FileHelper fileHelper;
+  private IdFileHelper idFileHelper;
 
   public InFileDatabase() {
-    this.configuration = new Configuration(invoicesPath, invoicesIdPath);
-    this.fileHelper = new FileHelper(configuration);
+    this.converter = new Converter(new ObjectMapper());
+    this.fileHelper = new FileHelper(invoicesPath);
+    this.idFileHelper = new IdFileHelper(invoicesIdPath);
   }
 
   @Override
   public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
+
     return null;
   }
 

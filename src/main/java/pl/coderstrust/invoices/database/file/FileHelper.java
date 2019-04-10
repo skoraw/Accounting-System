@@ -16,40 +16,16 @@ import pl.coderstrust.invoices.model.Invoice;
 
 public class FileHelper {
 
-  private Configuration filePath;
+  private String filePath;
   private Converter converter;
 
-  public FileHelper(Configuration filePath) {
+  public FileHelper(String filePath) {
     this.filePath = filePath;
     this.converter = new Converter(new ObjectMapper());
     createFileDatabase();
   }
 
-  private String getMaxId() {
-    try (Scanner scanner = new Scanner(new File(filePath.getInvoicesIdFilePath()))) {
-      return scanner.nextLine();
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-    return null;
-  }
 
-  private boolean isInvoiceID(Object id) {
-    try (Scanner scanner = new Scanner(new File(filePath.getInvoicesFilePath()))) {
-      String line = "";
-      Invoice invoice;
-      while (scanner.hasNext()) {
-        line = scanner.nextLine();
-        invoice = converter.stringToInvoice(line);
-        if (invoice != null && invoice.getId().equals(id)) {
-          return true;
-        }
-      }
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-    return false;
-  }
 
   public Invoice add(Invoice invoice) {
     if (invoice == null) {
@@ -79,7 +55,7 @@ public class FileHelper {
 
   private void addInvoice(Invoice invoice) {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
-        new FileWriter(filePath.getInvoicesFilePath(), true))) {
+        new FileWriter(filePath, true))) {
       String line = converter.objectToString(invoice);
       bufferedWriter.append(line);
       bufferedWriter.newLine();
@@ -88,17 +64,10 @@ public class FileHelper {
     }
   }
 
-  private void addId(Object id) {
-    try (BufferedWriter bufferedWriter = new BufferedWriter(
-        new FileWriter(filePath.getInvoicesIdFilePath()))) {
-      bufferedWriter.write(String.valueOf(id));
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-  }
+
 
   public Collection<Invoice> readAll() {
-    try (Scanner scanner = new Scanner(new File(filePath.getInvoicesFilePath()))) {
+    try (Scanner scanner = new Scanner(new File(filePath))) {
       Collection<Invoice> list = new ArrayList<>();
       String line = "";
       while (scanner.hasNext()) {
@@ -137,7 +106,7 @@ public class FileHelper {
     if (isInvoiceID(id)) {
       List<Invoice> invoices = (ArrayList<Invoice>) readAll();
       try (BufferedWriter bufferedWriter = new BufferedWriter(
-          new FileWriter(filePath.getInvoicesFilePath()))) {
+          new FileWriter(filePath))) {
         Invoice invoice = new Invoice();
         for (int i = 0; i < invoices.size(); i++) {
           if (!invoices.get(i).getId().equals(id)) {
@@ -159,7 +128,7 @@ public class FileHelper {
 
   public Collection<Invoice> readBetweenDates(LocalDate fromDate, LocalDate toDate) {
     if (fromDate.isBefore(toDate)) {
-      try (Scanner scanner = new Scanner(new File(filePath.getInvoicesFilePath()))) {
+      try (Scanner scanner = new Scanner(new File(filePath))) {
         List<Invoice> list = new ArrayList<>();
         String line = "";
         Invoice invoice;
@@ -182,19 +151,32 @@ public class FileHelper {
     return null;
   }
 
-  private void createFileDatabase() {
-    if (Files.exists(Paths.get(filePath.getInvoicesFilePath()))) {
-      return;
-    }
-    try (BufferedWriter bufferedWriter = new BufferedWriter(
-        new FileWriter(filePath.getInvoicesFilePath()))) {
-      bufferedWriter.write("");
+  //OK
+
+  private boolean isInvoiceID(Object id) {
+    try (Scanner scanner = new Scanner(new File(filePath))) {
+      String line = "";
+      Invoice invoice;
+      while (scanner.hasNext()) {
+        line = scanner.nextLine();
+        invoice = converter.stringToInvoice(line);
+        if (invoice != null && invoice.getId().equals(id)) {
+          return true;
+        }
+      }
     } catch (IOException exception) {
       exception.printStackTrace();
     }
+    return false;
+  }
+
+  private void createInvoicesFile() {
+    if (Files.exists(Paths.get(filePath))) {
+      return;
+    }
     try (BufferedWriter bufferedWriter = new BufferedWriter(
-        new FileWriter(filePath.getInvoicesIdFilePath()))) {
-      bufferedWriter.write("0");
+        new FileWriter(filePath))) {
+      bufferedWriter.write("");
     } catch (IOException exception) {
       exception.printStackTrace();
     }
