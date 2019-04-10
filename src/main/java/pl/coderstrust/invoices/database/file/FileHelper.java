@@ -27,45 +27,6 @@ public class FileHelper {
 
 
 
-  public Invoice add(Invoice invoice) {
-    if (invoice == null) {
-      throw new IllegalArgumentException("Invoice cannot be null");
-    } else if (isInvoiceID(invoice.getId())) {
-      throw new IllegalArgumentException("Invoice with given id exists");
-    }
-    Integer maxId = Integer.parseInt(getMaxId());
-    if (invoice.getId() != null) {
-      if ((Integer) invoice.getId() <= maxId) {
-        throw new IllegalArgumentException("Id can not be lower or equal than actual max Id");
-      }
-    }
-    String id;
-    Invoice copiedInvoice = invoice.deepCopy(invoice);
-    maxId++;
-    if (copiedInvoice.getId() == null) {
-      id = String.valueOf(maxId);
-      copiedInvoice.setId(maxId);
-    } else {
-      id = String.valueOf(copiedInvoice.getId());
-    }
-    addInvoice(copiedInvoice);
-    addId(id);
-    return copiedInvoice;
-  }
-
-  private void addInvoice(Invoice invoice) {
-    try (BufferedWriter bufferedWriter = new BufferedWriter(
-        new FileWriter(filePath, true))) {
-      String line = converter.objectToString(invoice);
-      bufferedWriter.append(line);
-      bufferedWriter.newLine();
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-  }
-
-
-
   public Collection<Invoice> readAll() {
     try (Scanner scanner = new Scanner(new File(filePath))) {
       Collection<Invoice> list = new ArrayList<>();
@@ -153,7 +114,7 @@ public class FileHelper {
 
   //OK
 
-  private boolean isInvoiceID(Object id) {
+  public boolean isInvoiceID(Object id) {
     try (Scanner scanner = new Scanner(new File(filePath))) {
       String line = "";
       Invoice invoice;
@@ -177,6 +138,17 @@ public class FileHelper {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath))) {
       bufferedWriter.write("");
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  public void addInvoice(Invoice invoice) {
+    try (BufferedWriter bufferedWriter = new BufferedWriter(
+        new FileWriter(filePath, true))) {
+      String line = converter.objectToString(invoice);
+      bufferedWriter.append(line);
+      bufferedWriter.newLine();
     } catch (IOException exception) {
       exception.printStackTrace();
     }

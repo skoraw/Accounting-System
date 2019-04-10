@@ -24,7 +24,24 @@ public class InFileDatabase implements Database {
 
   @Override
   public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
-
+    if (invoice == null) {
+      throw new IllegalArgumentException("Invoice cannot be null");
+    }
+    if (fileHelper.isInvoiceID(invoice.getId())) {
+      //zrobic update zamiast exception
+    } else {
+      //dodanie nowej faktury
+      Integer maxId = Integer.parseInt(idFileHelper.getMaxId());
+      Invoice copiedInvoice = invoice.deepCopy(invoice);
+      if (copiedInvoice.getId() == null) {
+        maxId++;
+        copiedInvoice.setId(maxId);
+      }
+      String id = String.valueOf(copiedInvoice.getId());
+      fileHelper.addInvoice(copiedInvoice);
+      idFileHelper.setNewId(id);
+      return copiedInvoice;
+    }
     return null;
   }
 
@@ -46,6 +63,7 @@ public class InFileDatabase implements Database {
 
   @Override
   public Invoice removeInvoice(Object id) throws DatabaseOperationException {
+
     return null;
   }
 }

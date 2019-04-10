@@ -16,7 +16,7 @@ public class IdFileHelper {
     this.filePath = filePath;
   }
 
-  private void createInvoicesIdFile() {
+  public void createInvoicesIdFile() {
     if (Files.exists(Paths.get(filePath))) {
       return;
     }
@@ -28,7 +28,7 @@ public class IdFileHelper {
     }
   }
 
-  private String getMaxId() {
+  public String getMaxId() {
     try (Scanner scanner = new Scanner(new File(filePath))) {
       return scanner.nextLine();
     } catch (IOException exception) {
@@ -37,7 +37,7 @@ public class IdFileHelper {
     return null;
   }
 
-  private void setNewId(Object id) {
+  public void setNewId(Object id) {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath))) {
       bufferedWriter.write(String.valueOf(id));
