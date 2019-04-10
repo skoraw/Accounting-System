@@ -54,6 +54,20 @@ public class InFileDatabase implements Database {
 
   @Override
   public Invoice getInvoice(Object id) throws DatabaseOperationException {
+    if (id == null) {
+      throw new IllegalArgumentException("Id cannot be null");
+    }
+    if (fileHelper.isInvoiceID(id)) {
+      List<Invoice> invoiceList;
+      invoiceList = (ArrayList<Invoice>) fileHelper.readAll();
+      for (int i = 0; i < invoiceList.size(); i++) {
+        if (invoiceList.get(i).getId().equals(id)) {
+          return invoiceList.get(i);
+        }
+      }
+    } else {
+      throw new IllegalArgumentException("Invoice with given id not exists");
+    }
     return null;
   }
 

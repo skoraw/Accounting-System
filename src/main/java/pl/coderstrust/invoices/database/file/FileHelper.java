@@ -25,40 +25,6 @@ public class FileHelper {
     createFileDatabase();
   }
 
-
-  public Collection<Invoice> readAll() {
-    try (Scanner scanner = new Scanner(new File(filePath))) {
-      Collection<Invoice> list = new ArrayList<>();
-      String line = "";
-      while (scanner.hasNext()) {
-        line = scanner.nextLine();
-        list.add(converter.stringToInvoice(line));
-      }
-      return list;
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-    return null;
-  }
-
-  public Invoice readInvoice(Object id) {
-    if (id == null) {
-      throw new IllegalArgumentException("Id cannot be null");
-    }
-    if (isInvoiceID(id)) {
-      List<Invoice> invoiceList;
-      invoiceList = (ArrayList<Invoice>) readAll();
-      for (int i = 0; i < invoiceList.size(); i++) {
-        if (invoiceList.get(i).getId().equals(id)) {
-          return invoiceList.get(i);
-        }
-      }
-    } else {
-      throw new IllegalArgumentException("Invoice with given id not exists");
-    }
-    return null;
-  }
-
   public Collection<Invoice> readBetweenDates(LocalDate fromDate, LocalDate toDate) {
     if (fromDate.isBefore(toDate)) {
       try (Scanner scanner = new Scanner(new File(filePath))) {
@@ -85,7 +51,7 @@ public class FileHelper {
   }
 
   //OK
-
+////////////////////////////////////////////
   public boolean isInvoiceID(Object id) {
     try (Scanner scanner = new Scanner(new File(filePath))) {
       String line = "";
@@ -103,6 +69,7 @@ public class FileHelper {
     return false;
   }
 
+  /////////////////////////////////////////
   private void createInvoicesFile() {
     if (Files.exists(Paths.get(filePath))) {
       return;
@@ -115,6 +82,7 @@ public class FileHelper {
     }
   }
 
+  /////////////////////////////////////////////////
   public void addInvoice(String line) {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath, true))) {
@@ -125,6 +93,7 @@ public class FileHelper {
     }
   }
 
+  /////////////////////////////////////////////////////////
   public void rewriteFile(List<String> list) {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath))) {
@@ -137,6 +106,7 @@ public class FileHelper {
     }
   }
 
+  //////////////////////////////////////////////////
   public Collection<String> readAllLines() {
     try (Scanner scanner = new Scanner(new File(filePath))) {
       Collection<String> list = new ArrayList<>();
