@@ -29,7 +29,7 @@ public class InFileDatabase implements Database {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
-    if (fileHelper.isInvoiceID(invoice.getId())) {
+    if (isInvoiceID(invoice.getId())) {
       //zrobic update zamiast exception
     } else {
       //dodanie nowej faktury
@@ -49,7 +49,8 @@ public class InFileDatabase implements Database {
 
   @Override
   public Collection<Invoice> getAllInvoices() throws DatabaseOperationException {
-    return null;
+    return converter.stringListToInvoicesList((List<String>) fileHelper.readAllLines());
+
   }
 
   @Override
@@ -57,9 +58,9 @@ public class InFileDatabase implements Database {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
-    if (fileHelper.isInvoiceID(id)) {
-      List<Invoice> invoiceList;
-      invoiceList = (ArrayList<Invoice>) fileHelper.readAll();
+    if (isInvoiceID(id)) {
+      List<Invoice> invoiceList = (ArrayList<Invoice>) converter.stringListToInvoicesList(
+          (List<String>) fileHelper.readAllLines());
       for (int i = 0; i < invoiceList.size(); i++) {
         if (invoiceList.get(i).getId().equals(id)) {
           return invoiceList.get(i);
@@ -86,7 +87,7 @@ public class InFileDatabase implements Database {
           betweenDatesInvoicesList.add(invoicesList.get(i));
         }
       }
-      return invoicesList;
+      return betweenDatesInvoicesList;
     } else {
       throw new IllegalArgumentException("fromDate must be earlier date than toDate");
     }
@@ -118,7 +119,7 @@ public class InFileDatabase implements Database {
     }
   }
 
-  public boolean isInvoiceID(Object id) {
+  private boolean isInvoiceID(Object id) {
     Invoice invoice;
     List<String> list = (ArrayList<String>) fileHelper.readAllLines();
     for (int i = 0; i < list.size(); i++) {
