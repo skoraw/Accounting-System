@@ -14,6 +14,7 @@ public class IdFileHelper {
 
   public IdFileHelper(String filePath) {
     this.filePath = filePath;
+    createInvoicesIdFile();
   }
 
   public void createInvoicesIdFile() {
