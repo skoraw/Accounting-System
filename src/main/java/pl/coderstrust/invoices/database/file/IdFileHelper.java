@@ -8,28 +8,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-public class IdFileHelper {
+class IdFileHelper {
 
   private String filePath;
 
-  public IdFileHelper(String filePath) {
+  IdFileHelper(String filePath) {
     this.filePath = filePath;
     createInvoicesIdFile();
   }
 
-  public void createInvoicesIdFile() {
-    if (Files.exists(Paths.get(filePath))) {
-      return;
-    }
-    try (BufferedWriter bufferedWriter = new BufferedWriter(
-        new FileWriter(filePath))) {
-      bufferedWriter.write("0");
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-  }
-
-  public String getMaxId() {
+  String getMaxId() {
     try (Scanner scanner = new Scanner(new File(filePath))) {
       return scanner.nextLine();
     } catch (IOException exception) {
@@ -38,10 +26,22 @@ public class IdFileHelper {
     return null;
   }
 
-  public void setNewId(Object id) {
+  void setNewId(Object id) {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath))) {
       bufferedWriter.write(String.valueOf(id));
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  private void createInvoicesIdFile() {
+    if (Files.exists(Paths.get(filePath))) {
+      return;
+    }
+    try (BufferedWriter bufferedWriter = new BufferedWriter(
+        new FileWriter(filePath))) {
+      bufferedWriter.write("0");
     } catch (IOException exception) {
       exception.printStackTrace();
     }
