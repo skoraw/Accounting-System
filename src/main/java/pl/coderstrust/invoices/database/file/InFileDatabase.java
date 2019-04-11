@@ -74,7 +74,22 @@ public class InFileDatabase implements Database {
   @Override
   public Collection<Invoice> getInvoicesInBetweenDates(LocalDate fromDate, LocalDate toDate)
       throws DatabaseOperationException {
-    return null;
+    if (fromDate.isBefore(toDate)) {
+      List<Invoice> invoicesList = (List<Invoice>) converter
+          .stringListToInvoicesList((List<String>) fileHelper.readAllLines());
+      List<Invoice> betweenDatesInvoicesList = new ArrayList<>();
+      fromDate = fromDate.minusDays(1);
+      toDate = toDate.plusDays(1);
+      for (int i = 0; i < invoicesList.size(); i++) {
+        if (invoicesList.get(i).getSellDate().isAfter(fromDate) && invoicesList.get(i).getSellDate()
+            .isBefore(toDate)) {
+          betweenDatesInvoicesList.add(invoicesList.get(i));
+        }
+      }
+      return invoicesList;
+    } else {
+      throw new IllegalArgumentException("fromDate must be earlier date than toDate");
+    }
   }
 
   @Override
@@ -82,7 +97,7 @@ public class InFileDatabase implements Database {
     if (id == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
-    if (fileHelper.isInvoiceID(id)) {
+    if (isInvoiceID(id)) {
       Invoice invoice = new Invoice();
       List<String> stringList = (ArrayList<String>) fileHelper.readAllLines();
       List<Invoice> invoicesList = (ArrayList<Invoice>) converter
@@ -101,5 +116,17 @@ public class InFileDatabase implements Database {
     } else {
       throw new IllegalArgumentException("Invoice with given id not exists");
     }
+  }
+
+  public boolean isInvoiceID(Object id) {
+    Invoice invoice;
+    List<String> list = (ArrayList<String>) fileHelper.readAllLines();
+    for (int i = 0; i < list.size(); i++) {
+      invoice = converter.stringToInvoice(list.get(i));
+      if (invoice != null && invoice.getId().equals(id)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
