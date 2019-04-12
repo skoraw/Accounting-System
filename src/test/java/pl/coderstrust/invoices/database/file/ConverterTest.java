@@ -36,31 +36,31 @@ class ConverterTest {
     assertEquals(expected, actual);
   }
 
-  @Test
-  void shouldReturnNull() {
-    //given
-    Invoice invoice = null;
-    String expected = null;
-
-    //when
-    String actual = converter.objectToString(invoice);
-
-    //then
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  void shouldReturnNullWhenStringIsNull() {
-    //given
-    Invoice expected = null;
-    String line = null;
-
-    //when
-    Invoice actual = converter.stringToInvoice(line);
-
-    //then
-    assertEquals(expected, actual);
-  }
+//  @Test
+//  void shouldReturnNull() {
+//    //given
+//    Invoice invoice = null;
+//    String expected = null;
+//
+//    //when
+//    String actual = converter.objectToString(invoice);
+//
+//    //then
+//    assertEquals(expected, actual);
+//  }
+//
+//  @Test
+//  void shouldReturnNullWhenStringIsNull() {
+//    //given
+//    Invoice expected = null;
+//    String line = null;
+//
+//    //when
+//    Invoice actual = converter.stringToInvoice(line);
+//
+//    //then
+//    assertEquals(expected, actual);
+//  }
 
   @Test
   void shouldConvertStringToInvoiceObject() {
