@@ -103,18 +103,11 @@ class FileHelperTest {
 
   @Test
   void shouldTestFileHelperConstructor() {
-    FileHelper tempFileHelper = new FileHelper(pathInvoices.toString());
     assertTrue(Files.exists(pathInvoices));
   }
 
   @Test
   void shouldThrowException() {
-//    FileHelper tempFileHelper = new FileHelper(null);
     assertThrows(NullPointerException.class, () -> new FileHelper(null));
-  }
-
-  @Test
-  void shouldReturnExceptionWhenStringLineIsNull() {
-    assertThrows(IOException.class, () -> fileHelper.addLine(null));
   }
 }
