@@ -18,10 +18,10 @@ public class InFileDatabase implements Database {
   private FileHelper fileHelper;
   private IdFileHelper idFileHelper;
 
-  public InFileDatabase() {
+  public InFileDatabase(FileHelper fileHelper, IdFileHelper idFileHelper) {
     this.converter = new Converter(new ObjectMapper());
-    this.fileHelper = new FileHelper(invoicesPath);
-    this.idFileHelper = new IdFileHelper(invoicesIdPath);
+    this.fileHelper = fileHelper;
+    this.idFileHelper = idFileHelper;
   }
 
   @Override
