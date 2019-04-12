@@ -24,7 +24,6 @@ class FileHelperTest {
   void setupBeforeEach() {
     try {
       pathInvoices = Files.createTempFile(pathInvoices, "test_invoices", ".txt");
-//      System.out.println("Created file: " + pathInvoices);
     } catch (IOException exception) {
       exception.printStackTrace();
     }
@@ -36,7 +35,6 @@ class FileHelperTest {
   void closeAfterEach() {
     try {
       Files.deleteIfExists(pathInvoices);
-//      System.out.println("Removed file: " + pathInvoices);
     } catch (IOException exception) {
       exception.printStackTrace();
     }
