@@ -20,7 +20,7 @@ class FileHelper {
     createInvoicesFile();
   }
 
-  void addInvoice(String line) {
+  void addLine(String line) {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath, true))) {
       bufferedWriter.append(line);

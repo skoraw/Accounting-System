@@ -40,7 +40,7 @@ public class InFileDatabase implements Database {
         copiedInvoice.setId(maxId);
       }
       String id = String.valueOf(copiedInvoice.getId());
-      fileHelper.addInvoice(converter.objectToString(copiedInvoice));
+      fileHelper.addLine(converter.objectToString(copiedInvoice));
       idFileHelper.setNewId(id);
       return copiedInvoice;
     }
