@@ -37,6 +37,32 @@ class ConverterTest {
   }
 
   @Test
+  void shouldReturnNull() {
+    //given
+    Invoice invoice = null;
+    String expected = null;
+
+    //when
+    String actual = converter.objectToString(invoice);
+
+    //then
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void shouldReturnNullWhenStringIsNull() {
+    //given
+    Invoice expected = null;
+    String line = null;
+
+    //when
+    Invoice actual = converter.stringToInvoice(line);
+
+    //then
+    assertEquals(expected, actual);
+  }
+
+  @Test
   void shouldConvertStringToInvoiceObject() {
     //given
     String line = "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":[]}";
