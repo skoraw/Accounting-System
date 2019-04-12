@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
-class FileHelper {
+public class FileHelper {
 
   private String filePath;
 

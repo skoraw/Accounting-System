@@ -18,12 +18,12 @@ class FileHelperTest {
 
   private FileHelper fileHelper;
 
-  private Path pathInvoices = Paths.get("F:/projects/project-10-tomasz-wiktor/src/test/resources/");
+  private Path pathInvoices = Paths.get("./src/test/resources/");
 
   @BeforeEach
   void setupBeforeEach() {
     try {
-      pathInvoices = Files.createTempFile(pathInvoices, "test_invoices", ".txt");
+      pathInvoices = Files.createTempFile(pathInvoices, "test_invoices", ".json");
     } catch (IOException exception) {
       exception.printStackTrace();
     }

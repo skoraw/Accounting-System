@@ -11,9 +11,6 @@ import pl.coderstrust.invoices.model.Invoice;
 
 public class InFileDatabase implements Database {
 
-  private static final String invoicesPath = "F:\\projects\\project-10-tomasz-wiktor\\src\\main\\resources\\invoices.txt";
-  private static final String invoicesIdPath = "F:\\projects\\project-10-tomasz-wiktor\\src\\main\\resources\\id.txt";
-
   private Converter converter;
   private FileHelper fileHelper;
   private IdFileHelper idFileHelper;

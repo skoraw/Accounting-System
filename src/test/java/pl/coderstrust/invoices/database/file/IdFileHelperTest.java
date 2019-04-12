@@ -14,12 +14,12 @@ class IdFileHelperTest {
 
   private IdFileHelper idFileHelper;
   private Path pathIdInvoices = Paths
-      .get("F:/projects/project-10-tomasz-wiktor/src/test/resources/");
+      .get("./src/test/resources/");
 
   @BeforeEach
   void setupBeforeEach() {
     try {
-      pathIdInvoices = Files.createTempFile(pathIdInvoices, "test_id", ".txt");
+      pathIdInvoices = Files.createTempFile(pathIdInvoices, "test_id", ".json");
     } catch (IOException exception) {
       exception.printStackTrace();
     }
