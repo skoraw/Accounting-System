@@ -19,18 +19,18 @@ public class InMemoryDatabase implements Database {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
-    Invoice cloneInvoice = new Invoice(invoice);
-    if (!(cloneInvoice.getId() instanceof Long)) {
+    if (!(invoice.getId() instanceof Long)) {
       throw new IllegalArgumentException("Id must be number Long type");
     }
+    Invoice cloneInvoice = new Invoice(invoice);
     invoices.put((Long) cloneInvoice.getId(), cloneInvoice);
     return new Invoice(cloneInvoice);
   }
 
   @Override
   public Collection<Invoice> getAllInvoices() throws DatabaseOperationException {
-    Map<Long, Invoice> copyListOfInvoices = new HashMap<>(invoices);
-    return copyListOfInvoices.values();
+    Map<Long, Invoice> copyOfInvoices = new HashMap<>(invoices);
+    return copyOfInvoices.values();
   }
 
   @Override
@@ -42,7 +42,7 @@ public class InMemoryDatabase implements Database {
       throw new IllegalArgumentException("Id must be number Long type");
     }
     if (!invoices.containsKey(id)) {
-      throw new DatabaseOperationException("No invoice with id");
+      throw new DatabaseOperationException(String.format("Invoice for id=[%d] is not exist", id));
     }
     return new Invoice(invoices.get(id));
   }
@@ -52,7 +52,7 @@ public class InMemoryDatabase implements Database {
       throws DatabaseOperationException {
     Collection<Invoice> invoicesByDate = new ArrayList<>();
     if (fromDate == null && toDate == null) {
-      throw new IllegalArgumentException("Date cant be null");
+      throw new IllegalArgumentException("Date can't be null");
     }
     for (Invoice invoice : invoices.values()) {
       if (invoice.getSellDate().isAfter(fromDate) && invoice.getSellDate().isBefore(toDate)) {
@@ -73,7 +73,7 @@ public class InMemoryDatabase implements Database {
     if (invoices.isEmpty()) {
       throw new DatabaseOperationException("List of invoices is empty");
     }
-    Invoice removedInvoice = new Invoice(invoices.get(id));
+    Invoice removedInvoice = invoices.get(id);
     invoices.remove(id);
     return removedInvoice;
   }

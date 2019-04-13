@@ -1,6 +1,6 @@
 package pl.coderstrust.invoices.database;
 
-public class InvoiceBookException extends Exception{
+public class InvoiceBookException extends Exception {
 
   public InvoiceBookException() {
   }
