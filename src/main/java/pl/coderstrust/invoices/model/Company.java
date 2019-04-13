@@ -1,14 +1,12 @@
 package pl.coderstrust.invoices.model;
 
-import java.util.prefs.Preferences;
-
 public class Company {
 
-  private String name;
-  private String taxIdentificationNumber;
-  private String street;
-  private String postalCode;
-  private String town;
+  private final String name;
+  private final String taxIdentificationNumber;
+  private final String street;
+  private final String postalCode;
+  private final String town;
 
   private Company(String name, String taxIdentificationNumber, String street,
       String postalCode, String town) {
@@ -65,40 +63,20 @@ public class Company {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public String getTaxIdentificationNumber() {
     return taxIdentificationNumber;
-  }
-
-  public void setTaxIdentificationNumber(String taxIdentificationNumber) {
-    this.taxIdentificationNumber = taxIdentificationNumber;
   }
 
   public String getStreet() {
     return street;
   }
 
-  public void setStreet(String street) {
-    this.street = street;
-  }
-
   public String getPostalCode() {
     return postalCode;
   }
 
-  public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode;
-  }
-
   public String getTown() {
     return town;
-  }
-
-  public void setTown(String town) {
-    this.town = town;
   }
 
   @Override

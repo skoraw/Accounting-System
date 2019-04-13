@@ -1,4 +1,4 @@
-package pl.coderstrust.invoices.database;
+package pl.coderstrust.invoices.database.memory;
 
 import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertThat;
@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.junit.Test;
+import pl.coderstrust.invoices.database.Database;
+import pl.coderstrust.invoices.database.DatabaseOperationException;
 import pl.coderstrust.invoices.model.Invoice;
 
 public class InMemoryDatabaseTest {

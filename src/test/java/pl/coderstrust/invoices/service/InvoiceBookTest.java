@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.invoices.database.Database;
 import pl.coderstrust.invoices.database.DatabaseOperationException;
-import pl.coderstrust.invoices.database.InMemoryDatabase;
+import pl.coderstrust.invoices.database.memory.InMemoryDatabase;
 import pl.coderstrust.invoices.database.InvoiceBookException;
 import pl.coderstrust.invoices.model.Invoice;
 
