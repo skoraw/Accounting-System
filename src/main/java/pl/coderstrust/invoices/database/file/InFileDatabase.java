@@ -26,20 +26,33 @@ public class InFileDatabase implements Database {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
-    if (isInvoiceID(invoice.getId())) {
-      //zrobic update zamiast exception
-    } else {
-      //dodanie nowej faktury
+    if (invoice.getId() == null || !isInvoiceID(invoice.getId())) {
       Integer maxId = Integer.parseInt(idFileHelper.getMaxId());
       Invoice copiedInvoice = invoice.deepCopy(invoice);
       if (copiedInvoice.getId() == null) {
         maxId++;
         copiedInvoice.setId(maxId);
       }
-      String id = String.valueOf(copiedInvoice.getId());
       fileHelper.addLine(converter.objectToString(copiedInvoice));
-      idFileHelper.setNewId(id);
+      if ((Integer) copiedInvoice.getId() >= maxId) {
+        String id = String.valueOf(copiedInvoice.getId());
+        idFileHelper.setNewId(id);
+      }
       return copiedInvoice;
+    } else {
+      ArrayList<String> list = (ArrayList<String>) fileHelper.readAllLines();
+      ArrayList<Invoice> invoicesList = (ArrayList<Invoice>) converter
+          .stringListToInvoicesList(list);
+      list.clear();
+      Integer id = (Integer) invoice.getId();
+      for (Invoice value : invoicesList) {
+        if (value.getId().equals(id)) {
+          list.add(converter.objectToString(invoice));
+        } else {
+          list.add(converter.objectToString(value));
+        }
+      }
+      fileHelper.rewriteFile(list);
     }
     return null;
   }
@@ -47,7 +60,6 @@ public class InFileDatabase implements Database {
   @Override
   public Collection<Invoice> getAllInvoices() throws DatabaseOperationException {
     return converter.stringListToInvoicesList((List<String>) fileHelper.readAllLines());
-
   }
 
   @Override
@@ -58,9 +70,9 @@ public class InFileDatabase implements Database {
     if (isInvoiceID(id)) {
       List<Invoice> invoiceList = (ArrayList<Invoice>) converter.stringListToInvoicesList(
           (List<String>) fileHelper.readAllLines());
-      for (int i = 0; i < invoiceList.size(); i++) {
-        if (invoiceList.get(i).getId().equals(id)) {
-          return invoiceList.get(i);
+      for (Invoice invoice : invoiceList) {
+        if (invoice.getId().equals(id)) {
+          return invoice;
         }
       }
     } else {
@@ -78,10 +90,10 @@ public class InFileDatabase implements Database {
       List<Invoice> betweenDatesInvoicesList = new ArrayList<>();
       fromDate = fromDate.minusDays(1);
       toDate = toDate.plusDays(1);
-      for (int i = 0; i < invoicesList.size(); i++) {
-        if (invoicesList.get(i).getSellDate().isAfter(fromDate) && invoicesList.get(i).getSellDate()
+      for (Invoice invoice : invoicesList) {
+        if (invoice.getSellDate().isAfter(fromDate) && invoice.getSellDate()
             .isBefore(toDate)) {
-          betweenDatesInvoicesList.add(invoicesList.get(i));
+          betweenDatesInvoicesList.add(invoice);
         }
       }
       return betweenDatesInvoicesList;
@@ -105,7 +117,6 @@ public class InFileDatabase implements Database {
           invoice = invoicesList.get(i);
           invoicesList.remove(i);
         }
-        //jezeli usuwam ostatnia fakture to zmniejsz id
       }
       stringList.clear();
       stringList = (List<String>) converter.invoicesListToStringList(invoicesList);
@@ -118,10 +129,10 @@ public class InFileDatabase implements Database {
 
   private boolean isInvoiceID(Object id) {
     Invoice invoice;
-    List<String> list = (ArrayList<String>) fileHelper.readAllLines();
-    for (int i = 0; i < list.size(); i++) {
-      invoice = converter.stringToInvoice(list.get(i));
-      if (invoice != null && invoice.getId().equals(id)) {
+    List<String> strings = (List<String>) fileHelper.readAllLines();
+    for (String string : strings) {
+      invoice = converter.stringToInvoice(string);
+      if (invoice.getId().equals(id)) {
         return true;
       }
     }
