@@ -21,23 +21,14 @@ class FileHelperTest {
   private Path pathInvoices = Paths.get("./src/test/resources/");
 
   @BeforeEach
-  void setupBeforeEach() {
-    try {
-      pathInvoices = Files.createTempFile(pathInvoices, "test_invoices", ".json");
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-
+  void setupBeforeEach() throws IOException {
+    pathInvoices = Files.createTempFile(pathInvoices, "test_invoices", ".json");
     fileHelper = new FileHelper(pathInvoices.toString());
   }
 
   @AfterEach
-  void closeAfterEach() {
-    try {
+  void closeAfterEach() throws IOException {
       Files.deleteIfExists(pathInvoices);
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
   }
 
   @Test
@@ -54,32 +45,25 @@ class FileHelperTest {
 
     //then
     assertEquals(expectedList, actualList);
-
   }
 
   @Test
-  void shouldAddLineOfTextToFile() {
+  void shouldAddLineOfTextToFile() throws IOException {
     //given
     String stringToWriteToFile = "Line of text";
     String expected = "Line of text" + System.lineSeparator();
 
     //when
     fileHelper.addLine(stringToWriteToFile);
-
     String actual = "";
-    try {
-      actual = Files.readString(pathInvoices);
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
+    actual = Files.readString(pathInvoices);
 
     //then
     assertEquals(expected, actual);
-
   }
 
   @Test
-  void shouldRewriteFile() {
+  void shouldRewriteFile() throws IOException {
     //given
     List<String> expectedList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
@@ -89,11 +73,7 @@ class FileHelperTest {
     //when
     fileHelper.rewriteFile(expectedList);
     List<String> actualList = new ArrayList<>();
-    try {
-      actualList = Files.readAllLines(pathInvoices);
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
+    actualList = Files.readAllLines(pathInvoices);
 
     //then
     assertEquals(expectedList, actualList);

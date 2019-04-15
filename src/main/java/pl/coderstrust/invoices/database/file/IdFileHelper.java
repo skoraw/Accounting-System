@@ -2,48 +2,42 @@ package pl.coderstrust.invoices.database.file;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-public class IdFileHelper {
+class IdFileHelper {
 
   private String filePath;
 
-  IdFileHelper(String filePath) {
+  IdFileHelper(String filePath) throws IOException {
     this.filePath = filePath;
     createInvoicesIdFile();
   }
 
-  String getMaxId() {
+  String getMaxId() throws FileNotFoundException {
     try (Scanner scanner = new Scanner(new File(filePath))) {
       return scanner.nextLine();
-    } catch (IOException exception) {
-      exception.printStackTrace();
     }
-    return null;
   }
 
-  void setNewId(Object id) {
+  void setNewId(Object id) throws IOException {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath))) {
       bufferedWriter.write(String.valueOf(id));
-    } catch (IOException exception) {
-      exception.printStackTrace();
     }
   }
 
-  private void createInvoicesIdFile() {
+  private void createInvoicesIdFile() throws IOException {
     if (Files.exists(Paths.get(filePath))) {
       return;
     }
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath))) {
       bufferedWriter.write("0");
-    } catch (IOException exception) {
-      exception.printStackTrace();
     }
   }
 }

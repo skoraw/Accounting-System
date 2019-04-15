@@ -2,6 +2,7 @@ package pl.coderstrust.invoices.database.file;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,34 +16,30 @@ class FileHelper {
 
   private String filePath;
 
-  FileHelper(String filePath) {
+  FileHelper(String filePath) throws IOException {
     this.filePath = filePath;
     createInvoicesFile();
   }
 
-  void addLine(String line) {
+  void addLine(String line) throws IOException {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath, true))) {
       bufferedWriter.append(line);
       bufferedWriter.newLine();
-    } catch (IOException exception) {
-      exception.printStackTrace();
     }
   }
 
-  void rewriteFile(List<String> list) {
+  void rewriteFile(List<String> list) throws IOException {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath))) {
       for (String s : list) {
         bufferedWriter.write(s);
         bufferedWriter.newLine();
       }
-    } catch (IOException exception) {
-      exception.printStackTrace();
     }
   }
 
-  Collection<String> readAllLines() {
+  Collection<String> readAllLines() throws FileNotFoundException {
     try (Scanner scanner = new Scanner(new File(filePath))) {
       Collection<String> list = new ArrayList<>();
       String line;
@@ -51,21 +48,16 @@ class FileHelper {
         list.add(line);
       }
       return list;
-    } catch (IOException exception) {
-      exception.printStackTrace();
     }
-    return null;
   }
 
-  private void createInvoicesFile() {
+  private void createInvoicesFile() throws IOException {
     if (Files.exists(Paths.get(filePath))) {
       return;
     }
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath))) {
       bufferedWriter.write("");
-    } catch (IOException exception) {
-      exception.printStackTrace();
     }
   }
 }

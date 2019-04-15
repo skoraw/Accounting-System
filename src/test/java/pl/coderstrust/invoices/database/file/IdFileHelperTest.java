@@ -17,23 +17,14 @@ class IdFileHelperTest {
       .get("./src/test/resources/");
 
   @BeforeEach
-  void setupBeforeEach() {
-    try {
-      pathIdInvoices = Files.createTempFile(pathIdInvoices, "test_id", ".json");
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-
+  void setupBeforeEach() throws IOException {
+    pathIdInvoices = Files.createTempFile(pathIdInvoices, "test_id", ".json");
     idFileHelper = new IdFileHelper(pathIdInvoices.toString());
   }
 
   @AfterEach
-  void closeAfterEach() {
-    try {
-      Files.deleteIfExists(pathIdInvoices);
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
+  void closeAfterEach() throws IOException {
+    Files.deleteIfExists(pathIdInvoices);
   }
 
   @Test

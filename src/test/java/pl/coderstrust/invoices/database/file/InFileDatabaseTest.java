@@ -34,30 +34,21 @@ class InFileDatabaseTest {
   }
 
   @BeforeEach
-  void setupBeforeEach() {
-    try {
-      pathInvoices = Files.createTempFile(pathInvoices, "test_invoices", ".json");
-      pathIdInvoices = Files.createTempFile(pathIdInvoices, "test_id", ".json");
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-
+  void setupBeforeEach() throws IOException {
+    pathInvoices = Files.createTempFile(pathInvoices, "test_invoices", ".json");
+    pathIdInvoices = Files.createTempFile(pathIdInvoices, "test_id", ".json");
     fileHelper = new FileHelper(pathInvoices.toString());
     idFileHelper = new IdFileHelper(pathIdInvoices.toString());
     inFileDatabase = new InFileDatabase(fileHelper, idFileHelper);
     String ex = "0";
     byte[] data = ex.getBytes();
-    try {
-      Files.write(pathIdInvoices, data);
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
+    Files.write(pathIdInvoices, data);
   }
 
   @AfterEach
   void closeAfterEach() throws IOException {
-      Files.deleteIfExists(pathInvoices);
-      Files.deleteIfExists(pathIdInvoices);
+    Files.deleteIfExists(pathInvoices);
+    Files.deleteIfExists(pathIdInvoices);
   }
 
   @Test
