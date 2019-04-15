@@ -64,5 +64,4 @@ class IdFileHelperTest {
     assertEquals(expected, actual);
 
   }
-
 }

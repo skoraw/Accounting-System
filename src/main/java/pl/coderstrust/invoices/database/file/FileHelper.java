@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
-public class FileHelper {
+class FileHelper {
 
   private String filePath;
 
@@ -45,7 +45,7 @@ public class FileHelper {
   Collection<String> readAllLines() {
     try (Scanner scanner = new Scanner(new File(filePath))) {
       Collection<String> list = new ArrayList<>();
-      String line = "";
+      String line;
       while (scanner.hasNext()) {
         line = scanner.nextLine();
         list.add(line);

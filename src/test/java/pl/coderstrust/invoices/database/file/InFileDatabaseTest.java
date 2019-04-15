@@ -52,17 +52,12 @@ class InFileDatabaseTest {
     } catch (IOException exception) {
       exception.printStackTrace();
     }
-
   }
 
   @AfterEach
-  void closeAfterEach() {
-    try {
+  void closeAfterEach() throws IOException {
       Files.deleteIfExists(pathInvoices);
       Files.deleteIfExists(pathIdInvoices);
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
   }
 
   @Test
@@ -98,7 +93,9 @@ class InFileDatabaseTest {
   @Test
   void shouldUpdateInvoice() throws DatabaseOperationException, IOException {
     //given
-    String givenInvoice = "{\"id\":1,\"number\":\"11\",\"issueDate\":\"2019-04-25\",\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,\"buyer\":null,\"entries\":null}";
+    String givenInvoice = "{\"id\":1,\"number\":\"11\",\"issueDate\":\"2019-04-25\","
+        + "\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,"
+        + "\"buyer\":null,\"entries\":null}";
     Files.writeString(pathInvoices, givenInvoice);
 
     Invoice expected = new Invoice(1, "1", LocalDate.of(2019, 4, 1), null,
@@ -109,7 +106,6 @@ class InFileDatabaseTest {
 
     //then
     assertEquals(expected, actual);
-
   }
 
   @Test
@@ -123,11 +119,14 @@ class InFileDatabaseTest {
     //given
     List<String> givenInvoice = new ArrayList<String>();
     givenInvoice.add(
-        "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-25\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     givenInvoice.add(
-        "{\"id\":2,\"number\":\"2\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":2,\"number\":\"2\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-25\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     givenInvoice.add(
-        "{\"id\":3,\"number\":\"3\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":3,\"number\":\"3\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-25\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     Files.write(pathInvoices, givenInvoice);
 
     List<Invoice> expectedInvoices = new ArrayList<>();
@@ -150,13 +149,17 @@ class InFileDatabaseTest {
     //given
     List<String> givenInvoice = new ArrayList<String>();
     givenInvoice.add(
-        "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,\"sellDate\":\"2019-04-01\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-01\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     givenInvoice.add(
-        "{\"id\":2,\"number\":\"2\",\"issueDate\":\"2019-04-02\",\"issuePlace\":null,\"sellDate\":\"2019-04-02\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":2,\"number\":\"2\",\"issueDate\":\"2019-04-02\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-02\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     givenInvoice.add(
-        "{\"id\":3,\"number\":\"3\",\"issueDate\":\"2019-04-03\",\"issuePlace\":null,\"sellDate\":\"2019-04-03\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":3,\"number\":\"3\",\"issueDate\":\"2019-04-03\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-03\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     givenInvoice.add(
-        "{\"id\":4,\"number\":\"4\",\"issueDate\":\"2019-04-04\",\"issuePlace\":null,\"sellDate\":\"2019-04-04\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":4,\"number\":\"4\",\"issueDate\":\"2019-04-04\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-04\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     Files.write(pathInvoices, givenInvoice);
     Invoice expected = new Invoice(2, "2", LocalDate.of(2019, 4, 2), null, LocalDate.of(2019, 4, 2),
         null, null, null);
@@ -166,7 +169,6 @@ class InFileDatabaseTest {
 
     //then
     assertEquals(expected, actual);
-
   }
 
   @Test
@@ -187,13 +189,17 @@ class InFileDatabaseTest {
     //given
     List<String> givenInvoice = new ArrayList<String>();
     givenInvoice.add(
-        "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,\"sellDate\":\"2019-04-01\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-01\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     givenInvoice.add(
-        "{\"id\":2,\"number\":\"2\",\"issueDate\":\"2019-04-02\",\"issuePlace\":null,\"sellDate\":\"2019-04-02\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":2,\"number\":\"2\",\"issueDate\":\"2019-04-02\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-02\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     givenInvoice.add(
-        "{\"id\":3,\"number\":\"3\",\"issueDate\":\"2019-04-03\",\"issuePlace\":null,\"sellDate\":\"2019-04-03\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":3,\"number\":\"3\",\"issueDate\":\"2019-04-03\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-03\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     givenInvoice.add(
-        "{\"id\":4,\"number\":\"4\",\"issueDate\":\"2019-04-04\",\"issuePlace\":null,\"sellDate\":\"2019-04-04\",\"seller\":null,\"buyer\":null,\"entries\":null}");
+        "{\"id\":4,\"number\":\"4\",\"issueDate\":\"2019-04-04\",\"issuePlace\":null,"
+            + "\"sellDate\":\"2019-04-04\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     Files.write(pathInvoices, givenInvoice);
 
     List<Invoice> expectedInvoices = new ArrayList<>();
@@ -223,7 +229,9 @@ class InFileDatabaseTest {
   @Test
   void shouldRemoveInvoice() throws IOException, DatabaseOperationException {
     //given
-    String givenInvoice = "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-25\",\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,\"buyer\":null,\"entries\":null}";
+    String givenInvoice = "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-25\","
+        + "\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,"
+        + "\"buyer\":null,\"entries\":null}";
     Files.writeString(pathInvoices, givenInvoice);
     Invoice expected = new Invoice(1, "1", LocalDate.of(2019, 4, 25), null,
         LocalDate.of(2019, 4, 25), null, null, null);

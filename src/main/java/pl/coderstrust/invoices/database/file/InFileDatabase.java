@@ -26,7 +26,7 @@ public class InFileDatabase implements Database {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
-    if (invoice.getId() == null || !isInvoiceID(invoice.getId())) {
+    if (invoice.getId() == null || !isInvoiceId(invoice.getId())) {
       Integer maxId = Integer.parseInt(idFileHelper.getMaxId());
       Invoice copiedInvoice = invoice.deepCopy(invoice);
       if (copiedInvoice.getId() == null) {
@@ -67,7 +67,7 @@ public class InFileDatabase implements Database {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
-    if (isInvoiceID(id)) {
+    if (isInvoiceId(id)) {
       List<Invoice> invoiceList = (ArrayList<Invoice>) converter.stringListToInvoicesList(
           (List<String>) fileHelper.readAllLines());
       for (Invoice invoice : invoiceList) {
@@ -107,7 +107,7 @@ public class InFileDatabase implements Database {
     if (id == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
-    if (isInvoiceID(id)) {
+    if (isInvoiceId(id)) {
       Invoice invoice = new Invoice();
       List<String> stringList = (ArrayList<String>) fileHelper.readAllLines();
       List<Invoice> invoicesList = (ArrayList<Invoice>) converter
@@ -127,7 +127,7 @@ public class InFileDatabase implements Database {
     }
   }
 
-  private boolean isInvoiceID(Object id) {
+  private boolean isInvoiceId(Object id) {
     Invoice invoice;
     List<String> strings = (List<String>) fileHelper.readAllLines();
     for (String string : strings) {
