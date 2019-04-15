@@ -53,8 +53,8 @@ public class InFileDatabase implements Database {
         }
       }
       fileHelper.rewriteFile(list);
+      return invoice;
     }
-    return null;
   }
 
   @Override
