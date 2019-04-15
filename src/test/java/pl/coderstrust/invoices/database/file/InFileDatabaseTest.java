@@ -15,17 +15,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import pl.coderstrust.invoices.database.DatabaseOperationException;
 import pl.coderstrust.invoices.model.Invoice;
 
 class InFileDatabaseTest {
 
   private static FileHelper fileHelper;
-
-  @Mock
   private static IdFileHelper idFileHelper;
-
   private static Converter converter;
   private static InFileDatabase inFileDatabase;
   private Path pathIdInvoices = Paths.get("./src/test/resources/");
