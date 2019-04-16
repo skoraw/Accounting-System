@@ -18,7 +18,7 @@ class FileHelper {
 
   FileHelper(String filePath) throws IOException {
     this.filePath = filePath;
-    createInvoicesFile();
+    initFileDatabase();
   }
 
   void addLine(String line) throws IOException {
@@ -51,7 +51,21 @@ class FileHelper {
     }
   }
 
-  private void createInvoicesFile() throws IOException {
+  String readLine() throws FileNotFoundException {
+    try (Scanner scanner = new Scanner(new File(filePath))) {
+      return scanner.nextLine();
+    }
+  }
+
+  boolean writeLine(Object id) throws IOException {
+    try (BufferedWriter bufferedWriter = new BufferedWriter(
+        new FileWriter(filePath))) {
+      bufferedWriter.write(String.valueOf(id));
+      return true;
+    }
+  }
+
+  private void initFileDatabase() throws IOException {
     if (Files.exists(Paths.get(filePath))) {
       return;
     }

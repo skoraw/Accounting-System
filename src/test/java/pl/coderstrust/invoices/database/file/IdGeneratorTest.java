@@ -10,16 +10,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class IdFileHelperTest {
+class IdGeneratorTest {
 
-  private IdFileHelper idFileHelper;
+  private IdGenerator idGenerator;
   private Path pathIdInvoices = Paths
       .get("./src/test/resources/");
 
   @BeforeEach
   void setupBeforeEach() throws IOException {
     pathIdInvoices = Files.createTempFile(pathIdInvoices, "test_id", ".json");
-    idFileHelper = new IdFileHelper(pathIdInvoices.toString());
+    idGenerator = new IdGenerator(new FileHelper(pathIdInvoices.toString()));
   }
 
   @AfterEach
@@ -35,24 +35,37 @@ class IdFileHelperTest {
     Files.write(pathIdInvoices, data);
 
     //when
-    String actual = idFileHelper.getMaxId();
+    String actual = String.valueOf(idGenerator.getId());
 
     //then
     assertEquals(expected, actual);
+  }
 
+  @Test
+  void shouldReturnNextId() throws IOException {
+    //given
+    String value = "2";
+    byte[] data = value.getBytes();
+    Files.write(pathIdInvoices, data);
+    String expected = "3";
+
+    //when
+    String actual = String.valueOf(idGenerator.getNextId());
+
+    //then
+    assertEquals(expected, actual);
   }
 
   @Test
   void shouldSetNewId() throws IOException {
     //given
     String expected = "2";
-    idFileHelper.setNewId(expected);
+    idGenerator.setNewId(expected);
 
     //when
     String actual = Files.readString(pathIdInvoices);
 
     //then
     assertEquals(expected, actual);
-
   }
 }

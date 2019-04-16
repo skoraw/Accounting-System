@@ -26,7 +26,7 @@ class ConverterTest {
     Invoice invoice = new Invoice(1, "1", LocalDate.of(2019, 4, 11), null,
         LocalDate.of(2019, 4, 11), null, null, null);
     String expected = "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null"
-        + ",\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":[]}";
+        + ",\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":null}";
 
     //when
     String actual = converter.objectToString(invoice);
@@ -39,7 +39,7 @@ class ConverterTest {
   void shouldConvertStringToInvoiceObject() {
     //given
     String line = "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,"
-        + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":[]}";
+        + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":null}";
     Invoice expected = new Invoice(1, "1", LocalDate.of(2019, 4, 11), null,
         LocalDate.of(2019, 4, 11), null, null,
         null);
@@ -56,11 +56,11 @@ class ConverterTest {
     //given
     List<String> list = new ArrayList<>(Arrays.asList(
         "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,"
-            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":[]}",
+            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":null}",
         "{\"id\":2,\"number\":\"2\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,"
-            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":[]}",
+            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":null}",
         "{\"id\":3,\"number\":\"3\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,"
-            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":[]}"));
+            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":null}"));
 
     List<Invoice> expected = new ArrayList<>(
         Arrays.asList(
@@ -98,11 +98,11 @@ class ConverterTest {
 
     List<String> expected = new ArrayList<>(Arrays.asList(
         "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,"
-            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":[]}",
+            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":null}",
         "{\"id\":2,\"number\":\"2\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,"
-            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":[]}",
+            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":null}",
         "{\"id\":3,\"number\":\"3\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,"
-            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":[]}"));
+            + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":null}"));
 
     //when
     List<String> actual = (List<String>) converter.invoicesListToStringList(list);

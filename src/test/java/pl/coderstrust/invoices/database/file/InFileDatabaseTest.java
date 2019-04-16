@@ -3,7 +3,6 @@ package pl.coderstrust.invoices.database.file;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,34 +11,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.coderstrust.invoices.database.DatabaseOperationException;
 import pl.coderstrust.invoices.model.Invoice;
 
 class InFileDatabaseTest {
 
-  private static FileHelper fileHelper;
-  private static IdFileHelper idFileHelper;
-  private static Converter converter;
   private static InFileDatabase inFileDatabase;
   private Path pathIdInvoices = Paths.get("./src/test/resources/");
   private Path pathInvoices = Paths.get("./src/test/resources/");
-
-
-  @BeforeAll
-  static void setupBeforeAll() {
-    converter = new Converter(new ObjectMapper());
-  }
 
   @BeforeEach
   void setupBeforeEach() throws IOException {
     pathInvoices = Files.createTempFile(pathInvoices, "test_invoices", ".json");
     pathIdInvoices = Files.createTempFile(pathIdInvoices, "test_id", ".json");
-    fileHelper = new FileHelper(pathInvoices.toString());
-    idFileHelper = new IdFileHelper(pathIdInvoices.toString());
-    inFileDatabase = new InFileDatabase(fileHelper, idFileHelper);
+    Configuration configuration = new Configuration(pathInvoices.toString(),
+        pathIdInvoices.toString());
+    inFileDatabase = new InFileDatabase(configuration);
     String ex = "0";
     byte[] data = ex.getBytes();
     Files.write(pathIdInvoices, data);
@@ -52,7 +40,7 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldSaveInvoiceWhenNullIdIsPassed() throws DatabaseOperationException {
+  void shouldSaveInvoiceWhenNullIdIsPassed() throws IOException {
     //given
     Invoice given = new Invoice(null, "1", LocalDate.of(2019, 4, 15), null,
         LocalDate.of(2019, 4, 15), null, null, null);
@@ -67,7 +55,7 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldSaveInvoiceWithGivenId() throws DatabaseOperationException {
+  void shouldSaveInvoiceWithGivenId() throws IOException {
     //given
     Invoice given = new Invoice(1, "1", LocalDate.of(2019, 4, 15), null,
         LocalDate.of(2019, 4, 15), null, null, null);
@@ -82,7 +70,7 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldUpdateInvoice() throws DatabaseOperationException, IOException {
+  void shouldUpdateInvoice() throws IOException {
     //given
     String givenInvoice = "{\"id\":1,\"number\":\"11\",\"issueDate\":\"2019-04-25\","
         + "\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,"
@@ -101,14 +89,13 @@ class InFileDatabaseTest {
 
   @Test
   void shouldThrowExceptionWhenTrySaveNullInvoice() {
-    Invoice invoice = null;
-    assertThrows(IllegalArgumentException.class, () -> inFileDatabase.saveInvoice(invoice));
+    assertThrows(IllegalArgumentException.class, () -> inFileDatabase.saveInvoice(null));
   }
 
   @Test
-  void shouldReturnAllInvoices() throws DatabaseOperationException, IOException {
+  void shouldReturnAllInvoices() throws IOException {
     //given
-    List<String> givenInvoice = new ArrayList<String>();
+    List<String> givenInvoice = new ArrayList<>();
     givenInvoice.add(
         "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,"
             + "\"sellDate\":\"2019-04-25\",\"seller\":null,\"buyer\":null,\"entries\":null}");
@@ -136,9 +123,9 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldGetInvoiceByGivenId() throws IOException, DatabaseOperationException {
+  void shouldGetInvoiceByGivenId() throws IOException {
     //given
-    List<String> givenInvoice = new ArrayList<String>();
+    List<String> givenInvoice = new ArrayList<>();
     givenInvoice.add(
         "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,"
             + "\"sellDate\":\"2019-04-01\",\"seller\":null,\"buyer\":null,\"entries\":null}");
@@ -164,8 +151,7 @@ class InFileDatabaseTest {
 
   @Test
   void shouldThrowExceptionWhenInvoiceIsNullWhileGettingInvoice() {
-    Invoice invoice = null;
-    assertThrows(IllegalArgumentException.class, () -> inFileDatabase.getInvoice(invoice));
+    assertThrows(IllegalArgumentException.class, () -> inFileDatabase.getInvoice(null));
   }
 
   @Test
@@ -176,9 +162,9 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldGetInvoicesBetweenDates() throws DatabaseOperationException, IOException {
+  void shouldGetInvoicesBetweenDates() throws IOException {
     //given
-    List<String> givenInvoice = new ArrayList<String>();
+    List<String> givenInvoice = new ArrayList<>();
     givenInvoice.add(
         "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,"
             + "\"sellDate\":\"2019-04-01\",\"seller\":null,\"buyer\":null,\"entries\":null}");
@@ -218,7 +204,7 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldRemoveInvoice() throws IOException, DatabaseOperationException {
+  void shouldRemoveInvoice() throws IOException {
     //given
     String givenInvoice = "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-25\","
         + "\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,"
@@ -236,8 +222,7 @@ class InFileDatabaseTest {
 
   @Test
   void shouldThrowExceptionWhenGivenInvoiceIsNullWhileRemovingInvoice() {
-    Invoice invoice = null;
-    assertThrows(IllegalArgumentException.class, () -> inFileDatabase.removeInvoice(invoice));
+    assertThrows(IllegalArgumentException.class, () -> inFileDatabase.removeInvoice(null));
   }
 
   @Test

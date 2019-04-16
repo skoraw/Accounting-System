@@ -10,11 +10,11 @@ public class Configuration {
     this.invoicesIdFilePath = invoicesIdFilePath;
   }
 
-  public String getInvoicesFilePath() {
+  String getInvoicesFilePath() {
     return invoicesFilePath;
   }
 
-  public String getInvoicesIdFilePath() {
+  String getInvoicesIdFilePath() {
     return invoicesIdFilePath;
   }
 }

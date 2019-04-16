@@ -1,69 +1,77 @@
 package pl.coderstrust.invoices.database.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import pl.coderstrust.invoices.database.Database;
-import pl.coderstrust.invoices.database.DatabaseOperationException;
 import pl.coderstrust.invoices.model.Invoice;
 
 public class InFileDatabase implements Database {
 
   private Converter converter;
   private FileHelper fileHelper;
-  private IdFileHelper idFileHelper;
+  private IdGenerator idGenerator;
 
-  public InFileDatabase(FileHelper fileHelper, IdFileHelper idFileHelper) {
+  InFileDatabase(Configuration configuration) throws IOException {
     this.converter = new Converter(new ObjectMapper());
-    this.fileHelper = fileHelper;
-    this.idFileHelper = idFileHelper;
+    this.fileHelper = new FileHelper(configuration.getInvoicesFilePath());
+    FileHelper idFileHelper = new FileHelper(configuration.getInvoicesIdFilePath());
+    this.idGenerator = new IdGenerator(idFileHelper);
   }
 
   @Override
-  public Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException {
+  public Invoice saveInvoice(Invoice invoice) throws IOException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
-    if (invoice.getId() == null || !isInvoiceId(invoice.getId())) {
-      Integer maxId = Integer.parseInt(idFileHelper.getMaxId());
-      Invoice copiedInvoice = invoice.deepCopy(invoice);
-      if (copiedInvoice.getId() == null) {
-        maxId++;
-        copiedInvoice.setId(maxId);
-      }
-      fileHelper.addLine(converter.objectToString(copiedInvoice));
-      if ((Integer) copiedInvoice.getId() >= maxId) {
-        String id = String.valueOf(copiedInvoice.getId());
-        idFileHelper.setNewId(id);
-      }
-      return copiedInvoice;
+    Invoice copiedInvoice = invoice.deepCopy(invoice);
+    if (!(copiedInvoice.getId() instanceof Integer)) {
+      copiedInvoice.setId(null);
+    }
+    if (isInvoiceId(invoice.getId())) {
+      return updateInvoice(copiedInvoice);
     } else {
-      ArrayList<String> list = (ArrayList<String>) fileHelper.readAllLines();
-      ArrayList<Invoice> invoicesList = (ArrayList<Invoice>) converter
-          .stringListToInvoicesList(list);
-      list.clear();
-      Integer id = (Integer) invoice.getId();
-      for (Invoice value : invoicesList) {
-        if (value.getId().equals(id)) {
-          list.add(converter.objectToString(invoice));
-        } else {
-          list.add(converter.objectToString(value));
-        }
-      }
-      fileHelper.rewriteFile(list);
-      return invoice;
+      return addInvoice(copiedInvoice);
     }
   }
 
+  private Invoice addInvoice(Invoice invoice) throws IOException {
+    Integer id = idGenerator.getNextId();
+    invoice.setId(id);
+    fileHelper.addLine(converter.objectToString(invoice));
+    idGenerator.setNewId(id);
+    return invoice;
+  }
+
+  private Invoice updateInvoice(Invoice invoice) throws IOException {
+    ArrayList<String> list = (ArrayList<String>) fileHelper.readAllLines();
+    ArrayList<Invoice> invoicesList = (ArrayList<Invoice>) converter
+        .stringListToInvoicesList(list);
+    list.clear();
+    Integer id = (Integer) invoice.getId();
+    for (Invoice value : invoicesList) {
+      if (value.getId().equals(id)) {
+        list.add(converter.objectToString(invoice));
+      } else {
+        list.add(converter.objectToString(value));
+      }
+    }
+    fileHelper.rewriteFile(list);
+    return invoice;
+  }
+
   @Override
-  public Collection<Invoice> getAllInvoices() throws DatabaseOperationException {
+  public Collection<Invoice> getAllInvoices()
+      throws FileNotFoundException {
     return converter.stringListToInvoicesList((List<String>) fileHelper.readAllLines());
   }
 
   @Override
-  public Invoice getInvoice(Object id) throws DatabaseOperationException {
+  public Invoice getInvoice(Object id) throws FileNotFoundException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
@@ -83,7 +91,7 @@ public class InFileDatabase implements Database {
 
   @Override
   public Collection<Invoice> getInvoicesInBetweenDates(LocalDate fromDate, LocalDate toDate)
-      throws DatabaseOperationException {
+      throws FileNotFoundException {
     if (fromDate.isBefore(toDate)) {
       List<Invoice> invoicesList = (List<Invoice>) converter
           .stringListToInvoicesList((List<String>) fileHelper.readAllLines());
@@ -103,7 +111,7 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public Invoice removeInvoice(Object id) throws DatabaseOperationException {
+  public Invoice removeInvoice(Object id) throws IOException {
     if (id == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
@@ -127,7 +135,7 @@ public class InFileDatabase implements Database {
     }
   }
 
-  private boolean isInvoiceId(Object id) {
+  private boolean isInvoiceId(Object id) throws FileNotFoundException {
     Invoice invoice;
     List<String> strings = (List<String>) fileHelper.readAllLines();
     for (String string : strings) {

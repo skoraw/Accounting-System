@@ -28,7 +28,7 @@ class FileHelperTest {
 
   @AfterEach
   void closeAfterEach() throws IOException {
-      Files.deleteIfExists(pathInvoices);
+    Files.deleteIfExists(pathInvoices);
   }
 
   @Test
@@ -55,7 +55,7 @@ class FileHelperTest {
 
     //when
     fileHelper.addLine(stringToWriteToFile);
-    String actual = "";
+    String actual;
     actual = Files.readString(pathInvoices);
 
     //then
@@ -72,7 +72,7 @@ class FileHelperTest {
 
     //when
     fileHelper.rewriteFile(expectedList);
-    List<String> actualList = new ArrayList<>();
+    List<String> actualList;
     actualList = Files.readAllLines(pathInvoices);
 
     //then
