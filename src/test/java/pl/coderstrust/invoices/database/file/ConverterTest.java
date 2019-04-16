@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pl.coderstrust.invoices.model.Invoice;
+import pl.coderstrust.invoices.model.Invoice.InvoiceBuilder;
 
 class ConverterTest {
 
@@ -23,8 +24,9 @@ class ConverterTest {
   @Test
   void shouldConvertInvoiceObjectToString() {
     //given
-    Invoice invoice = new Invoice(1, "1", LocalDate.of(2019, 4, 11), null,
-        LocalDate.of(2019, 4, 11), null, null, null);
+    Invoice invoice = new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 11))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 11)).seller(null).buyer(null).entries(null)
+        .build();
     String expected = "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null"
         + ",\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":null}";
 
@@ -40,9 +42,9 @@ class ConverterTest {
     //given
     String line = "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,"
         + "\"sellDate\":\"2019-04-11\",\"seller\":null,\"buyer\":null,\"entries\":null}";
-    Invoice expected = new Invoice(1, "1", LocalDate.of(2019, 4, 11), null,
-        LocalDate.of(2019, 4, 11), null, null,
-        null);
+    Invoice expected = new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 11))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 11)).seller(null).buyer(null).entries(null)
+        .build();
 
     //when
     Invoice actual = converter.stringToInvoice(line);
@@ -64,15 +66,18 @@ class ConverterTest {
 
     List<Invoice> expected = new ArrayList<>(
         Arrays.asList(
-            new Invoice(1, "1", LocalDate.of(2019, 4, 11), null,
-                LocalDate.of(2019, 4, 11), null, null,
-                null),
-            new Invoice(2, "2", LocalDate.of(2019, 4, 11), null,
-                LocalDate.of(2019, 4, 11), null, null,
-                null),
-            new Invoice(3, "3", LocalDate.of(2019, 4, 11), null,
-                LocalDate.of(2019, 4, 11), null, null,
-                null)));
+            new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 11))
+                .issuePlace(null).sellDate(LocalDate.of(2019, 4, 11)).seller(null).buyer(null)
+                .entries(null)
+                .build(),
+            new InvoiceBuilder().id(2).number("2").issueDate(LocalDate.of(2019, 4, 11))
+                .issuePlace(null).sellDate(LocalDate.of(2019, 4, 11)).seller(null).buyer(null)
+                .entries(null)
+                .build(),
+            new InvoiceBuilder().id(3).number("3").issueDate(LocalDate.of(2019, 4, 11))
+                .issuePlace(null).sellDate(LocalDate.of(2019, 4, 11)).seller(null).buyer(null)
+                .entries(null)
+                .build()));
 
     //when
     List<Invoice> actual = (List<Invoice>) converter.stringListToInvoicesList(list);
@@ -86,15 +91,18 @@ class ConverterTest {
     //given
     List<Invoice> list = new ArrayList<>(
         Arrays.asList(
-            new Invoice(1, "1", LocalDate.of(2019, 4, 11), null,
-                LocalDate.of(2019, 4, 11), null, null,
-                null),
-            new Invoice(2, "2", LocalDate.of(2019, 4, 11), null,
-                LocalDate.of(2019, 4, 11), null, null,
-                null),
-            new Invoice(3, "3", LocalDate.of(2019, 4, 11), null,
-                LocalDate.of(2019, 4, 11), null, null,
-                null)));
+            new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 11))
+                .issuePlace(null).sellDate(LocalDate.of(2019, 4, 11)).seller(null).buyer(null)
+                .entries(null)
+                .build(),
+            new InvoiceBuilder().id(2).number("2").issueDate(LocalDate.of(2019, 4, 11))
+                .issuePlace(null).sellDate(LocalDate.of(2019, 4, 11)).seller(null).buyer(null)
+                .entries(null)
+                .build(),
+            new InvoiceBuilder().id(3).number("3").issueDate(LocalDate.of(2019, 4, 11))
+                .issuePlace(null).sellDate(LocalDate.of(2019, 4, 11)).seller(null).buyer(null)
+                .entries(null)
+                .build()));
 
     List<String> expected = new ArrayList<>(Arrays.asList(
         "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,"

@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import pl.coderstrust.invoices.database.Database;
 import pl.coderstrust.invoices.model.Invoice;
+import pl.coderstrust.invoices.model.Invoice.InvoiceBuilder;
 
 public class InFileDatabase implements Database {
 
@@ -28,7 +29,7 @@ public class InFileDatabase implements Database {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
-    Invoice copiedInvoice = invoice.deepCopy(invoice);
+    Invoice copiedInvoice = new Invoice(invoice);
     if (!(copiedInvoice.getId() instanceof Integer)) {
       copiedInvoice.setId(null);
     }
@@ -116,7 +117,9 @@ public class InFileDatabase implements Database {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
     if (isInvoiceId(id)) {
-      Invoice invoice = new Invoice();
+      Invoice invoice = new InvoiceBuilder().id(null).number(null).issueDate(null)
+          .issuePlace(null).sellDate(null).seller(null).buyer(null).entries(null)
+          .build();
       List<String> stringList = (ArrayList<String>) fileHelper.readAllLines();
       List<Invoice> invoicesList = (ArrayList<Invoice>) converter
           .stringListToInvoicesList(stringList);

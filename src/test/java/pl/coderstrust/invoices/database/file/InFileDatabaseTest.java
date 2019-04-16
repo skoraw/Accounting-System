@@ -14,6 +14,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.coderstrust.invoices.model.Invoice;
+import pl.coderstrust.invoices.model.Invoice.InvoiceBuilder;
 
 class InFileDatabaseTest {
 
@@ -42,10 +43,13 @@ class InFileDatabaseTest {
   @Test
   void shouldSaveInvoiceWhenNullIdIsPassed() throws IOException {
     //given
-    Invoice given = new Invoice(null, "1", LocalDate.of(2019, 4, 15), null,
-        LocalDate.of(2019, 4, 15), null, null, null);
-    Invoice expected = new Invoice(1, "1", LocalDate.of(2019, 4, 15), null,
-        LocalDate.of(2019, 4, 15), null, null, null);
+    Invoice given = new InvoiceBuilder().id(null).number("1").issueDate(LocalDate.of(2019, 4, 15))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
+        .build();
+    Invoice expected = new InvoiceBuilder().id(1).number("1")
+        .issueDate(LocalDate.of(2019, 4, 15))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
+        .build();
 
     //when
     Invoice actual = inFileDatabase.saveInvoice(given);
@@ -57,10 +61,13 @@ class InFileDatabaseTest {
   @Test
   void shouldSaveInvoiceWithGivenId() throws IOException {
     //given
-    Invoice given = new Invoice(1, "1", LocalDate.of(2019, 4, 15), null,
-        LocalDate.of(2019, 4, 15), null, null, null);
-    Invoice expected = new Invoice(1, "1", LocalDate.of(2019, 4, 15), null,
-        LocalDate.of(2019, 4, 15), null, null, null);
+    Invoice given = new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 15))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
+        .build();
+    Invoice expected = new InvoiceBuilder().id(1).number("1")
+        .issueDate(LocalDate.of(2019, 4, 15))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
+        .build();
 
     //when
     Invoice actual = inFileDatabase.saveInvoice(given);
@@ -77,8 +84,9 @@ class InFileDatabaseTest {
         + "\"buyer\":null,\"entries\":null}";
     Files.writeString(pathInvoices, givenInvoice);
 
-    Invoice expected = new Invoice(1, "1", LocalDate.of(2019, 4, 1), null,
-        LocalDate.of(2019, 4, 25), null, null, null);
+    Invoice expected = new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 1))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 25)).seller(null).buyer(null).entries(null)
+        .build();
 
     //when
     Invoice actual = inFileDatabase.saveInvoice(expected);
@@ -108,12 +116,15 @@ class InFileDatabaseTest {
     Files.write(pathInvoices, givenInvoice);
 
     List<Invoice> expectedInvoices = new ArrayList<>();
-    expectedInvoices.add(new Invoice(1, "1", LocalDate.of(2019, 4, 1), null,
-        LocalDate.of(2019, 4, 25), null, null, null));
-    expectedInvoices.add(new Invoice(2, "2", LocalDate.of(2019, 4, 1), null,
-        LocalDate.of(2019, 4, 25), null, null, null));
-    expectedInvoices.add(new Invoice(3, "3", LocalDate.of(2019, 4, 1), null,
-        LocalDate.of(2019, 4, 25), null, null, null));
+    expectedInvoices.add(new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 1))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 25)).seller(null).buyer(null).entries(null)
+        .build());
+    expectedInvoices.add(new InvoiceBuilder().id(2).number("2").issueDate(LocalDate.of(2019, 4, 1))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 25)).seller(null).buyer(null).entries(null)
+        .build());
+    expectedInvoices.add(new InvoiceBuilder().id(3).number("3").issueDate(LocalDate.of(2019, 4, 1))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 25)).seller(null).buyer(null).entries(null)
+        .build());
 
     //when
     List<Invoice> actualInvoices = (List<Invoice>) inFileDatabase.getAllInvoices();
@@ -139,8 +150,9 @@ class InFileDatabaseTest {
         "{\"id\":4,\"number\":\"4\",\"issueDate\":\"2019-04-04\",\"issuePlace\":null,"
             + "\"sellDate\":\"2019-04-04\",\"seller\":null,\"buyer\":null,\"entries\":null}");
     Files.write(pathInvoices, givenInvoice);
-    Invoice expected = new Invoice(2, "2", LocalDate.of(2019, 4, 2), null, LocalDate.of(2019, 4, 2),
-        null, null, null);
+    Invoice expected = new InvoiceBuilder().id(2).number("2").issueDate(LocalDate.of(2019, 4, 2))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 2)).seller(null).buyer(null).entries(null)
+        .build();
 
     //when
     Invoice actual = inFileDatabase.getInvoice(expected.getId());
@@ -156,8 +168,9 @@ class InFileDatabaseTest {
 
   @Test
   void shouldThrowExceptionWhenGivenIdNotExistsWhileGettingInvoice() {
-    Invoice invoice = new Invoice(2, "2", LocalDate.of(2019, 4, 2), null, LocalDate.of(2019, 4, 2),
-        null, null, null);
+    Invoice invoice = new InvoiceBuilder().id(2).number("2").issueDate(LocalDate.of(2019, 4, 2))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 2)).seller(null).buyer(null).entries(null)
+        .build();
     assertThrows(IllegalArgumentException.class, () -> inFileDatabase.getInvoice(invoice));
   }
 
@@ -180,10 +193,12 @@ class InFileDatabaseTest {
     Files.write(pathInvoices, givenInvoice);
 
     List<Invoice> expectedInvoices = new ArrayList<>();
-    expectedInvoices.add(new Invoice(2, "2", LocalDate.of(2019, 4, 2), null,
-        LocalDate.of(2019, 4, 2), null, null, null));
-    expectedInvoices.add(new Invoice(3, "3", LocalDate.of(2019, 4, 3), null,
-        LocalDate.of(2019, 4, 3), null, null, null));
+    expectedInvoices.add(new InvoiceBuilder().id(2).number("2").issueDate(LocalDate.of(2019, 4, 2))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 2)).seller(null).buyer(null).entries(null)
+        .build());
+    expectedInvoices.add(new InvoiceBuilder().id(3).number("3").issueDate(LocalDate.of(2019, 4, 3))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 3)).seller(null).buyer(null).entries(null)
+        .build());
     LocalDate dateFrom = LocalDate.of(2019, 4, 2);
     LocalDate dateTo = LocalDate.of(2019, 4, 3);
 
@@ -210,8 +225,9 @@ class InFileDatabaseTest {
         + "\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,"
         + "\"buyer\":null,\"entries\":null}";
     Files.writeString(pathInvoices, givenInvoice);
-    Invoice expected = new Invoice(1, "1", LocalDate.of(2019, 4, 25), null,
-        LocalDate.of(2019, 4, 25), null, null, null);
+    Invoice expected = new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 25))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 25)).seller(null).buyer(null).entries(null)
+        .build();
 
     //when
     Invoice actual = inFileDatabase.removeInvoice(expected.getId());
@@ -227,8 +243,9 @@ class InFileDatabaseTest {
 
   @Test
   void shouldThrowExceptionWhenGivenInvoiceIdIsNotExistsWhileRemovingInvoice() {
-    Invoice invoice = new Invoice(1, "1", LocalDate.of(2019, 4, 25), null,
-        LocalDate.of(2019, 4, 25), null, null, null);
+    Invoice invoice = new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 25))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 25)).seller(null).buyer(null).entries(null)
+        .build();
     assertThrows(IllegalArgumentException.class, () -> inFileDatabase.removeInvoice(invoice));
   }
 }
