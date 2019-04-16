@@ -53,15 +53,18 @@ class FileHelper {
 
   String readLine() throws FileNotFoundException {
     try (Scanner scanner = new Scanner(new File(filePath))) {
-      return scanner.nextLine();
+      if (scanner.hasNextLine()) {
+        return scanner.nextLine();
+      } else {
+        return null;
+      }
     }
   }
 
-  boolean writeLine(Object id) throws IOException {
+  void writeLine(Object id) throws IOException {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new FileWriter(filePath))) {
       bufferedWriter.write(String.valueOf(id));
-      return true;
     }
   }
 

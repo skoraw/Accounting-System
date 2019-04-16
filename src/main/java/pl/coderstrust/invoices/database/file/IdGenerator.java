@@ -9,6 +9,9 @@ class IdGenerator {
 
   IdGenerator(FileHelper fileHelper) throws IOException {
     this.fileHelper = fileHelper;
+    if (fileHelper.readLine() == null) {
+      setNewId(0);
+    }
   }
 
   int getId() throws FileNotFoundException {
@@ -22,14 +25,4 @@ class IdGenerator {
   void setNewId(Object id) throws IOException {
     fileHelper.writeLine(id);
   }
-
-//  private void createInvoicesIdFile() throws IOException {
-//    if (Files.exists(Paths.get(filePath))) {
-//      return;
-//    }
-//    try (BufferedWriter bufferedWriter = new BufferedWriter(
-//        new FileWriter(filePath))) {
-//      bufferedWriter.write("0");
-//    }
-//  }
 }
