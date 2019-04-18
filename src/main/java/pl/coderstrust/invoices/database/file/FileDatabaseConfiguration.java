@@ -1,11 +1,11 @@
 package pl.coderstrust.invoices.database.file;
 
-public class Configuration {
+public class FileDatabaseConfiguration {
 
   private String invoicesFilePath;
   private String invoicesIdFilePath;
 
-  public Configuration(String invoicesFilePath, String invoicesIdFilePath) {
+  public FileDatabaseConfiguration(String invoicesFilePath, String invoicesIdFilePath) {
     this.invoicesFilePath = invoicesFilePath;
     this.invoicesIdFilePath = invoicesIdFilePath;
   }

@@ -26,9 +26,10 @@ class InFileDatabaseTest {
   void setupBeforeEach() throws IOException {
     pathInvoices = Files.createTempFile(pathInvoices, "test_invoices", ".json");
     pathIdInvoices = Files.createTempFile(pathIdInvoices, "test_id", ".json");
-    Configuration configuration = new Configuration(pathInvoices.toString(),
+    FileDatabaseConfiguration fileDatabaseConfiguration = new FileDatabaseConfiguration(
+        pathInvoices.toString(),
         pathIdInvoices.toString());
-    inFileDatabase = new InFileDatabase(configuration);
+    inFileDatabase = new InFileDatabase(fileDatabaseConfiguration);
     String ex = "0";
     byte[] data = ex.getBytes();
     Files.write(pathIdInvoices, data);
@@ -38,24 +39,6 @@ class InFileDatabaseTest {
   void closeAfterEach() throws IOException {
     Files.deleteIfExists(pathInvoices);
     Files.deleteIfExists(pathIdInvoices);
-  }
-
-  @Test
-  void shouldSaveInvoiceWhenNullIdIsPassed() throws IOException {
-    //given
-    Invoice given = new InvoiceBuilder().id(null).number("1").issueDate(LocalDate.of(2019, 4, 15))
-        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
-        .build();
-    Invoice expected = new InvoiceBuilder().id(1).number("1")
-        .issueDate(LocalDate.of(2019, 4, 15))
-        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
-        .build();
-
-    //when
-    Invoice actual = inFileDatabase.saveInvoice(given);
-
-    //then
-    assertEquals(expected, actual);
   }
 
   @Test
