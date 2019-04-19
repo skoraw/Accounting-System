@@ -27,7 +27,7 @@ class InvoiceConverter {
     return objectMapper.readValue(line, Invoice.class);
   }
 
-  Collection<Invoice> stringListToInvoicesList(List<String> list) throws IOException {
+  Collection<Invoice> stringListToInvoicesList(List<String> list) {
     return list.stream().map(n -> {
       try {
         return stringToInvoice(n);
@@ -37,7 +37,7 @@ class InvoiceConverter {
     }).collect(Collectors.toList());
   }
 
-  Collection<String> invoicesListToStringList(List<Invoice> invoices) throws IOException {
+  Collection<String> invoicesListToStringList(List<Invoice> invoices) {
     return invoices.stream().map(n -> {
       try {
         return objectToString(n);
