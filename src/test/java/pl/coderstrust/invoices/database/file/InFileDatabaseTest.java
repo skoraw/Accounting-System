@@ -3,6 +3,7 @@ package pl.coderstrust.invoices.database.file;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,7 +30,10 @@ class InFileDatabaseTest {
     FileDatabaseConfiguration fileDatabaseConfiguration = new FileDatabaseConfiguration(
         pathInvoices.toString(),
         pathIdInvoices.toString());
-    inFileDatabase = new InFileDatabase(fileDatabaseConfiguration);
+    inFileDatabase = new InFileDatabase(
+        new FileHelper(fileDatabaseConfiguration.getInvoicesFilePath()),
+        new IdGenerator(new FileHelper(fileDatabaseConfiguration.getInvoicesIdFilePath())),
+        new InvoiceConverter(new ObjectMapper()));
     String ex = "0";
     byte[] data = ex.getBytes();
     Files.write(pathIdInvoices, data);
