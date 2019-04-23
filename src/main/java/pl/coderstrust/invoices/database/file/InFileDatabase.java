@@ -1,6 +1,5 @@
 package pl.coderstrust.invoices.database.file;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,11 +14,11 @@ public class InFileDatabase implements Database {
   private FileHelper fileHelper;
   private IdGenerator idGenerator;
 
-  InFileDatabase(FileDatabaseConfiguration fileDatabaseConfiguration) throws IOException {
-    this.invoiceConverter = new InvoiceConverter(new ObjectMapper());
-    this.fileHelper = new FileHelper(fileDatabaseConfiguration.getInvoicesFilePath());
-    FileHelper idFileHelper = new FileHelper(fileDatabaseConfiguration.getInvoicesIdFilePath());
-    this.idGenerator = new IdGenerator(idFileHelper);
+  InFileDatabase(FileHelper fileHelper, IdGenerator idGenerator,
+      InvoiceConverter invoiceConverter) {
+    this.fileHelper = fileHelper;
+    this.idGenerator = idGenerator;
+    this.invoiceConverter = invoiceConverter;
   }
 
   @Override
