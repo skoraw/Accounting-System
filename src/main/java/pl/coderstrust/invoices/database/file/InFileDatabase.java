@@ -73,6 +73,9 @@ public class InFileDatabase implements Database {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
+    if (!(id instanceof Integer)) {
+      throw new IllegalArgumentException("Incorrect type of Invoice Id");
+    }
     if (!isInvoiceExist(id)) {
       throw new IllegalArgumentException("Invoice with given id not exists");
     } else {
@@ -112,6 +115,9 @@ public class InFileDatabase implements Database {
   public Invoice removeInvoice(Object id) throws IOException {
     if (id == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
+    }
+    if (!(id instanceof Integer)) {
+      throw new IllegalArgumentException("Incorrect type of Invoice Id");
     }
     if (!isInvoiceExist(id)) {
       throw new IllegalArgumentException("Invoice with given id not exists");
