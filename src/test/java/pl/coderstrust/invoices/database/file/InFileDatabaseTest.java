@@ -2,47 +2,39 @@ package pl.coderstrust.invoices.database.file;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.coderstrust.invoices.model.Invoice;
 import pl.coderstrust.invoices.model.Invoice.InvoiceBuilder;
 
+@ExtendWith(MockitoExtension.class)
 class InFileDatabaseTest {
 
   private static InFileDatabase inFileDatabase;
-  private Path pathIdInvoices = Paths.get("./src/test/resources/");
-  private Path pathInvoices = Paths.get("./src/test/resources/");
+
+  @Mock
+  private FileHelper fileHelper;
+
+  @Mock
+  private IdGenerator idGenerator;
 
   @BeforeEach
-  void setupBeforeEach() throws IOException {
-    pathInvoices = Files.createTempFile(pathInvoices, "test_invoices", ".json");
-    pathIdInvoices = Files.createTempFile(pathIdInvoices, "test_id", ".json");
-    FileDatabaseConfiguration fileDatabaseConfiguration = new FileDatabaseConfiguration(
-        pathInvoices.toString(),
-        pathIdInvoices.toString());
+  void setupBeforeEach() {
     inFileDatabase = new InFileDatabase(
-        new FileHelper(fileDatabaseConfiguration.getInvoicesFilePath()),
-        new IdGenerator(new FileHelper(fileDatabaseConfiguration.getInvoicesIdFilePath())),
+        fileHelper,
+        idGenerator,
         new InvoiceConverter(new ObjectMapper()));
-    String ex = "0";
-    byte[] data = ex.getBytes();
-    Files.write(pathIdInvoices, data);
-  }
-
-  @AfterEach
-  void closeAfterEach() throws IOException {
-    Files.deleteIfExists(pathInvoices);
-    Files.deleteIfExists(pathIdInvoices);
   }
 
   @Test
@@ -56,6 +48,9 @@ class InFileDatabaseTest {
         .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
         .build();
 
+    when(fileHelper.readAllLines()).thenReturn(Collections.emptyList());
+    when(idGenerator.getNextId()).thenReturn(1);
+
     //when
     Invoice actual = inFileDatabase.saveInvoice(given);
 
@@ -66,14 +61,17 @@ class InFileDatabaseTest {
   @Test
   void shouldUpdateInvoice() throws IOException {
     //given
-    String givenInvoice = "{\"id\":1,\"number\":\"11\",\"issueDate\":\"2019-04-25\","
+    List<String> stringInvoiceList = new ArrayList<>();
+    String givenStringInvoice = "{\"id\":1,\"number\":\"11\",\"issueDate\":\"2019-04-25\","
         + "\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,"
         + "\"buyer\":null,\"entries\":null}";
-    Files.writeString(pathInvoices, givenInvoice);
+    stringInvoiceList.add(givenStringInvoice);
 
     Invoice expected = new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 1))
         .issuePlace(null).sellDate(LocalDate.of(2019, 4, 25)).seller(null).buyer(null).entries(null)
         .build();
+
+    when(fileHelper.readAllLines()).thenReturn(stringInvoiceList);
 
     //when
     Invoice actual = inFileDatabase.saveInvoice(expected);
@@ -85,6 +83,15 @@ class InFileDatabaseTest {
   @Test
   void shouldThrowExceptionWhenTrySaveNullInvoice() {
     assertThrows(IllegalArgumentException.class, () -> inFileDatabase.saveInvoice(null));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenTrySaveInvoiceWithIncorrectIdType() {
+    Invoice given = new InvoiceBuilder().id("incorrect id").number("1")
+        .issueDate(LocalDate.of(2019, 4, 15))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
+        .build();
+    assertThrows(IllegalArgumentException.class, () -> inFileDatabase.saveInvoice(given));
   }
 
   @Test
@@ -100,7 +107,6 @@ class InFileDatabaseTest {
     givenInvoice.add(
         "{\"id\":3,\"number\":\"3\",\"issueDate\":\"2019-04-01\",\"issuePlace\":null,"
             + "\"sellDate\":\"2019-04-25\",\"seller\":null,\"buyer\":null,\"entries\":null}");
-    Files.write(pathInvoices, givenInvoice);
 
     List<Invoice> expectedInvoices = new ArrayList<>();
     expectedInvoices.add(new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 1))
@@ -112,6 +118,8 @@ class InFileDatabaseTest {
     expectedInvoices.add(new InvoiceBuilder().id(3).number("3").issueDate(LocalDate.of(2019, 4, 1))
         .issuePlace(null).sellDate(LocalDate.of(2019, 4, 25)).seller(null).buyer(null).entries(null)
         .build());
+
+    when(fileHelper.readAllLines()).thenReturn(givenInvoice);
 
     //when
     List<Invoice> actualInvoices = (List<Invoice>) inFileDatabase.getAllInvoices();
@@ -136,10 +144,11 @@ class InFileDatabaseTest {
     givenInvoice.add(
         "{\"id\":4,\"number\":\"4\",\"issueDate\":\"2019-04-04\",\"issuePlace\":null,"
             + "\"sellDate\":\"2019-04-04\",\"seller\":null,\"buyer\":null,\"entries\":null}");
-    Files.write(pathInvoices, givenInvoice);
     Invoice expected = new InvoiceBuilder().id(2).number("2").issueDate(LocalDate.of(2019, 4, 2))
         .issuePlace(null).sellDate(LocalDate.of(2019, 4, 2)).seller(null).buyer(null).entries(null)
         .build();
+
+    when(fileHelper.readAllLines()).thenReturn(givenInvoice);
 
     //when
     Invoice actual = inFileDatabase.getInvoice(expected.getId());
@@ -151,6 +160,15 @@ class InFileDatabaseTest {
   @Test
   void shouldThrowExceptionWhenInvoiceIsNullWhileGettingInvoice() {
     assertThrows(IllegalArgumentException.class, () -> inFileDatabase.getInvoice(null));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenInvoiceIdIsIncorrectType() {
+    Invoice given = new InvoiceBuilder().id("incorrect id").number("1")
+        .issueDate(LocalDate.of(2019, 4, 15))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
+        .build();
+    assertThrows(IllegalArgumentException.class, () -> inFileDatabase.getInvoice(given));
   }
 
   @Test
@@ -177,7 +195,6 @@ class InFileDatabaseTest {
     givenInvoice.add(
         "{\"id\":4,\"number\":\"4\",\"issueDate\":\"2019-04-04\",\"issuePlace\":null,"
             + "\"sellDate\":\"2019-04-04\",\"seller\":null,\"buyer\":null,\"entries\":null}");
-    Files.write(pathInvoices, givenInvoice);
 
     List<Invoice> expectedInvoices = new ArrayList<>();
     expectedInvoices.add(new InvoiceBuilder().id(2).number("2").issueDate(LocalDate.of(2019, 4, 2))
@@ -188,6 +205,8 @@ class InFileDatabaseTest {
         .build());
     LocalDate dateFrom = LocalDate.of(2019, 4, 2);
     LocalDate dateTo = LocalDate.of(2019, 4, 3);
+
+    when(fileHelper.readAllLines()).thenReturn(givenInvoice);
 
     //when
     List<Invoice> actualInvoices = (List<Invoice>) inFileDatabase
@@ -208,13 +227,16 @@ class InFileDatabaseTest {
   @Test
   void shouldRemoveInvoice() throws IOException {
     //given
+    List<String> stringInvoicesList = new ArrayList<>();
     String givenInvoice = "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-25\","
         + "\"issuePlace\":null,\"sellDate\":\"2019-04-25\",\"seller\":null,"
         + "\"buyer\":null,\"entries\":null}";
-    Files.writeString(pathInvoices, givenInvoice);
+    stringInvoicesList.add(givenInvoice);
     Invoice expected = new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 25))
         .issuePlace(null).sellDate(LocalDate.of(2019, 4, 25)).seller(null).buyer(null).entries(null)
         .build();
+
+    when(fileHelper.readAllLines()).thenReturn(stringInvoicesList);
 
     //when
     Invoice actual = inFileDatabase.removeInvoice(expected.getId());
@@ -226,6 +248,15 @@ class InFileDatabaseTest {
   @Test
   void shouldThrowExceptionWhenGivenInvoiceIsNullWhileRemovingInvoice() {
     assertThrows(IllegalArgumentException.class, () -> inFileDatabase.removeInvoice(null));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenGivenInvoiceIdIsIncorrectType() {
+    Invoice given = new InvoiceBuilder().id("incorrect id").number("1")
+        .issueDate(LocalDate.of(2019, 4, 15))
+        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
+        .build();
+    assertThrows(IllegalArgumentException.class, () -> inFileDatabase.removeInvoice(given));
   }
 
   @Test
