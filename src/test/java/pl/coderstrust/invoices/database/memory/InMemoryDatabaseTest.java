@@ -49,10 +49,11 @@ public class InMemoryDatabaseTest {
         .entries(null)
         .build();
     Invoice inv = database.saveInvoice(invoice);
+    Object id = inv.getId();
     inv.setId(7L);
 
-    Invoice result = database.getInvoice(3L);
-    assertEquals(3L, result.getId());
+    Invoice result = database.getInvoice(id);
+    assertEquals(id, result.getId());
   }
 
   @Test
