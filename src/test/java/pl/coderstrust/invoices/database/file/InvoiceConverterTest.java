@@ -55,7 +55,7 @@ class InvoiceConverterTest {
   }
 
   @Test
-  void shouldConvertStringListToInvoicesList() throws IOException {
+  void shouldConvertStringListToInvoicesList() {
     //given
     List<String> list = new ArrayList<>(Arrays.asList(
         "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-11\",\"issuePlace\":null,"
@@ -88,7 +88,7 @@ class InvoiceConverterTest {
   }
 
   @Test
-  void shouldConvertInvoicesListToStringList() throws IOException {
+  void shouldConvertInvoicesListToStringList() {
     //given
     List<Invoice> list = new ArrayList<>(
         Arrays.asList(
