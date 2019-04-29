@@ -1,21 +1,20 @@
 package pl.coderstrust.invoices.database;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collection;
 import pl.coderstrust.invoices.model.Invoice;
 
 public interface Database {
 
-  Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException, IOException;
+  Invoice saveInvoice(Invoice invoice) throws DatabaseOperationException;
 
-  Collection<Invoice> getAllInvoices() throws DatabaseOperationException, IOException;
+  Collection<Invoice> getAllInvoices() throws DatabaseOperationException;
 
-  Invoice getInvoice(Object id) throws DatabaseOperationException, IOException;
+  Invoice getInvoice(Object id) throws DatabaseOperationException;
 
   Collection<Invoice> getInvoicesInBetweenDates(LocalDate fromDate, LocalDate toDate)
-      throws DatabaseOperationException, IOException;
+      throws DatabaseOperationException;
 
-  Invoice removeInvoice(Object id) throws DatabaseOperationException, IOException;
+  Invoice removeInvoice(Object id) throws DatabaseOperationException;
 
 }

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.coderstrust.invoices.database.DatabaseOperationException;
 import pl.coderstrust.invoices.model.Invoice;
 import pl.coderstrust.invoices.model.Invoice.InvoiceBuilder;
 
@@ -38,7 +39,7 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldSaveInvoiceWithGivenId() throws IOException {
+  void shouldSaveInvoiceWithGivenId() throws DatabaseOperationException, FileNotFoundException {
     //given
     Invoice given = new InvoiceBuilder().id(1).number("1").issueDate(LocalDate.of(2019, 4, 15))
         .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
@@ -59,7 +60,7 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldUpdateInvoice() throws IOException {
+  void shouldUpdateInvoice() throws DatabaseOperationException, FileNotFoundException {
     //given
     List<String> stringInvoiceList = new ArrayList<>();
     String givenStringInvoice = "{\"id\":1,\"number\":\"11\",\"issueDate\":\"2019-04-25\","
@@ -95,7 +96,7 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldReturnAllInvoices() throws IOException {
+  void shouldReturnAllInvoices() throws DatabaseOperationException, FileNotFoundException {
     //given
     List<String> givenInvoice = new ArrayList<>();
     givenInvoice.add(
@@ -129,7 +130,7 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldGetInvoiceByGivenId() throws IOException {
+  void shouldGetInvoiceByGivenId() throws DatabaseOperationException, FileNotFoundException {
     //given
     List<String> givenInvoice = new ArrayList<>();
     givenInvoice.add(
@@ -180,7 +181,7 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldGetInvoicesBetweenDates() throws IOException {
+  void shouldGetInvoicesBetweenDates() throws DatabaseOperationException, FileNotFoundException {
     //given
     List<String> givenInvoice = new ArrayList<>();
     givenInvoice.add(
@@ -225,7 +226,7 @@ class InFileDatabaseTest {
   }
 
   @Test
-  void shouldRemoveInvoice() throws IOException {
+  void shouldRemoveInvoice() throws DatabaseOperationException, FileNotFoundException {
     //given
     List<String> stringInvoicesList = new ArrayList<>();
     String givenInvoice = "{\"id\":1,\"number\":\"1\",\"issueDate\":\"2019-04-25\","
