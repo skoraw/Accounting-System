@@ -12,7 +12,7 @@ public interface Database {
 
   Invoice getInvoice(Object id) throws DatabaseOperationException;
 
-  Collection<Invoice> getInvoicesInBetweenDates(LocalDate fromDate, LocalDate toDate)
+  Collection<Invoice> getInvoicesBetweenDates(LocalDate fromDate, LocalDate toDate)
       throws DatabaseOperationException;
 
   Invoice removeInvoice(Object id) throws DatabaseOperationException;

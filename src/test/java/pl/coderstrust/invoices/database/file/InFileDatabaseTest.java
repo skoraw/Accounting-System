@@ -211,7 +211,7 @@ class InFileDatabaseTest {
 
     //when
     List<Invoice> actualInvoices = (List<Invoice>) inFileDatabase
-        .getInvoicesInBetweenDates(dateFrom, dateTo);
+        .getInvoicesBetweenDates(dateFrom, dateTo);
 
     //then
     assertEquals(expectedInvoices, actualInvoices);
@@ -222,7 +222,7 @@ class InFileDatabaseTest {
     LocalDate dateTo = LocalDate.of(2019, 4, 2);
     LocalDate dateFrom = LocalDate.of(2019, 4, 3);
     assertThrows(IllegalArgumentException.class,
-        () -> inFileDatabase.getInvoicesInBetweenDates(dateFrom, dateTo));
+        () -> inFileDatabase.getInvoicesBetweenDates(dateFrom, dateTo));
   }
 
   @Test

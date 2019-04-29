@@ -105,7 +105,7 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public Collection<Invoice> getInvoicesInBetweenDates(LocalDate fromDate, LocalDate toDate)
+  public Collection<Invoice> getInvoicesBetweenDates(LocalDate fromDate, LocalDate toDate)
       throws DatabaseOperationException {
     if (!fromDate.isBefore(toDate)) {
       throw new IllegalArgumentException("fromDate must be earlier date than toDate");
