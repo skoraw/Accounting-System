@@ -28,50 +28,71 @@ public class Invoice {
 
   public Invoice() {
   }
-
+  
   public Invoice(Invoice invoice) {
     this(invoice.getId(), invoice.getNumber(), invoice.getIssueDate(),
         invoice.getIssuePlace(), invoice.getSellDate(), invoice.getSeller(),
         invoice.getBuyer(), invoice.getEntries());
   }
 
-  public static InvoiceBuilder builder() {
-    return new InvoiceBuilder();
+  public static class InvoiceBuilder {
+
+    private Object id;
+    private String number;
+    private LocalDate issueDate;
+    private String issuePlace;
+    private LocalDate sellDate;
+    private Company seller;
+    private Company buyer;
+    private List<InvoiceEntry> entries;
+
+    public InvoiceBuilder id(Object id) {
+      this.id = id;
+      return this;
+    }
+
+    public InvoiceBuilder number(String number) {
+      this.number = number;
+      return this;
+    }
+
+    public InvoiceBuilder issueDate(LocalDate issueDate) {
+      this.issueDate = issueDate;
+      return this;
+    }
+
+    public InvoiceBuilder issuePlace(String issuePlace) {
+      this.issuePlace = issuePlace;
+      return this;
+    }
+
+    public InvoiceBuilder sellDate(LocalDate sellDate) {
+      this.sellDate = sellDate;
+      return this;
+    }
+
+    public InvoiceBuilder seller(Company seller) {
+      this.seller = seller;
+      return this;
+    }
+
+    public InvoiceBuilder buyer(Company buyer) {
+      this.buyer = buyer;
+      return this;
+    }
+
+    public InvoiceBuilder entries(List<InvoiceEntry> entries) {
+      this.entries = entries;
+      return this;
+    }
+
+    public Invoice build() {
+      return new Invoice(id, number, issueDate, issuePlace, sellDate, seller, buyer, entries);
+    }
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null || getClass() != obj.getClass()) {
-      return false;
-    }
-
-    Invoice invoice = (Invoice) obj;
-
-    if (id != null ? !id.equals(invoice.id) : invoice.id != null) {
-      return false;
-    }
-    if (number != null ? !number.equals(invoice.number) : invoice.number != null) {
-      return false;
-    }
-    if (issueDate != null ? !issueDate.equals(invoice.issueDate) : invoice.issueDate != null) {
-      return false;
-    }
-    if (issuePlace != null ? !issuePlace.equals(invoice.issuePlace) : invoice.issuePlace != null) {
-      return false;
-    }
-    if (sellDate != null ? !sellDate.equals(invoice.sellDate) : invoice.sellDate != null) {
-      return false;
-    }
-    if (seller != null ? !seller.equals(invoice.seller) : invoice.seller != null) {
-      return false;
-    }
-    if (buyer != null ? !buyer.equals(invoice.buyer) : invoice.buyer != null) {
-      return false;
-    }
-    return entries != null ? entries.equals(invoice.entries) : invoice.entries == null;
+  public static InvoiceBuilder builder() {
+    return new InvoiceBuilder();
   }
 
   public Object getId() {
@@ -138,60 +159,39 @@ public class Invoice {
     this.entries = entries;
   }
 
-  public static class InvoiceBuilder {
-
-    private Object id;
-    private String number;
-    private LocalDate issueDate;
-    private String issuePlace;
-    private LocalDate sellDate;
-    private Company seller;
-    private Company buyer;
-    private List<InvoiceEntry> entries;
-
-    public InvoiceBuilder id(Object id) {
-      this.id = id;
-      return this;
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
     }
 
-    public InvoiceBuilder number(String number) {
-      this.number = number;
-      return this;
-    }
+    Invoice invoice = (Invoice) obj;
 
-    public InvoiceBuilder issueDate(LocalDate issueDate) {
-      this.issueDate = issueDate;
-      return this;
+    if (id != null ? !id.equals(invoice.id) : invoice.id != null) {
+      return false;
     }
-
-    public InvoiceBuilder issuePlace(String issuePlace) {
-      this.issuePlace = issuePlace;
-      return this;
+    if (number != null ? !number.equals(invoice.number) : invoice.number != null) {
+      return false;
     }
-
-    public InvoiceBuilder sellDate(LocalDate sellDate) {
-      this.sellDate = sellDate;
-      return this;
+    if (issueDate != null ? !issueDate.equals(invoice.issueDate) : invoice.issueDate != null) {
+      return false;
     }
-
-    public InvoiceBuilder seller(Company seller) {
-      this.seller = seller;
-      return this;
+    if (issuePlace != null ? !issuePlace.equals(invoice.issuePlace) : invoice.issuePlace != null) {
+      return false;
     }
-
-    public InvoiceBuilder buyer(Company buyer) {
-      this.buyer = buyer;
-      return this;
+    if (sellDate != null ? !sellDate.equals(invoice.sellDate) : invoice.sellDate != null) {
+      return false;
     }
-
-    public InvoiceBuilder entries(List<InvoiceEntry> entries) {
-      this.entries = entries;
-      return this;
+    if (seller != null ? !seller.equals(invoice.seller) : invoice.seller != null) {
+      return false;
     }
-
-    public Invoice build() {
-      return new Invoice(id, number, issueDate, issuePlace, sellDate, seller, buyer, entries);
+    if (buyer != null ? !buyer.equals(invoice.buyer) : invoice.buyer != null) {
+      return false;
     }
+    return entries != null ? entries.equals(invoice.entries) : invoice.entries == null;
   }
 
   @Override

@@ -4,16 +4,13 @@ import java.math.BigDecimal;
 
 public class InvoiceEntry {
 
-  private Object id;
+  private Long id;
   private String productName;
   private String amount;
   private BigDecimal price;
   private Vat vat;
 
-  public InvoiceEntry() {
-  }
-
-  public InvoiceEntry(Object id, String productName, String amount, BigDecimal price,
+  public InvoiceEntry(Long id, String productName, String amount, BigDecimal price,
       Vat vat) {
     this.id = id;
     this.productName = productName;
@@ -22,7 +19,7 @@ public class InvoiceEntry {
     this.vat = vat;
   }
 
-  public Object getId() {
+  public Long getId() {
     return id;
   }
 
@@ -63,15 +60,15 @@ public class InvoiceEntry {
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
+  public boolean equals(Object o) {
+    if (this == o) {
       return true;
     }
-    if (obj == null || getClass() != obj.getClass()) {
+    if (o == null || getClass() != o.getClass()) {
       return false;
     }
 
-    InvoiceEntry that = (InvoiceEntry) obj;
+    InvoiceEntry that = (InvoiceEntry) o;
 
     if (id != null ? !id.equals(that.id) : that.id != null) {
       return false;
@@ -96,16 +93,5 @@ public class InvoiceEntry {
     result = 31 * result + (price != null ? price.hashCode() : 0);
     result = 31 * result + (vat != null ? vat.hashCode() : 0);
     return result;
-  }
-
-  @Override
-  public String toString() {
-    return "InvoiceEntry{"
-        + "id=" + id
-        + ", productName='" + productName + '\''
-        + ", amount='" + amount + '\''
-        + ", price=" + price
-        + ", vat=" + vat
-        + '}';
   }
 }

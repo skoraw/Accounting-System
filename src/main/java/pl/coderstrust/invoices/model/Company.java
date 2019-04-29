@@ -2,14 +2,13 @@ package pl.coderstrust.invoices.model;
 
 public class Company {
 
-  private Object id;
-  private String name;
-  private String taxIdentificationNumber;
-  private String street;
-  private String postalCode;
-  private String town;
+  private final String name;
+  private final String taxIdentificationNumber;
+  private final String street;
+  private final String postalCode;
+  private final String town;
 
-  public Company(String name, String taxIdentificationNumber, String street,
+  private Company(String name, String taxIdentificationNumber, String street,
       String postalCode, String town) {
     this.name = name;
     this.taxIdentificationNumber = taxIdentificationNumber;
@@ -18,56 +17,78 @@ public class Company {
     this.town = town;
   }
 
-  public String getName() {
-    return name;
+  public static class CompanyBuilder {
+
+    private String name;
+    private String taxIdentificationNumber;
+    private String street;
+    private String postalCode;
+    private String town;
+
+    public CompanyBuilder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public CompanyBuilder taxIdentificationNumber(String taxIdentificationNumber) {
+      this.taxIdentificationNumber = taxIdentificationNumber;
+      return this;
+    }
+
+    public CompanyBuilder street(String street) {
+      this.street = street;
+      return this;
+    }
+
+    public CompanyBuilder postalCode(String postalCode) {
+      this.postalCode = postalCode;
+      return this;
+    }
+
+    public CompanyBuilder town(String town) {
+      this.town = town;
+      return this;
+    }
+
+    public Company build() {
+      return new Company(name, taxIdentificationNumber, street, postalCode, town);
+    }
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public static CompanyBuilder builder() {
+    return new CompanyBuilder();
+  }
+
+  public String getName() {
+    return name;
   }
 
   public String getTaxIdentificationNumber() {
     return taxIdentificationNumber;
   }
 
-  public void setTaxIdentificationNumber(String taxIdentificationNumber) {
-    this.taxIdentificationNumber = taxIdentificationNumber;
-  }
-
   public String getStreet() {
     return street;
-  }
-
-  public void setStreet(String street) {
-    this.street = street;
   }
 
   public String getPostalCode() {
     return postalCode;
   }
 
-  public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode;
-  }
-
   public String getTown() {
     return town;
   }
 
-  public void setTown(String town) {
-    this.town = town;
-  }
-
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
+  public boolean equals(Object o) {
+    if (this == o) {
       return true;
     }
-    if (obj == null || getClass() != obj.getClass()) {
+    if (o == null || getClass() != o.getClass()) {
       return false;
     }
 
-    Company company = (Company) obj;
+    Company company = (Company) o;
 
     if (name != null ? !name.equals(company.name) : company.name != null) {
       return false;
