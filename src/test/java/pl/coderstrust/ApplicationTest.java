@@ -13,20 +13,20 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ApplicationTest {
 
-    @Autowired
-    private ApplicationContext context;
+  @Autowired
+  private ApplicationContext context;
 
-    @Test
-    public void testContextLoaded() {
-        assertThat(context).isNotNull();
-        System.out.println(String.format("Application name: %s", context.getApplicationName()));
-        System.out
-            .println(String.format("Application startup timestamp: %d", context.getStartupDate()));
-        System.out
-            .println(String.format("Number of beans loaded: %d", context.getBeanDefinitionCount()));
-        for (String beanName : context.getBeanDefinitionNames()) {
-            System.out.println(beanName);
-        }
+  @Test
+  public void testContextLoaded() {
+    assertThat(context).isNotNull();
+    System.out.println(String.format("Application name: %s", context.getApplicationName()));
+    System.out
+        .println(String.format("Application startup timestamp: %d", context.getStartupDate()));
+    System.out
+        .println(String.format("Number of beans loaded: %d", context.getBeanDefinitionCount()));
+    for (String beanName : context.getBeanDefinitionNames()) {
+      System.out.println(beanName);
     }
+  }
 
 }
