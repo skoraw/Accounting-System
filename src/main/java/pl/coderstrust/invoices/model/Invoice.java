@@ -3,10 +3,11 @@ package pl.coderstrust.invoices.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import java.util.List;
 
-@ApiModel(value = "Faktura",description = "Przykładowa faktura VAT")
+@ApiModel(value = "Faktura", description = "Przykładowa faktura VAT")
 public class Invoice {
 
   private Object id;
@@ -103,6 +104,7 @@ public class Invoice {
     return new InvoiceBuilder();
   }
 
+  @ApiModelProperty(value = "Identyfikator faktury", hidden = true)
   public Object getId() {
     return id;
   }
@@ -111,6 +113,7 @@ public class Invoice {
     this.id = id;
   }
 
+  @ApiModelProperty(value = "Numer faktury", example = "1/5/2019")
   public String getNumber() {
     return number;
   }
@@ -119,6 +122,7 @@ public class Invoice {
     this.number = number;
   }
 
+  @ApiModelProperty(value = "Data wystawienia faktury", example = "2019-12-05")
   public LocalDate getIssueDate() {
     return issueDate;
   }
@@ -127,6 +131,7 @@ public class Invoice {
     this.issueDate = issueDate;
   }
 
+  @ApiModelProperty(value = "Miejsce wystawienia faktury", example = "Kraków")
   public String getIssuePlace() {
     return issuePlace;
   }
@@ -135,6 +140,7 @@ public class Invoice {
     this.issuePlace = issuePlace;
   }
 
+  @ApiModelProperty(value = "Data sprzedaży", example = "2019-12-05")
   public LocalDate getSellDate() {
     return sellDate;
   }
@@ -143,6 +149,7 @@ public class Invoice {
     this.sellDate = sellDate;
   }
 
+  @ApiModelProperty(value = "Sprzedający", example = "Firma sprzedająca")
   public Company getSeller() {
     return seller;
   }
@@ -151,6 +158,7 @@ public class Invoice {
     this.seller = seller;
   }
 
+  @ApiModelProperty(value = "Kupujacy", example = "Firma kupująca")
   public Company getBuyer() {
     return buyer;
   }
@@ -159,6 +167,7 @@ public class Invoice {
     this.buyer = buyer;
   }
 
+  @ApiModelProperty(value = "Lista pozycji na fakturze")
   public List<InvoiceEntry> getEntries() {
     return entries;
   }

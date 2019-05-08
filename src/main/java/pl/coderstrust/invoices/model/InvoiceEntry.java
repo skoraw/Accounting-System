@@ -2,8 +2,12 @@ package pl.coderstrust.invoices.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 
+@ApiModel(value = "Lista pozycji na fakturze")
 public class InvoiceEntry {
 
   private Long id;
@@ -33,6 +37,7 @@ public class InvoiceEntry {
         invoiceEntry.getVat());
   }
 
+  @ApiModelProperty(value = "Numer pozycji", example = "1")
   public Long getId() {
     return id;
   }
@@ -41,6 +46,7 @@ public class InvoiceEntry {
     this.id = id;
   }
 
+  @ApiModelProperty(value = "Nazwa produktu", example = "Rower MTB")
   public String getProductName() {
     return productName;
   }
@@ -49,6 +55,7 @@ public class InvoiceEntry {
     this.productName = productName;
   }
 
+  @ApiModelProperty(value = "Ilość produktu", example = "2")
   public String getAmount() {
     return amount;
   }
@@ -57,6 +64,7 @@ public class InvoiceEntry {
     this.amount = amount;
   }
 
+  @ApiModelProperty(value = "Cena sprzedaży", example = "3499.99")
   public BigDecimal getPrice() {
     return price;
   }
@@ -65,6 +73,7 @@ public class InvoiceEntry {
     this.price = price;
   }
 
+  @ApiModelProperty(value = "Wielkość procentowa podatku VAT", example = "VAT_23")
   public Vat getVat() {
     return vat;
   }
