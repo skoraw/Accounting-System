@@ -7,13 +7,22 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 
-@ApiModel(value = "Lista pozycji na fakturze")
+@ApiModel(value = "Invoice entry", description = "Describes an invoice entry")
 public class InvoiceEntry {
 
+  @ApiModelProperty(value = "Entry ID", example = "1")
   private Long id;
+
+  @ApiModelProperty(value = "Product name", example = "MTB bike")
   private String productName;
+
+  @ApiModelProperty(value = "Amount", example = "2")
   private String amount;
+
+  @ApiModelProperty(value = "Price", example = "3499.99")
   private BigDecimal price;
+
+  @ApiModelProperty(value = "TAX", example = "VAT_23")
   private Vat vat;
 
   @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -37,7 +46,6 @@ public class InvoiceEntry {
         invoiceEntry.getVat());
   }
 
-  @ApiModelProperty(value = "Numer pozycji", example = "1")
   public Long getId() {
     return id;
   }
@@ -46,7 +54,6 @@ public class InvoiceEntry {
     this.id = id;
   }
 
-  @ApiModelProperty(value = "Nazwa produktu", example = "Rower MTB")
   public String getProductName() {
     return productName;
   }
@@ -55,7 +62,6 @@ public class InvoiceEntry {
     this.productName = productName;
   }
 
-  @ApiModelProperty(value = "Ilość produktu", example = "2")
   public String getAmount() {
     return amount;
   }
@@ -64,7 +70,6 @@ public class InvoiceEntry {
     this.amount = amount;
   }
 
-  @ApiModelProperty(value = "Cena sprzedaży", example = "3499.99")
   public BigDecimal getPrice() {
     return price;
   }
@@ -73,7 +78,6 @@ public class InvoiceEntry {
     this.price = price;
   }
 
-  @ApiModelProperty(value = "Wielkość procentowa podatku VAT", example = "VAT_23")
   public Vat getVat() {
     return vat;
   }

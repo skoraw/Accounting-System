@@ -5,13 +5,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "Dane firmy", description = "Company X")
+@ApiModel(value = "Company", description = "Describes a company")
 public class Company {
 
+  @ApiModelProperty(value = "Company name", example = "CodersTrust")
   private final String name;
+
+  @ApiModelProperty(value = "Tax ID Number", example = "555-444-12-32")
   private final String taxIdentificationNumber;
+
+  @ApiModelProperty(value = "Street", example = "Niepodległosci 23")
   private final String street;
+
+  @ApiModelProperty(value = "Postal code", example = "45-789")
   private final String postalCode;
+
+  @ApiModelProperty(value = "City", example = "Kraków")
   private final String town;
 
   @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -77,26 +86,22 @@ public class Company {
     return new CompanyBuilder();
   }
 
-  @ApiModelProperty(value = "Nazwa firmy", example = "Company X")
   public String getName() {
     return name;
   }
-  @ApiModelProperty(value = "Numer NIP", example = "555-444-12-32")
+
   public String getTaxIdentificationNumber() {
     return taxIdentificationNumber;
   }
 
-  @ApiModelProperty(value = "Ulica", example = "Niepodległosci 23")
   public String getStreet() {
     return street;
   }
 
-  @ApiModelProperty(value = "Kod pocztowy", example = "45-789")
   public String getPostalCode() {
     return postalCode;
   }
 
-  @ApiModelProperty(value = "Miasto", example = "Kraków")
   public String getTown() {
     return town;
   }
