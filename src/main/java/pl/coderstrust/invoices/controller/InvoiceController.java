@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiParam;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +20,7 @@ import pl.coderstrust.invoices.service.InvoiceBook;
 
 @RestController
 @RequestMapping("/invoice")
-@Api(tags = "Faktury", description = "Operacje na fakturach")
+@Api(tags = "Invoices", description = "Available operations")
 public class InvoiceController {
 
   private final InvoiceBook invoiceBook;
@@ -31,38 +30,39 @@ public class InvoiceController {
   }
 
   @GetMapping
-  @ApiOperation(value = "Wyświetl wszystkie faktury")
+  @ApiOperation(value = "Get all invoices")
   public Collection<Invoice> getAllInvoices() throws InvoiceBookException {
     return invoiceBook.getAllInvoices();
   }
 
   @PutMapping
-  @ApiOperation(value = "Dodaj nową fakturę lub edytuj istniejącą")
+  @ApiOperation(value = "Insert or update an invoice")
+  // TODO Add @ApiParam
   public Invoice addInvoice(@RequestBody Invoice invoice) throws InvoiceBookException {
     return invoiceBook.saveInvoice(invoice);
   }
 
   @DeleteMapping("/{id}")
-  @ApiOperation(value = "Usuń wybraną fakturę podając numer id")
+  @ApiOperation(value = "Remove the invoice")
   public Invoice removeInvoice(
-      @PathVariable("id") @ApiParam(value = "Identyfikator faktury", example = "2") Long id)
+      @PathVariable("id") @ApiParam(value = "Invoice ID", example = "2") Long id)
       throws InvoiceBookException {
     return invoiceBook.removeInvoice(id);
   }
 
   @GetMapping("/{id}")
-  @ApiOperation(value = "Wyświetl fakturę z konkretnym numerem id")
+  @ApiOperation(value = "Get the invoice")
   public Invoice getInvoice(
-      @PathVariable("id") @ApiParam(value = "Identyfikator faktury", example = "2") Long id)
+      @PathVariable("id") @ApiParam(value = "Invoice ID", example = "2") Long id)
       throws InvoiceBookException {
     return invoiceBook.getInvoice(id);
   }
 
   @GetMapping("/byDates")
-  @ApiOperation(value = "Wyświetl faktury znajdujące się w wybranym przedziale czasowym", notes = "Format daty: YYYY-MM-DD")
+  @ApiOperation(value = "Get invoices from given range of time", notes = "Date format: YYYY-MM-DD")
   public Collection<Invoice> getInvoiceBetweenDates(
-      @RequestParam("fromDate") @ApiParam(value = "Data początkowa", example = "YYYY-MM-DD") String fromDate,
-      @RequestParam("toDate") @ApiParam(value = "Data końcowa", example = "YYYY-MM-DD") String toDate)
+      @RequestParam("fromDate") @ApiParam(value = "Begin date - exclusive", example = "YYYY-MM-DD") String fromDate,
+      @RequestParam("toDate") @ApiParam(value = "End date - exclusive", example = "YYYY-MM-DD") String toDate)
       throws InvoiceBookException {
     LocalDate fromDateConverter = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(fromDate));
     LocalDate toDateConverter = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(toDate));
