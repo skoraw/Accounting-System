@@ -16,18 +16,13 @@ import pl.coderstrust.invoices.database.InvoiceBookException;
 import pl.coderstrust.invoices.model.Invoice;
 import pl.coderstrust.invoices.service.InvoiceBook;
 
-
 @RestController
 @RequestMapping("/invoice")
 public class InvoiceController {
 
-  @Autowired
   private final InvoiceBook invoiceBook;
 
   public InvoiceController(InvoiceBook invoiceBook) {
-    if (invoiceBook == null) {
-      throw new IllegalArgumentException("Invoice Book can't be null");
-    }
     this.invoiceBook = invoiceBook;
   }
 

@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,8 +21,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-
-import static org.hamcrest.Matchers.*;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -108,6 +107,7 @@ public class InvoiceControllerTest {
     mvc.perform(delete("/invoice/{id}", 2))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(2)));
+
     verify(invoiceBook, times(1)).removeInvoice(2L);
   }
 
@@ -119,6 +119,7 @@ public class InvoiceControllerTest {
         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(2)));
+
     verify(invoiceBook, times(1)).getInvoice(2L);
   }
 
