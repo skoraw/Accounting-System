@@ -38,6 +38,9 @@ public class Invoice {
     this.entries = entries;
   }
 
+  public Invoice() {
+  }
+  
   public Invoice(Invoice invoice) {
     this(invoice.getId(), invoice.getNumber(), invoice.getIssueDate(),
         invoice.getIssuePlace(), invoice.getSellDate(), invoice.getSeller(),

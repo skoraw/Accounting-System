@@ -1,10 +1,8 @@
 package pl.coderstrust.invoices.database;
 
-import pl.coderstrust.invoices.model.Invoice;
-
 import java.time.LocalDate;
 import java.util.Collection;
-
+import pl.coderstrust.invoices.model.Invoice;
 
 public interface Database {
 
@@ -18,4 +16,5 @@ public interface Database {
       throws DatabaseOperationException;
 
   Invoice removeInvoice(Object id) throws DatabaseOperationException;
+
 }
