@@ -1,5 +1,8 @@
 package pl.coderstrust.invoices.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Company {
 
   private final String name;
@@ -8,13 +11,25 @@ public class Company {
   private final String postalCode;
   private final String town;
 
-  private Company(String name, String taxIdentificationNumber, String street,
-      String postalCode, String town) {
+  @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+  private Company(@JsonProperty("name") String name,
+      @JsonProperty("taxIdentificationNumber") String taxIdentificationNumber,
+      @JsonProperty("street") String street,
+      @JsonProperty("postalCode") String postalCode,
+      @JsonProperty("town") String town) {
     this.name = name;
     this.taxIdentificationNumber = taxIdentificationNumber;
     this.street = street;
     this.postalCode = postalCode;
     this.town = town;
+  }
+
+  public Company(Company company) {
+    this(company.getName(),
+        company.getTaxIdentificationNumber(),
+        company.getStreet(),
+        company.postalCode,
+        company.getTown());
   }
 
   public static class CompanyBuilder {

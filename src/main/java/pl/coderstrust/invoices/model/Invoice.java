@@ -2,9 +2,11 @@ package pl.coderstrust.invoices.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
 import java.time.LocalDate;
 import java.util.List;
 
+@ApiModel(value = "Faktura",description = "Przykładowa faktura VAT")
 public class Invoice {
 
   private Object id;
