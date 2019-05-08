@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class SwaggerConfiguration {
 
   @Bean
   public Docket api() {
@@ -29,11 +29,11 @@ public class SwaggerConfig {
 
   private ApiInfo apiInfo() {
     return new ApiInfo(
-        "Invoice Controller API",
-        "API to manage invoices in company.",
-        "BETA",
-        "Terms of service",
-        new Contact("CodersTrust", "www.coderstrust.pl", "hello@coderstrust.pl"),
-        "CodersTrust", "CodersTrust license URL", Collections.emptyList());
+        "Accounting System",
+        "Application provides an invoices management.",
+        "1.0",
+        null,
+        new Contact("CodersTrust", "http://www.coderstrust.pl", "contact@coderstrust.pl"),
+        "MIT Licence", "https://choosealicense.com/licenses/mit/", Collections.emptyList());
   }
 }
