@@ -2,13 +2,17 @@ package pl.coderstrust.invoices.service;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pl.coderstrust.invoices.database.Database;
 import pl.coderstrust.invoices.database.DatabaseOperationException;
 import pl.coderstrust.invoices.database.InvoiceBookException;
 import pl.coderstrust.invoices.model.Invoice;
 
+@Service
 public class InvoiceBook {
 
+  @Autowired
   private Database database;
 
   public InvoiceBook(Database database) {

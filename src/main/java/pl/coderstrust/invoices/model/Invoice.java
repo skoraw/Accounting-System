@@ -1,5 +1,7 @@
 package pl.coderstrust.invoices.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,8 +16,15 @@ public class Invoice {
   private Company buyer;
   private List<InvoiceEntry> entries;
 
-  private Invoice(Object id, String number, LocalDate issueDate, String issuePlace,
-      LocalDate sellDate, Company seller, Company buyer, List<InvoiceEntry> entries) {
+  @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+  public Invoice(@JsonProperty("id") Object id,
+      @JsonProperty("number") String number,
+      @JsonProperty("issueDate") LocalDate issueDate,
+      @JsonProperty("issuePlace") String issuePlace,
+      @JsonProperty("sellDate") LocalDate sellDate,
+      @JsonProperty("seller") Company seller,
+      @JsonProperty("buyer") Company buyer,
+      @JsonProperty("entries") List<InvoiceEntry> entries) {
     this.id = id;
     this.number = number;
     this.issueDate = issueDate;
