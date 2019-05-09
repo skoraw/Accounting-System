@@ -1,23 +1,39 @@
-package pl.coderstrust.invoices.model;
+package pl.coderstrust.invoices.model.hibernate;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import pl.coderstrust.invoices.model.Company;
+import pl.coderstrust.invoices.model.Invoice;
+import pl.coderstrust.invoices.model.InvoiceEntry;
 
-public class Invoice {
+@Entity
+public class InvoiceHibernate {
 
-  private Object id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.TABLE)
+  private Long id;
   private String number;
   private LocalDate issueDate;
   private String issuePlace;
   private LocalDate sellDate;
+
+  @ManyToOne
   private Company seller;
+  @ManyToOne
   private Company buyer;
+  @ManyToMany
   private List<InvoiceEntry> entries;
 
   @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-  public Invoice(@JsonProperty("id") Object id,
+  public InvoiceHibernate(@JsonProperty("id") Long id,
       @JsonProperty("number") String number,
       @JsonProperty("issueDate") LocalDate issueDate,
       @JsonProperty("issuePlace") String issuePlace,
@@ -35,80 +51,25 @@ public class Invoice {
     this.entries = entries;
   }
 
-  public Invoice() {
+  public InvoiceHibernate() {
   }
 
-  public Invoice(Invoice invoice) {
-    this(invoice.getId(), invoice.getNumber(), invoice.getIssueDate(),
-        invoice.getIssuePlace(), invoice.getSellDate(), invoice.getSeller(),
-        invoice.getBuyer(), invoice.getEntries());
+  public InvoiceHibernate(Invoice invoice) {
+    this.id = (Long) invoice.getId();
+    this.number = invoice.getNumber();
+    this.issueDate = invoice.getIssueDate();
+    this.issuePlace = invoice.getIssuePlace();
+    this.sellDate = invoice.getSellDate();
+    this.seller = invoice.getSeller();
+    this.buyer = invoice.getBuyer();
+    this.entries = invoice.getEntries();
   }
 
-  public static class InvoiceBuilder {
-
-    private Object id;
-    private String number;
-    private LocalDate issueDate;
-    private String issuePlace;
-    private LocalDate sellDate;
-    private Company seller;
-    private Company buyer;
-    private List<InvoiceEntry> entries;
-
-    public InvoiceBuilder id(Object id) {
-      this.id = id;
-      return this;
-    }
-
-    public InvoiceBuilder number(String number) {
-      this.number = number;
-      return this;
-    }
-
-    public InvoiceBuilder issueDate(LocalDate issueDate) {
-      this.issueDate = issueDate;
-      return this;
-    }
-
-    public InvoiceBuilder issuePlace(String issuePlace) {
-      this.issuePlace = issuePlace;
-      return this;
-    }
-
-    public InvoiceBuilder sellDate(LocalDate sellDate) {
-      this.sellDate = sellDate;
-      return this;
-    }
-
-    public InvoiceBuilder seller(Company seller) {
-      this.seller = seller;
-      return this;
-    }
-
-    public InvoiceBuilder buyer(Company buyer) {
-      this.buyer = buyer;
-      return this;
-    }
-
-    public InvoiceBuilder entries(List<InvoiceEntry> entries) {
-      this.entries = entries;
-      return this;
-    }
-
-    public Invoice build() {
-      return new Invoice(id, number, issueDate, issuePlace, sellDate, seller, buyer, entries);
-    }
-  }
-
-  public static InvoiceBuilder builder() {
-    return new InvoiceBuilder();
-  }
-
-  public Object getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Object id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -177,7 +138,7 @@ public class Invoice {
       return false;
     }
 
-    Invoice invoice = (Invoice) obj;
+    InvoiceHibernate invoice = (InvoiceHibernate) obj;
 
     if (id != null ? !id.equals(invoice.id) : invoice.id != null) {
       return false;

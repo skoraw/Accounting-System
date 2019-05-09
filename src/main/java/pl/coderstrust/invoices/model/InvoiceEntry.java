@@ -1,9 +1,15 @@
 package pl.coderstrust.invoices.model;
 
 import java.math.BigDecimal;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
+@Entity
 public class InvoiceEntry {
 
+  @Id
+  @GeneratedValue
   private Long id;
   private String productName;
   private String amount;
@@ -60,15 +66,15 @@ public class InvoiceEntry {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
 
-    InvoiceEntry that = (InvoiceEntry) o;
+    InvoiceEntry that = (InvoiceEntry) obj;
 
     if (id != null ? !id.equals(that.id) : that.id != null) {
       return false;
