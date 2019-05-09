@@ -88,7 +88,7 @@ public class HibernateDatabase implements Database {
         .buyer(tempInvoice.getBuyer())
         .entries(tempInvoice.getEntries())
         .build();
-    System.out.println(invoice.toString());
+//    System.out.println(invoice.toString());
     invoiceRepository.deleteById((Long) id);
     return invoice;
   }
