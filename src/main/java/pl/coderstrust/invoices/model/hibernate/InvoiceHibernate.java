@@ -4,17 +4,20 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import pl.coderstrust.invoices.model.Company;
 import pl.coderstrust.invoices.model.Invoice;
 import pl.coderstrust.invoices.model.InvoiceEntry;
 
 @Entity
+@Table(name = "invoices")
 public class InvoiceHibernate {
 
   @Id
@@ -25,11 +28,11 @@ public class InvoiceHibernate {
   private String issuePlace;
   private LocalDate sellDate;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   private Company seller;
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   private Company buyer;
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   private List<InvoiceEntry> entries;
 
   @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

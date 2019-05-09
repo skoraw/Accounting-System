@@ -66,7 +66,13 @@ public class HibernateDatabase implements Database {
   @Override
   public Collection<Invoice> getInvoicesBetweenDates(LocalDate fromDate, LocalDate toDate)
       throws DatabaseOperationException {
-    throw new IllegalArgumentException("Dokonczyc");
+    Collection<InvoiceHibernate> invoiceHibernateList = invoiceRepository
+        .findByIssueDateBetween(fromDate, toDate);
+    List<Invoice> invoices = new ArrayList<>();
+    for (InvoiceHibernate invoiceHibernate : invoiceHibernateList) {
+      invoices.add(getInvoiceObject(invoiceHibernate));
+    }
+    return invoices;
   }
 
   @Override
