@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.invoices.database.Database;
@@ -16,6 +17,7 @@ import pl.coderstrust.invoices.model.hibernate.InvoiceHibernate;
 
 @Repository
 @Primary
+@ConditionalOnProperty(name = "database.type", havingValue = "hibernate", matchIfMissing = true)
 public class HibernateDatabase implements Database {
 
   private InvoiceRepository invoiceRepository;
@@ -88,7 +90,6 @@ public class HibernateDatabase implements Database {
         .buyer(tempInvoice.getBuyer())
         .entries(tempInvoice.getEntries())
         .build();
-//    System.out.println(invoice.toString());
     invoiceRepository.deleteById((Long) id);
     return invoice;
   }

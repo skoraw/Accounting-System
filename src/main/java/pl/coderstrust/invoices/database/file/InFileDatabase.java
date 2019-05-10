@@ -6,10 +6,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Repository;
 import pl.coderstrust.invoices.database.Database;
 import pl.coderstrust.invoices.database.DatabaseOperationException;
 import pl.coderstrust.invoices.model.Invoice;
 
+@Repository
+@ConditionalOnProperty(name = "database.type", havingValue = "in-file")
 public class InFileDatabase implements Database {
 
   private InvoiceConverter invoiceConverter;
