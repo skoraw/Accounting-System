@@ -8,10 +8,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Component;
 import pl.coderstrust.invoices.model.Invoice;
 
-@Component
 class InvoiceConverter {
 
   private ObjectMapper objectMapper;

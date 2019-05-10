@@ -21,7 +21,7 @@ import pl.coderstrust.invoices.model.InvoiceEntry;
 public class InvoiceHibernate {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.TABLE)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private String number;
   private LocalDate issueDate;

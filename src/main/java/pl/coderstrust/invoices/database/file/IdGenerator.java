@@ -2,9 +2,7 @@ package pl.coderstrust.invoices.database.file;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import org.springframework.stereotype.Component;
 
-@Component
 class IdGenerator {
 
   private FileHelper fileHelper;

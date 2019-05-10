@@ -10,7 +10,7 @@ import javax.persistence.Id;
 public class InvoiceEntry {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.TABLE)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private String productName;
   private String amount;

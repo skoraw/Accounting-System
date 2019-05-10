@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class Company {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.TABLE)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private final String name;
   private final String taxIdentificationNumber;
