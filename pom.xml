@@ -75,6 +75,8 @@
           <excludes>
             <exclude>pl/coderstrust/Application.class</exclude>
             <exclude>pl/coderstrust/invoices/model/*.class</exclude>
+            <exclude>pl/coderstrust/invoices/model/hibernate/*.class</exclude>
+            <exclude>pl/coderstrust/invoices/database/*.class</exclude>
           </excludes>
         </configuration>
         <executions>

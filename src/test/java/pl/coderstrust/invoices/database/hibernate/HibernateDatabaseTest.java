@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.coderstrust.invoices.database.InvoiceBookException;
 import pl.coderstrust.invoices.model.Invoice;
@@ -17,6 +19,7 @@ import pl.coderstrust.invoices.service.InvoiceBook;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class HibernateDatabaseTest {
 
   @Autowired
@@ -52,6 +55,7 @@ class HibernateDatabaseTest {
       .seller(null)
       .entries(Collections.emptyList())
       .build();
+
   @Test
   void shouldSaveInvoiceInDatabase() throws InvoiceBookException {
     //given
@@ -74,46 +78,67 @@ class HibernateDatabaseTest {
   }
 
   @Test
+  void shouldSaveInvoiceWhenIdIsNull() throws InvoiceBookException {
+    //given
+    Invoice given = Invoice.builder()
+        .id(null)
+        .number("2019/1")
+        .buyer(null)
+        .issueDate(LocalDate.of(2019, 5, 11))
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2019, 5, 11))
+        .seller(null)
+        .entries(Collections.emptyList())
+        .build();
+    Invoice expected = Invoice.builder()
+        .id(1L)
+        .number("2019/1")
+        .buyer(null)
+        .issueDate(LocalDate.of(2019, 5, 11))
+        .issuePlace("SomePlace")
+        .sellDate(LocalDate.of(2019, 5, 11))
+        .seller(null)
+        .entries(Collections.emptyList())
+        .build();
+
+    //when
+    Invoice actual = invoiceBook.saveInvoice(given);
+
+    //then
+    assertEquals(expected, actual);
+  }
+
+  @Test
   void shouldGetAllInvoicesFromDatabase() throws InvoiceBookException {
     //given
     invoiceBook.saveInvoice(invoice);
-//    invoiceBook.saveInvoice(invoice2nd);
+    invoiceBook.saveInvoice(invoice2nd);
+    invoiceBook.saveInvoice(invoice3rd);
     List<Invoice> expected = new ArrayList<>();
-    invoice.setId(1L);
     expected.add(invoice);
-//    invoice2nd.setId(2L);
-//    expected.add(invoice2nd);
+    expected.add(invoice2nd);
+    expected.add(invoice3rd);
 
     //when
-    List<Invoice> actual = (List<Invoice>) invoiceBook.getAllInvoices();
+    ArrayList<Invoice> actual = (ArrayList<Invoice>) invoiceBook.getAllInvoices();
+    System.out.println(actual.toString());
+    //then
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void shouldGetSingleInvoiceBygivenId() throws InvoiceBookException {
+    //given
+    Invoice expected = invoiceBook.saveInvoice(invoice);
+
+    //when
+    Invoice actual = invoiceBook.getInvoice(1L);
 
     //then
     assertEquals(expected, actual);
 
   }
 
-  //  @Test
-//  void shouldGetSingleInvoiceBygivenId() throws InvoiceBookException {
-//    //given
-////    Invoice given = Invoice.builder()
-////        .id(null)
-////        .number("23/11/2019")
-////        .buyer(null)
-////        .issueDate(LocalDate.of(2018, 11, 11))
-////        .issuePlace("SomePlace")
-////        .sellDate(LocalDate.of(2013, 11, 27))
-////        .seller(null)
-////        .entries(Arrays.asList())
-////        .build();
-//    invoiceBook.saveInvoice(invoice);
-//    Invoice actual = invoiceBook.saveInvoice(invoice2nd);
-//    //when
-//    Invoice expected = invoiceBook.getInvoice(2L);
-//
-//    //then
-//    assertEquals(expected, actual);
-//
-//  }
   @Test
   void shouldRemoveInvoiceWithGivenId() throws InvoiceBookException {
     //given
@@ -165,6 +190,7 @@ class HibernateDatabaseTest {
 
     //then
     assertEquals(expected, actual);
+
   }
 
   //przetestowac exceptiony rzucane
