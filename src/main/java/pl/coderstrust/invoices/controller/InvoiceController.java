@@ -37,8 +37,7 @@ public class InvoiceController {
 
   @PutMapping
   @ApiOperation(value = "Insert or update an invoice")
-  // TODO Add @ApiParam
-  public Invoice addInvoice(@RequestBody Invoice invoice) throws InvoiceBookException {
+  public Invoice addInvoice(@ApiParam(value = "Invoice document", name = "Invoice") @RequestBody Invoice invoice) throws InvoiceBookException {
     return invoiceBook.saveInvoice(invoice);
   }
 
