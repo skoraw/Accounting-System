@@ -10,7 +10,7 @@ import java.util.List;
 @ApiModel(value = "Invoice", description = "Describes an invoice")
 public class Invoice {
 
-  @ApiModelProperty(value = "Invoice ID", dataType = "java.lang.Long", example="3")
+  @ApiModelProperty(value = "Invoice ID", dataType = "java.lang.Long", example = "3")
   private Object id;
 
   @ApiModelProperty(value = "Tax identification number", example = "1/5/2019")
@@ -55,7 +55,7 @@ public class Invoice {
 
   public Invoice() {
   }
-  
+
   public Invoice(Invoice invoice) {
     this(invoice.getId(), invoice.getNumber(), invoice.getIssueDate(),
         invoice.getIssuePlace(), invoice.getSellDate(), invoice.getSeller(),
