@@ -1,17 +1,18 @@
 package pl.coderstrust.invoices.database.hibernate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.coderstrust.invoices.database.InvoiceBookException;
 import pl.coderstrust.invoices.model.Invoice;
@@ -19,7 +20,7 @@ import pl.coderstrust.invoices.service.InvoiceBook;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class HibernateDatabaseTest {
 
   @Autowired
@@ -109,6 +110,11 @@ class HibernateDatabaseTest {
   }
 
   @Test
+  void shouldThrowExceptionWhenNullIsPassedToSaveMethod() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceBook.saveInvoice(null));
+  }
+
+  @Test
   void shouldGetAllInvoicesFromDatabase() throws InvoiceBookException {
     //given
     invoiceBook.saveInvoice(invoice);
@@ -136,7 +142,16 @@ class HibernateDatabaseTest {
 
     //then
     assertEquals(expected, actual);
+  }
 
+  @Test
+  void shouldThrowExceptionWhenNullIsPassedToGetInvoiceMethod() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceBook.getInvoice(null));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenNotExistingIdIsPassedToGetInvoiceMethod() {
+    assertThrows(NoSuchElementException.class, () -> invoiceBook.getInvoice(1L));
   }
 
   @Test
@@ -149,7 +164,16 @@ class HibernateDatabaseTest {
 
     //then
     assertEquals(expected, actual);
+  }
 
+  @Test
+  void shouldThrowExceptionWhenNotExistingIdIsPassedToRemoveMethod() {
+    assertThrows(NoSuchElementException.class, () -> invoiceBook.removeInvoice(1L));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenNullIsPassedToRemoveMethod() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceBook.removeInvoice(null));
   }
 
   @Test
@@ -167,6 +191,19 @@ class HibernateDatabaseTest {
 
     //then
     assertEquals(expected, actual);
+  }
+
+  @Test
+  void shouldThrowExceptionWhenDatesAreChanged() throws InvoiceBookException {
+    //given
+    List<Invoice> expeted = Collections.EMPTY_LIST;
+
+    //when
+    List<Invoice> actual = (List<Invoice>) invoiceBook
+        .getInvoicesBetweenDates(LocalDate.of(2019, 5, 11), LocalDate.of(2019, 5, 10));
+
+    //then
+    assertEquals(expeted, actual);
   }
 
   @Test
@@ -190,8 +227,5 @@ class HibernateDatabaseTest {
 
     //then
     assertEquals(expected, actual);
-
   }
-
-  //przetestowac exceptiony rzucane
 }
