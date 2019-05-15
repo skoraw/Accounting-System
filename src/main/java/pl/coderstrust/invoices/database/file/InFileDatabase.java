@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.invoices.database.Database;
@@ -20,7 +21,7 @@ public class InFileDatabase implements Database {
   private FileHelper fileHelper;
   private IdGenerator idGenerator;
 
-  InFileDatabase(FileHelper fileHelper, IdGenerator idGenerator,
+  InFileDatabase(@Qualifier("invoices") FileHelper fileHelper, IdGenerator idGenerator,
       InvoiceConverter invoiceConverter) {
     this.fileHelper = fileHelper;
     this.idGenerator = idGenerator;
@@ -60,9 +61,8 @@ public class InFileDatabase implements Database {
     ArrayList<Invoice> invoicesList = (ArrayList<Invoice>) invoiceConverter
         .stringListToInvoicesList(list);
     list.clear();
-    Integer id = (Integer) invoice.getId();
     for (Invoice value : invoicesList) {
-      if (value.getId().equals(id)) {
+      if (value.getId().equals(invoice.getId())) {
         list.add(invoiceConverter.objectToString(invoice));
       } else {
         list.add(invoiceConverter.objectToString(value));
@@ -86,9 +86,6 @@ public class InFileDatabase implements Database {
   public Invoice getInvoice(Object id) throws DatabaseOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
-    }
-    if (!(id instanceof Integer)) {
-      throw new IllegalArgumentException("Incorrect type of Invoice Id");
     }
     try {
       if (!isInvoiceExist(id)) {
@@ -137,9 +134,6 @@ public class InFileDatabase implements Database {
   public Invoice removeInvoice(Object id) throws DatabaseOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
-    }
-    if (!(id instanceof Integer)) {
-      throw new IllegalArgumentException("Incorrect type of Invoice Id");
     }
     try {
       if (!isInvoiceExist(id)) {
