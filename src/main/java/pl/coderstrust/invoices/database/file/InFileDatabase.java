@@ -33,9 +33,6 @@ public class InFileDatabase implements Database {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
-    if (!(invoice.getId() instanceof Integer)) {
-      throw new IllegalArgumentException("Incorrect type of Invoice Id");
-    }
     Invoice copiedInvoice = new Invoice(invoice);
     try {
       if (isInvoiceExist(copiedInvoice.getId())) {

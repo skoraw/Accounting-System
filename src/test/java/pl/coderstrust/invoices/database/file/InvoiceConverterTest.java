@@ -3,6 +3,8 @@ package pl.coderstrust.invoices.database.file;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,7 +21,10 @@ class InvoiceConverterTest {
 
   @BeforeAll
   static void setup() {
-    invoiceConverter = new InvoiceConverter(new ObjectMapper());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    mapper.registerModule(new JSR310Module());
+    invoiceConverter = new InvoiceConverter(mapper);
   }
 
   @Test
