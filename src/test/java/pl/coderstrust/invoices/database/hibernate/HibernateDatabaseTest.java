@@ -73,7 +73,7 @@ class HibernateDatabaseTest {
 
     //when
     Invoice actual = invoiceBook.saveInvoice(invoice);
-
+    System.out.println("Expected" + expected + "Actual" + actual);
     //then
     assertEquals(expected, actual);
   }
@@ -145,6 +145,17 @@ class HibernateDatabaseTest {
   }
 
   @Test
+  void shouldThrowExceptionWhenTryGetInvoiceWithUnsupportedId() {
+    String id = "id";
+    assertThrows(IllegalArgumentException.class, () -> invoiceBook.getInvoice(Long.valueOf(id)));
+  }
+
+  @Test
+  void shouldThrowExceptionWhentryGetNotExistInvoice() {
+    assertThrows(NoSuchElementException.class, () -> invoiceBook.getInvoice(1L));
+  }
+
+  @Test
   void shouldThrowExceptionWhenNullIsPassedToGetInvoiceMethod() {
     assertThrows(IllegalArgumentException.class, () -> invoiceBook.getInvoice(null));
   }
@@ -169,6 +180,12 @@ class HibernateDatabaseTest {
   @Test
   void shouldThrowExceptionWhenNotExistingIdIsPassedToRemoveMethod() {
     assertThrows(NoSuchElementException.class, () -> invoiceBook.removeInvoice(1L));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenTryRemoveInvoiceWithUnsupportedIdType() {
+    String id = "id";
+    assertThrows(IllegalArgumentException.class, () -> invoiceBook.removeInvoice(Long.valueOf(id)));
   }
 
   @Test

@@ -1,15 +1,23 @@
-package pl.coderstrust.invoices.model;
+package pl.coderstrust.invoices.model.hibernate;
 
-public class Company {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-  private Object id;
-  private final String name;
-  private final String taxIdentificationNumber;
-  private final String street;
-  private final String postalCode;
-  private final String town;
+@Entity
+public class CompanyHibernate {
 
-  private Company(Object id, String name, String taxIdentificationNumber, String street,
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+  private String name;
+  private String taxIdentificationNumber;
+  private String street;
+  private String postalCode;
+  private String town;
+
+  private CompanyHibernate(Long id, String name, String taxIdentificationNumber, String street,
       String postalCode, String town) {
     this.id = id;
     this.name = name;
@@ -19,13 +27,17 @@ public class Company {
     this.town = town;
   }
 
-  public Object getId() {
-    return id;
+  public CompanyHibernate() {
   }
 
-  public static CompanyBuilder builder() {
-    return new CompanyBuilder();
-  }
+//  public CompanyHibernate(Company company) {
+//    this.id = (Long) company.getId();
+//    this.name = company.getName();
+//    this.taxIdentificationNumber = company.getTaxIdentificationNumber();
+//    this.street = company.getStreet();
+//    this.postalCode = company.getPostalCode();
+//    this.town = company.getTown();
+//  }
 
   @Override
   public boolean equals(Object o) {
@@ -36,7 +48,7 @@ public class Company {
       return false;
     }
 
-    Company company = (Company) o;
+    CompanyHibernate company = (CompanyHibernate) o;
 
     if (id != null ? !id.equals(company.id) : company.id != null) {
       return false;
@@ -56,6 +68,10 @@ public class Company {
       return false;
     }
     return town != null ? town.equals(company.town) : company.town == null;
+  }
+
+  public Long getId() {
+    return id;
   }
 
   public String getName() {
@@ -100,49 +116,5 @@ public class Company {
         + ", postalCode='" + postalCode + '\''
         + ", town='" + town + '\''
         + '}';
-  }
-
-  public static class CompanyBuilder {
-
-    private Object id;
-    private String name;
-    private String taxIdentificationNumber;
-    private String street;
-    private String postalCode;
-    private String town;
-
-    public CompanyBuilder id(Long id) {
-      this.id = id;
-      return this;
-    }
-
-    public CompanyBuilder name(String name) {
-      this.name = name;
-      return this;
-    }
-
-    public CompanyBuilder taxIdentificationNumber(String taxIdentificationNumber) {
-      this.taxIdentificationNumber = taxIdentificationNumber;
-      return this;
-    }
-
-    public CompanyBuilder street(String street) {
-      this.street = street;
-      return this;
-    }
-
-    public CompanyBuilder postalCode(String postalCode) {
-      this.postalCode = postalCode;
-      return this;
-    }
-
-    public CompanyBuilder town(String town) {
-      this.town = town;
-      return this;
-    }
-
-    public Company build() {
-      return new Company(id, name, taxIdentificationNumber, street, postalCode, town);
-    }
   }
 }

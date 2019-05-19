@@ -1,16 +1,24 @@
-package pl.coderstrust.invoices.model;
+package pl.coderstrust.invoices.model.hibernate;
 
 import java.math.BigDecimal;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import pl.coderstrust.invoices.model.Vat;
 
-public class InvoiceEntry {
+@Entity
+public class InvoiceEntryHibernate {
 
-  private Object id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
   private String productName;
   private String amount;
   private BigDecimal price;
   private Vat vat;
 
-  public InvoiceEntry(Object id, String productName, String amount, BigDecimal price,
+  public InvoiceEntryHibernate(Long id, String productName, String amount, BigDecimal price,
       Vat vat) {
     this.id = id;
     this.productName = productName;
@@ -19,11 +27,11 @@ public class InvoiceEntry {
     this.vat = vat;
   }
 
-  public Object getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Object id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -68,7 +76,7 @@ public class InvoiceEntry {
       return false;
     }
 
-    InvoiceEntry that = (InvoiceEntry) obj;
+    InvoiceEntryHibernate that = (InvoiceEntryHibernate) obj;
 
     if (id != null ? !id.equals(that.id) : that.id != null) {
       return false;

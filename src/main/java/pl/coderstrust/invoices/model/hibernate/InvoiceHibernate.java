@@ -3,6 +3,7 @@ package pl.coderstrust.invoices.model.hibernate;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,9 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import pl.coderstrust.invoices.model.Company;
 import pl.coderstrust.invoices.model.Invoice;
-import pl.coderstrust.invoices.model.InvoiceEntry;
 
 @Entity
 @Table(name = "invoices")
@@ -29,11 +28,11 @@ public class InvoiceHibernate {
   private LocalDate sellDate;
 
   @ManyToOne(cascade = CascadeType.ALL)
-  private Company seller;
+  private CompanyHibernate seller;
   @ManyToOne(cascade = CascadeType.ALL)
-  private Company buyer;
+  private CompanyHibernate buyer;
   @ManyToMany(cascade = CascadeType.ALL)
-  private List<InvoiceEntry> entries;
+  private List<InvoiceEntryHibernate> entries;
 
   @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
   public InvoiceHibernate(@JsonProperty("id") Long id,
@@ -41,9 +40,9 @@ public class InvoiceHibernate {
       @JsonProperty("issueDate") LocalDate issueDate,
       @JsonProperty("issuePlace") String issuePlace,
       @JsonProperty("sellDate") LocalDate sellDate,
-      @JsonProperty("seller") Company seller,
-      @JsonProperty("buyer") Company buyer,
-      @JsonProperty("entries") List<InvoiceEntry> entries) {
+      @JsonProperty("seller") CompanyHibernate seller,
+      @JsonProperty("buyer") CompanyHibernate buyer,
+      @JsonProperty("entries") List<InvoiceEntryHibernate> entries) {
     this.id = id;
     this.number = number;
     this.issueDate = issueDate;
@@ -63,9 +62,9 @@ public class InvoiceHibernate {
     this.issueDate = invoice.getIssueDate();
     this.issuePlace = invoice.getIssuePlace();
     this.sellDate = invoice.getSellDate();
-    this.seller = invoice.getSeller();
-    this.buyer = invoice.getBuyer();
-    this.entries = invoice.getEntries();
+    this.seller = new CompanyHibernate();
+    this.buyer = new CompanyHibernate();
+    this.entries = new ArrayList<>();
   }
 
   public Long getId() {
@@ -108,27 +107,27 @@ public class InvoiceHibernate {
     this.sellDate = sellDate;
   }
 
-  public Company getSeller() {
+  public CompanyHibernate getSeller() {
     return seller;
   }
 
-  public void setSeller(Company seller) {
+  public void setSeller(CompanyHibernate seller) {
     this.seller = seller;
   }
 
-  public Company getBuyer() {
+  public CompanyHibernate getBuyer() {
     return buyer;
   }
 
-  public void setBuyer(Company buyer) {
+  public void setBuyer(CompanyHibernate buyer) {
     this.buyer = buyer;
   }
 
-  public List<InvoiceEntry> getEntries() {
+  public List<InvoiceEntryHibernate> getEntries() {
     return entries;
   }
 
-  public void setEntries(List<InvoiceEntry> entries) {
+  public void setEntries(List<InvoiceEntryHibernate> entries) {
     this.entries = entries;
   }
 
