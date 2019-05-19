@@ -1,22 +1,49 @@
 package pl.coderstrust.invoices.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 
+@ApiModel(value = "Invoice entry", description = "Describes an invoice entry")
 public class InvoiceEntry {
 
+  @ApiModelProperty(value = "Entry ID", example = "1")
   private Long id;
+
+  @ApiModelProperty(value = "Product name", example = "MTB bike")
   private String productName;
+
+  @ApiModelProperty(value = "Amount", example = "2")
   private String amount;
+
+  @ApiModelProperty(value = "Price", example = "3499.99")
   private BigDecimal price;
+
+  @ApiModelProperty(value = "TAX", example = "VAT_23")
   private Vat vat;
 
-  public InvoiceEntry(Long id, String productName, String amount, BigDecimal price,
-      Vat vat) {
+  @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+  public InvoiceEntry(@JsonProperty("id") Long id,
+      @JsonProperty("productName") String productName,
+      @JsonProperty("amount") String amount,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("vat") Vat vat) {
     this.id = id;
     this.productName = productName;
     this.amount = amount;
     this.price = price;
     this.vat = vat;
+  }
+
+  public InvoiceEntry(InvoiceEntry invoiceEntry) {
+    this(invoiceEntry.getId(),
+        invoiceEntry.getProductName(),
+        invoiceEntry.getAmount(),
+        invoiceEntry.getPrice(),
+        invoiceEntry.getVat());
   }
 
   public Long getId() {

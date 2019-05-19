@@ -1,20 +1,47 @@
 package pl.coderstrust.invoices.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "Company", description = "Describes a company")
 public class Company {
 
+  @ApiModelProperty(value = "Company name", example = "CodersTrust")
   private final String name;
+
+  @ApiModelProperty(value = "Tax ID Number", example = "555-444-12-32")
   private final String taxIdentificationNumber;
+
+  @ApiModelProperty(value = "Street", example = "Niepodległosci 23")
   private final String street;
+
+  @ApiModelProperty(value = "Postal code", example = "45-789")
   private final String postalCode;
+
+  @ApiModelProperty(value = "City", example = "Kraków")
   private final String town;
 
-  private Company(String name, String taxIdentificationNumber, String street,
-      String postalCode, String town) {
+  @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+  private Company(@JsonProperty("name") String name,
+      @JsonProperty("taxIdentificationNumber") String taxIdentificationNumber,
+      @JsonProperty("street") String street,
+      @JsonProperty("postalCode") String postalCode,
+      @JsonProperty("town") String town) {
     this.name = name;
     this.taxIdentificationNumber = taxIdentificationNumber;
     this.street = street;
     this.postalCode = postalCode;
     this.town = town;
+  }
+
+  public Company(Company company) {
+    this(company.getName(),
+        company.getTaxIdentificationNumber(),
+        company.getStreet(),
+        company.postalCode,
+        company.getTown());
   }
 
   public static class CompanyBuilder {

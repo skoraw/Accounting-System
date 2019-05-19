@@ -2,18 +2,36 @@ package pl.coderstrust.invoices.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import java.util.List;
 
+@ApiModel(value = "Invoice", description = "Describes an invoice")
 public class Invoice {
 
+  @ApiModelProperty(value = "Invoice ID", dataType = "java.lang.Long", example="3")
   private Object id;
+
+  @ApiModelProperty(value = "Tax identification number", example = "1/5/2019")
   private String number;
+
+  @ApiModelProperty(value = "Issue date", example = "2019-12-05")
   private LocalDate issueDate;
+
+  @ApiModelProperty(value = "Issue place", example = "Kraków")
   private String issuePlace;
+
+  @ApiModelProperty(value = "Sell date", example = "2019-12-05")
   private LocalDate sellDate;
+
+  @ApiModelProperty(value = "Seller", example = "John Industries")
   private Company seller;
+
+  @ApiModelProperty(value = "Buyer", example = "Januszex Z O. O.")
   private Company buyer;
+
+  @ApiModelProperty(value = "List of entries")
   private List<InvoiceEntry> entries;
 
   @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

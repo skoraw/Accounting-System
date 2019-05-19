@@ -72,7 +72,7 @@ public class InvoiceControllerTest {
 
   @Test
   public void shouldReturnEmptyArray() throws Exception {
-    mvc.perform(get("/invoice"))
+    mvc.perform(get("/invoices"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(0)));
   }
@@ -81,7 +81,7 @@ public class InvoiceControllerTest {
   public void shouldReturnArrayOfInvoicesWithTwoInvoices() throws Exception {
     when(invoiceBook.getAllInvoices()).thenReturn(Arrays.asList(invoice, invoice2nd));
 
-    mvc.perform(get("/invoice"))
+    mvc.perform(get("/invoices"))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
@@ -128,7 +128,7 @@ public class InvoiceControllerTest {
     when(invoiceBook.getInvoicesBetweenDates(LocalDate.of(2011, 5, 21), LocalDate.of(2019, 9, 21)))
         .thenReturn(Arrays.asList(invoice, invoice2nd));
 
-    mvc.perform(get("/invoice/byDates")
+    mvc.perform(get("/invoices")
         .param("fromDate", "2015-05-21")
         .param("toDate", "2019-05-21"))
         .andDo(print())
