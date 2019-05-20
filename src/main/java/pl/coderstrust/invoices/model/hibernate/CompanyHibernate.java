@@ -4,12 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import pl.coderstrust.invoices.model.Company;
 
 @Entity
 public class CompanyHibernate {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
   private String taxIdentificationNumber;
@@ -30,14 +31,14 @@ public class CompanyHibernate {
   public CompanyHibernate() {
   }
 
-//  public CompanyHibernate(Company company) {
-//    this.id = (Long) company.getId();
-//    this.name = company.getName();
-//    this.taxIdentificationNumber = company.getTaxIdentificationNumber();
-//    this.street = company.getStreet();
-//    this.postalCode = company.getPostalCode();
-//    this.town = company.getTown();
-//  }
+  public CompanyHibernate(Company company) {
+    this.id = (Long) company.getId();
+    this.name = company.getName();
+    this.taxIdentificationNumber = company.getTaxIdentificationNumber();
+    this.street = company.getStreet();
+    this.postalCode = company.getPostalCode();
+    this.town = company.getTown();
+  }
 
   @Override
   public boolean equals(Object o) {

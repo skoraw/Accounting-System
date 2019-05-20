@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.coderstrust.invoices.database.InvoiceBookException;
+import pl.coderstrust.invoices.model.Company;
 import pl.coderstrust.invoices.model.Invoice;
 import pl.coderstrust.invoices.service.InvoiceBook;
 
@@ -26,34 +27,50 @@ class HibernateDatabaseTest {
   @Autowired
   private InvoiceBook invoiceBook;
 
+  private Company buyer = Company.builder()
+      .id(1L)
+      .town(null)
+      .postalCode(null)
+      .street(null)
+      .taxIdentificationNumber(null)
+      .name(null)
+      .build();
+  private Company seller = Company.builder()
+      .id(2L)
+      .town(null)
+      .postalCode(null)
+      .street(null)
+      .taxIdentificationNumber(null)
+      .name(null)
+      .build();
   private Invoice invoice = Invoice.builder()
       .id(1L)
       .number("2019/1")
-      .buyer(null)
+      .buyer(buyer)
       .issueDate(LocalDate.of(2019, 5, 11))
       .issuePlace("SomePlace")
       .sellDate(LocalDate.of(2019, 5, 11))
-      .seller(null)
+      .seller(seller)
       .entries(Collections.emptyList())
       .build();
   private Invoice invoice2nd = Invoice.builder()
       .id(2L)
       .number("2019/2")
-      .buyer(null)
+      .buyer(buyer)
       .issueDate(LocalDate.of(2019, 5, 12))
       .issuePlace("SomePlace")
       .sellDate(LocalDate.of(2019, 5, 12))
-      .seller(null)
+      .seller(seller)
       .entries(Collections.emptyList())
       .build();
   private Invoice invoice3rd = Invoice.builder()
       .id(3L)
       .number("2019/3")
-      .buyer(null)
+      .buyer(buyer)
       .issueDate(LocalDate.of(2019, 5, 13))
       .issuePlace("SomePlace")
       .sellDate(LocalDate.of(2019, 5, 13))
-      .seller(null)
+      .seller(seller)
       .entries(Collections.emptyList())
       .build();
 
@@ -63,17 +80,17 @@ class HibernateDatabaseTest {
     Invoice expected = Invoice.builder()
         .id(1L)
         .number("2019/1")
-        .buyer(null)
+        .buyer(buyer)
         .issueDate(LocalDate.of(2019, 5, 11))
         .issuePlace("SomePlace")
         .sellDate(LocalDate.of(2019, 5, 11))
-        .seller(null)
+        .seller(seller)
         .entries(Collections.emptyList())
         .build();
 
     //when
     Invoice actual = invoiceBook.saveInvoice(invoice);
-    System.out.println("Expected" + expected + "Actual" + actual);
+
     //then
     assertEquals(expected, actual);
   }
@@ -81,29 +98,19 @@ class HibernateDatabaseTest {
   @Test
   void shouldSaveInvoiceWhenIdIsNull() throws InvoiceBookException {
     //given
-    Invoice given = Invoice.builder()
-        .id(null)
-        .number("2019/1")
-        .buyer(null)
-        .issueDate(LocalDate.of(2019, 5, 11))
-        .issuePlace("SomePlace")
-        .sellDate(LocalDate.of(2019, 5, 11))
-        .seller(null)
-        .entries(Collections.emptyList())
-        .build();
     Invoice expected = Invoice.builder()
         .id(1L)
         .number("2019/1")
-        .buyer(null)
+        .buyer(buyer)
         .issueDate(LocalDate.of(2019, 5, 11))
         .issuePlace("SomePlace")
         .sellDate(LocalDate.of(2019, 5, 11))
-        .seller(null)
+        .seller(seller)
         .entries(Collections.emptyList())
         .build();
 
     //when
-    Invoice actual = invoiceBook.saveInvoice(given);
+    Invoice actual = invoiceBook.saveInvoice(invoice);
 
     //then
     assertEquals(expected, actual);
@@ -230,11 +237,11 @@ class HibernateDatabaseTest {
     Invoice expected = Invoice.builder()
         .id(1L)
         .number("2019/1")
-        .buyer(null)
+        .buyer(buyer)
         .issueDate(LocalDate.of(2019, 5, 15))
         .issuePlace("SomePlace")
         .sellDate(LocalDate.of(2019, 5, 15))
-        .seller(null)
+        .seller(seller)
         .entries(Collections.emptyList())
         .build();
 

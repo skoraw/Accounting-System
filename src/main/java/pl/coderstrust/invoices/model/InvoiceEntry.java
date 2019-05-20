@@ -10,6 +10,9 @@ public class InvoiceEntry {
   private BigDecimal price;
   private Vat vat;
 
+  public InvoiceEntry() {
+  }
+
   public InvoiceEntry(Object id, String productName, String amount, BigDecimal price,
       Vat vat) {
     this.id = id;

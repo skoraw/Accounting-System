@@ -3,11 +3,14 @@ package pl.coderstrust.invoices.model;
 public class Company {
 
   private Object id;
-  private final String name;
-  private final String taxIdentificationNumber;
-  private final String street;
-  private final String postalCode;
-  private final String town;
+  private String name;
+  private String taxIdentificationNumber;
+  private String street;
+  private String postalCode;
+  private String town;
+
+  public Company() {
+  }
 
   private Company(Object id, String name, String taxIdentificationNumber, String street,
       String postalCode, String town) {

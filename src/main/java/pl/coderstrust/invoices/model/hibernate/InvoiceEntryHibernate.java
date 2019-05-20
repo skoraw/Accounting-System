@@ -5,26 +5,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import pl.coderstrust.invoices.model.InvoiceEntry;
 import pl.coderstrust.invoices.model.Vat;
 
 @Entity
 public class InvoiceEntryHibernate {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String productName;
   private String amount;
   private BigDecimal price;
   private Vat vat;
 
-  public InvoiceEntryHibernate(Long id, String productName, String amount, BigDecimal price,
-      Vat vat) {
-    this.id = id;
-    this.productName = productName;
-    this.amount = amount;
-    this.price = price;
-    this.vat = vat;
+  public InvoiceEntryHibernate() {
+  }
+
+  public InvoiceEntryHibernate(InvoiceEntry invoiceEntry) {
+    this.id = (Long) invoiceEntry.getId();
+    this.productName = invoiceEntry.getProductName();
+    this.amount = invoiceEntry.getAmount();
+    this.price = invoiceEntry.getPrice();
+    this.vat = invoiceEntry.getVat();
   }
 
   public Long getId() {

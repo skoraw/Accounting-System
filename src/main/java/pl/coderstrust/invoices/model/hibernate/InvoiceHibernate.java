@@ -3,8 +3,8 @@ package pl.coderstrust.invoices.model.hibernate;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +20,7 @@ import pl.coderstrust.invoices.model.Invoice;
 public class InvoiceHibernate {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String number;
   private LocalDate issueDate;
@@ -62,9 +62,12 @@ public class InvoiceHibernate {
     this.issueDate = invoice.getIssueDate();
     this.issuePlace = invoice.getIssuePlace();
     this.sellDate = invoice.getSellDate();
-    this.seller = new CompanyHibernate();
-    this.buyer = new CompanyHibernate();
-    this.entries = new ArrayList<>();
+    this.seller = new CompanyHibernate(invoice.getSeller());
+    this.buyer = new CompanyHibernate(invoice.getBuyer());
+    this.entries = invoice.getEntries()
+        .stream()
+        .map(InvoiceEntryHibernate::new)
+        .collect(Collectors.toList());
   }
 
   public Long getId() {
