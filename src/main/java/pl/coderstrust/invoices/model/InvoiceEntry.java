@@ -11,7 +11,7 @@ public class InvoiceEntry {
 
   @ApiModelProperty(value = "Invoice Entry ID", dataType = "java.lang.Long", example = "3")
   private Object id;
-  
+
   @ApiModelProperty(value = "Product name", example = "MTB bike")
   private String productName;
 

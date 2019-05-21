@@ -30,7 +30,7 @@ public class Company {
   }
 
   @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-  private Company(@JsonProperty Object id,
+  private Company(@JsonProperty("id") Object id,
       @JsonProperty("name") String name,
       @JsonProperty("taxIdentificationNumber") String taxIdentificationNumber,
       @JsonProperty("street") String street,
@@ -53,15 +53,15 @@ public class Company {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
 
-    Company company = (Company) o;
+    Company company = (Company) obj;
 
     if (id != null ? !id.equals(company.id) : company.id != null) {
       return false;

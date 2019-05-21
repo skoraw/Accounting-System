@@ -12,20 +12,20 @@ import pl.coderstrust.invoices.model.InvoiceEntry;
 @Component
 public class ConverterHibernate {
 
-  public Invoice getInvoiceObject(InvoiceHibernate invoiceHibernate) {
+  public Invoice getInvoice(InvoiceHibernate invoiceHibernate) {
     return new InvoiceBuilder()
         .id(invoiceHibernate.getId())
         .number(invoiceHibernate.getNumber())
         .issueDate(invoiceHibernate.getIssueDate())
         .issuePlace(invoiceHibernate.getIssuePlace())
         .sellDate(invoiceHibernate.getSellDate())
-        .seller(getCompanyObject(invoiceHibernate.getSeller()))
-        .buyer(getCompanyObject(invoiceHibernate.getBuyer()))
+        .seller(getCompany(invoiceHibernate.getSeller()))
+        .buyer(getCompany(invoiceHibernate.getBuyer()))
         .entries(getInvoiceEntryList(invoiceHibernate.getEntries()))
         .build();
   }
 
-  private Company getCompanyObject(CompanyHibernate companyHibernate) {
+  private Company getCompany(CompanyHibernate companyHibernate) {
     return new CompanyBuilder()
         .id(companyHibernate.getId())
         .name(companyHibernate.getName())
