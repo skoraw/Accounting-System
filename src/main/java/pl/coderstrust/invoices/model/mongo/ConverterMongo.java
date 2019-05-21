@@ -6,6 +6,7 @@ import pl.coderstrust.invoices.model.Invoice.InvoiceBuilder;
 
 @Component
 public class ConverterMongo {
+
   public Invoice getInvoice(InvoiceMongo invoiceMongo) {
     return new InvoiceBuilder()
         .id(invoiceMongo.getId())
