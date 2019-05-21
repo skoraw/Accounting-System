@@ -2,7 +2,6 @@ package pl.coderstrust.invoices.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
@@ -10,6 +9,7 @@ import java.math.BigDecimal;
 @ApiModel(value = "Invoice entry", description = "Describes an invoice entry")
 public class InvoiceEntry {
 
+  @ApiModelProperty(value = "Invoice Entry ID", dataType = "java.lang.Long", example = "3")
   private Object id;
   
   @ApiModelProperty(value = "Product name", example = "MTB bike")
@@ -27,8 +27,12 @@ public class InvoiceEntry {
   public InvoiceEntry() {
   }
 
-  public InvoiceEntry(Object id, String productName, String amount, BigDecimal price,
-      Vat vat) {
+  @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+  public InvoiceEntry(@JsonProperty("id") Object id,
+      @JsonProperty("productName") String productName,
+      @JsonProperty("amount") String amount,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("vat") Vat vat) {
     this.id = id;
     this.productName = productName;
     this.amount = amount;

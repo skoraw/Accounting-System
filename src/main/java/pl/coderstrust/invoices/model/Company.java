@@ -8,28 +8,34 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Company", description = "Describes a company")
 public class Company {
 
+  @ApiModelProperty(value = "Company ID", dataType = "java.lang.Long", example = "3")
   private Object id;
   
   @ApiModelProperty(value = "Company name", example = "CodersTrust")
-  private final String name;
+  private String name;
 
   @ApiModelProperty(value = "Tax ID Number", example = "555-444-12-32")
-  private final String taxIdentificationNumber;
+  private String taxIdentificationNumber;
 
   @ApiModelProperty(value = "Street", example = "Niepodległosci 23")
-  private final String street;
+  private String street;
 
   @ApiModelProperty(value = "Postal code", example = "45-789")
-  private final String postalCode;
+  private String postalCode;
 
   @ApiModelProperty(value = "City", example = "Kraków")
-  private final String town;
+  private String town;
   
   public Company() {
   }
 
-  private Company(Object id, String name, String taxIdentificationNumber, String street,
-      String postalCode, String town) {
+  @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+  private Company(@JsonProperty Object id,
+      @JsonProperty("name") String name,
+      @JsonProperty("taxIdentificationNumber") String taxIdentificationNumber,
+      @JsonProperty("street") String street,
+      @JsonProperty("postalCode") String postalCode,
+      @JsonProperty("town") String town) {
     this.id = id;
     this.name = name;
     this.taxIdentificationNumber = taxIdentificationNumber;
