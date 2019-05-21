@@ -75,6 +75,8 @@
           <excludes>
             <exclude>pl/coderstrust/Application.class</exclude>
             <exclude>pl/coderstrust/invoices/model/*.class</exclude>
+            <exclude>pl/coderstrust/invoices/model/hibernate/*.class</exclude>
+            <exclude>pl/coderstrust/invoices/database/*.class</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -163,6 +165,14 @@
       <artifactId>mockito-junit-jupiter</artifactId>
       <version>2.23.4</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>h2</artifactId>
+      <groupId>com.h2database</groupId>
     </dependency>
   </dependencies>
 

@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,10 +34,13 @@ class InFileDatabaseTest {
 
   @BeforeEach
   void setupBeforeEach() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    mapper.registerModule(new JSR310Module());
     inFileDatabase = new InFileDatabase(
         fileHelper,
         idGenerator,
-        new InvoiceConverter(new ObjectMapper()));
+        new InvoiceConverter(mapper));
   }
 
   @Test
@@ -84,15 +89,6 @@ class InFileDatabaseTest {
   @Test
   void shouldThrowExceptionWhenTrySaveNullInvoice() {
     assertThrows(IllegalArgumentException.class, () -> inFileDatabase.saveInvoice(null));
-  }
-
-  @Test
-  void shouldThrowExceptionWhenTrySaveInvoiceWithIncorrectIdType() {
-    Invoice given = new InvoiceBuilder().id("incorrect id").number("1")
-        .issueDate(LocalDate.of(2019, 4, 15))
-        .issuePlace(null).sellDate(LocalDate.of(2019, 4, 15)).seller(null).buyer(null).entries(null)
-        .build();
-    assertThrows(IllegalArgumentException.class, () -> inFileDatabase.saveInvoice(given));
   }
 
   @Test

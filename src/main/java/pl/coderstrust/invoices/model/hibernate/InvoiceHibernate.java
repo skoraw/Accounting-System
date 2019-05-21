@@ -1,48 +1,48 @@
-package pl.coderstrust.invoices.model;
+package pl.coderstrust.invoices.model.hibernate;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import pl.coderstrust.invoices.model.Invoice;
 
-@ApiModel(value = "Invoice", description = "Describes an invoice")
-public class Invoice {
+@Entity
+@Table(name = "invoices")
+public class InvoiceHibernate {
 
-  @ApiModelProperty(value = "Invoice ID", dataType = "java.lang.Long", example="3")
-  private Object id;
-
-  @ApiModelProperty(value = "Tax identification number", example = "1/5/2019")
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   private String number;
-
-  @ApiModelProperty(value = "Issue date", example = "2019-12-05")
   private LocalDate issueDate;
-
-  @ApiModelProperty(value = "Issue place", example = "Kraków")
   private String issuePlace;
-
-  @ApiModelProperty(value = "Sell date", example = "2019-12-05")
   private LocalDate sellDate;
 
-  @ApiModelProperty(value = "Seller", example = "John Industries")
-  private Company seller;
-
-  @ApiModelProperty(value = "Buyer", example = "Januszex Z O. O.")
-  private Company buyer;
-
-  @ApiModelProperty(value = "List of entries")
-  private List<InvoiceEntry> entries;
+  @ManyToOne(cascade = CascadeType.ALL)
+  private CompanyHibernate seller;
+  @ManyToOne(cascade = CascadeType.ALL)
+  private CompanyHibernate buyer;
+  @ManyToMany(cascade = CascadeType.ALL)
+  private List<InvoiceEntryHibernate> entries;
 
   @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-  public Invoice(@JsonProperty("id") Object id,
+  public InvoiceHibernate(@JsonProperty("id") Long id,
       @JsonProperty("number") String number,
       @JsonProperty("issueDate") LocalDate issueDate,
       @JsonProperty("issuePlace") String issuePlace,
       @JsonProperty("sellDate") LocalDate sellDate,
-      @JsonProperty("seller") Company seller,
-      @JsonProperty("buyer") Company buyer,
-      @JsonProperty("entries") List<InvoiceEntry> entries) {
+      @JsonProperty("seller") CompanyHibernate seller,
+      @JsonProperty("buyer") CompanyHibernate buyer,
+      @JsonProperty("entries") List<InvoiceEntryHibernate> entries) {
     this.id = id;
     this.number = number;
     this.issueDate = issueDate;
@@ -53,80 +53,28 @@ public class Invoice {
     this.entries = entries;
   }
 
-  public Invoice() {
+  public InvoiceHibernate() {
   }
 
-  public Invoice(Invoice invoice) {
-    this(invoice.getId(), invoice.getNumber(), invoice.getIssueDate(),
-        invoice.getIssuePlace(), invoice.getSellDate(), invoice.getSeller(),
-        invoice.getBuyer(), invoice.getEntries());
+  public InvoiceHibernate(Invoice invoice) {
+    this.id = (Long) invoice.getId();
+    this.number = invoice.getNumber();
+    this.issueDate = invoice.getIssueDate();
+    this.issuePlace = invoice.getIssuePlace();
+    this.sellDate = invoice.getSellDate();
+    this.seller = new CompanyHibernate(invoice.getSeller());
+    this.buyer = new CompanyHibernate(invoice.getBuyer());
+    this.entries = invoice.getEntries()
+        .stream()
+        .map(InvoiceEntryHibernate::new)
+        .collect(Collectors.toList());
   }
 
-  public static class InvoiceBuilder {
-
-    private Object id;
-    private String number;
-    private LocalDate issueDate;
-    private String issuePlace;
-    private LocalDate sellDate;
-    private Company seller;
-    private Company buyer;
-    private List<InvoiceEntry> entries;
-
-    public InvoiceBuilder id(Object id) {
-      this.id = id;
-      return this;
-    }
-
-    public InvoiceBuilder number(String number) {
-      this.number = number;
-      return this;
-    }
-
-    public InvoiceBuilder issueDate(LocalDate issueDate) {
-      this.issueDate = issueDate;
-      return this;
-    }
-
-    public InvoiceBuilder issuePlace(String issuePlace) {
-      this.issuePlace = issuePlace;
-      return this;
-    }
-
-    public InvoiceBuilder sellDate(LocalDate sellDate) {
-      this.sellDate = sellDate;
-      return this;
-    }
-
-    public InvoiceBuilder seller(Company seller) {
-      this.seller = seller;
-      return this;
-    }
-
-    public InvoiceBuilder buyer(Company buyer) {
-      this.buyer = buyer;
-      return this;
-    }
-
-    public InvoiceBuilder entries(List<InvoiceEntry> entries) {
-      this.entries = entries;
-      return this;
-    }
-
-    public Invoice build() {
-      return new Invoice(id, number, issueDate, issuePlace, sellDate, seller, buyer, entries);
-    }
-  }
-
-  public static InvoiceBuilder builder() {
-    return new InvoiceBuilder();
-  }
-
-  public Object getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Object id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -162,27 +110,27 @@ public class Invoice {
     this.sellDate = sellDate;
   }
 
-  public Company getSeller() {
+  public CompanyHibernate getSeller() {
     return seller;
   }
 
-  public void setSeller(Company seller) {
+  public void setSeller(CompanyHibernate seller) {
     this.seller = seller;
   }
 
-  public Company getBuyer() {
+  public CompanyHibernate getBuyer() {
     return buyer;
   }
 
-  public void setBuyer(Company buyer) {
+  public void setBuyer(CompanyHibernate buyer) {
     this.buyer = buyer;
   }
 
-  public List<InvoiceEntry> getEntries() {
+  public List<InvoiceEntryHibernate> getEntries() {
     return entries;
   }
 
-  public void setEntries(List<InvoiceEntry> entries) {
+  public void setEntries(List<InvoiceEntryHibernate> entries) {
     this.entries = entries;
   }
 
@@ -195,7 +143,7 @@ public class Invoice {
       return false;
     }
 
-    Invoice invoice = (Invoice) obj;
+    InvoiceHibernate invoice = (InvoiceHibernate) obj;
 
     if (id != null ? !id.equals(invoice.id) : invoice.id != null) {
       return false;

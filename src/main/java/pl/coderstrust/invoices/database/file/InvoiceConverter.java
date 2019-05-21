@@ -1,23 +1,21 @@
 package pl.coderstrust.invoices.database.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 import pl.coderstrust.invoices.model.Invoice;
 
+@Component
 class InvoiceConverter {
 
   private ObjectMapper objectMapper;
 
   InvoiceConverter(ObjectMapper objectMapper) {
     this.objectMapper = objectMapper;
-    this.objectMapper.registerModule(new JSR310Module());
-    this.objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
   }
 
   String objectToString(Invoice invoice) throws IOException {
