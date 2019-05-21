@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import pl.coderstrust.invoices.model.mongo.InvoiceMongo;
 
-public interface InvocieRepositoryMongo extends MongoRepository<InvoiceMongo, String> {
+public interface InvoiceRepositoryMongo extends MongoRepository<InvoiceMongo, String> {
 
   List<InvoiceMongo> findByIssueDateBetween(LocalDate fromDate, LocalDate toDate);
-
-
 }

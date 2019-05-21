@@ -18,13 +18,13 @@ import pl.coderstrust.invoices.model.mongo.InvoiceMongo;
 @ConditionalOnProperty(name = "database.type", havingValue = "mongo", matchIfMissing = true)
 public class MongoDatabase implements Database {
 
-  private InvocieRepositoryMongo invocieRepositoryMongo;
+  private InvoiceRepositoryMongo invoiceRepositoryMongo;
   private ConverterMongo converterMongo;
 
   public MongoDatabase(
-      InvocieRepositoryMongo invocieRepositoryMongo,
+      InvoiceRepositoryMongo invoiceRepositoryMongo,
       ConverterMongo converterMongo) {
-    this.invocieRepositoryMongo = invocieRepositoryMongo;
+    this.invoiceRepositoryMongo = invoiceRepositoryMongo;
     this.converterMongo = converterMongo;
   }
 
@@ -34,13 +34,13 @@ public class MongoDatabase implements Database {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
     InvoiceMongo invoiceMongo = new InvoiceMongo(invoice);
-    InvoiceMongo savedInvoice = invocieRepositoryMongo.save(invoiceMongo);
+    InvoiceMongo savedInvoice = invoiceRepositoryMongo.save(invoiceMongo);
     return converterMongo.getInvoice(savedInvoice);
   }
 
   @Override
   public Collection<Invoice> getAllInvoices() throws DatabaseOperationException {
-    Iterable<InvoiceMongo> invoicesMongo = invocieRepositoryMongo.findAll();
+    Iterable<InvoiceMongo> invoicesMongo = invoiceRepositoryMongo.findAll();
     return StreamSupport.stream(invoicesMongo.spliterator(), false)
         .map(converterMongo::getInvoice)
         .collect(Collectors.toList());
@@ -54,14 +54,14 @@ public class MongoDatabase implements Database {
     if (!(id instanceof String)) {
       throw new IllegalArgumentException("Id must be String type");
     }
-    InvoiceMongo invoiceMongo = invocieRepositoryMongo.findById((String) id).get();
+    InvoiceMongo invoiceMongo = invoiceRepositoryMongo.findById((String) id).get();
     return converterMongo.getInvoice(invoiceMongo);
   }
 
   @Override
   public Collection<Invoice> getInvoicesBetweenDates(LocalDate fromDate, LocalDate toDate)
       throws DatabaseOperationException {
-    Collection<InvoiceMongo> invoiceMongoList = invocieRepositoryMongo
+    Collection<InvoiceMongo> invoiceMongoList = invoiceRepositoryMongo
         .findByIssueDateBetween(fromDate, toDate);
     return invoiceMongoList.stream().map(converterMongo::getInvoice)
         .collect(Collectors.toList());
@@ -79,7 +79,7 @@ public class MongoDatabase implements Database {
     if (tempInvoice == null) {
       throw new DatabaseOperationException("Invoice cannot be null");
     }
-    invocieRepositoryMongo.deleteById((String) id);
+    invoiceRepositoryMongo.deleteById((String) id);
     return tempInvoice;
   }
 }
