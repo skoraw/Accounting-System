@@ -1,14 +1,30 @@
 package pl.coderstrust.invoices.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "Company", description = "Describes a company")
 public class Company {
 
   private Object id;
-  private String name;
-  private String taxIdentificationNumber;
-  private String street;
-  private String postalCode;
-  private String town;
+  
+  @ApiModelProperty(value = "Company name", example = "CodersTrust")
+  private final String name;
 
+  @ApiModelProperty(value = "Tax ID Number", example = "555-444-12-32")
+  private final String taxIdentificationNumber;
+
+  @ApiModelProperty(value = "Street", example = "Niepodległosci 23")
+  private final String street;
+
+  @ApiModelProperty(value = "Postal code", example = "45-789")
+  private final String postalCode;
+
+  @ApiModelProperty(value = "City", example = "Kraków")
+  private final String town;
+  
   public Company() {
   }
 

@@ -1,13 +1,27 @@
 package pl.coderstrust.invoices.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 
+@ApiModel(value = "Invoice entry", description = "Describes an invoice entry")
 public class InvoiceEntry {
 
   private Object id;
+  
+  @ApiModelProperty(value = "Product name", example = "MTB bike")
   private String productName;
+
+  @ApiModelProperty(value = "Amount", example = "2")
   private String amount;
+
+  @ApiModelProperty(value = "Price", example = "3499.99")
   private BigDecimal price;
+
+  @ApiModelProperty(value = "TAX", example = "VAT_23")
   private Vat vat;
 
   public InvoiceEntry() {
