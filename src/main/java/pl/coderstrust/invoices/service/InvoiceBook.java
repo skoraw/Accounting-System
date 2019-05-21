@@ -38,7 +38,7 @@ public class InvoiceBook {
     }
   }
 
-  public Invoice removeInvoice(Long id) throws InvoiceBookException {
+  public Invoice removeInvoice(Object id) throws InvoiceBookException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
@@ -49,7 +49,7 @@ public class InvoiceBook {
     }
   }
 
-  public Invoice getInvoice(Long id) throws InvoiceBookException {
+  public Invoice getInvoice(Object id) throws InvoiceBookException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
