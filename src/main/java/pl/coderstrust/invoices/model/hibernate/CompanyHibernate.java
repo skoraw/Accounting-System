@@ -40,37 +40,6 @@ public class CompanyHibernate {
     this.town = company.getTown();
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    CompanyHibernate company = (CompanyHibernate) o;
-
-    if (id != null ? !id.equals(company.id) : company.id != null) {
-      return false;
-    }
-
-    if (name != null ? !name.equals(company.name) : company.name != null) {
-      return false;
-    }
-    if (taxIdentificationNumber != null ? !taxIdentificationNumber
-        .equals(company.taxIdentificationNumber) : company.taxIdentificationNumber != null) {
-      return false;
-    }
-    if (street != null ? !street.equals(company.street) : company.street != null) {
-      return false;
-    }
-    if (postalCode != null ? !postalCode.equals(company.postalCode) : company.postalCode != null) {
-      return false;
-    }
-    return town != null ? town.equals(company.town) : company.town == null;
-  }
-
   public Long getId() {
     return id;
   }
@@ -93,6 +62,37 @@ public class CompanyHibernate {
 
   public String getTown() {
     return town;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+
+    CompanyHibernate company = (CompanyHibernate) obj;
+
+    if (id != null ? !id.equals(company.id) : company.id != null) {
+      return false;
+    }
+
+    if (name != null ? !name.equals(company.name) : company.name != null) {
+      return false;
+    }
+    if (taxIdentificationNumber != null ? !taxIdentificationNumber
+        .equals(company.taxIdentificationNumber) : company.taxIdentificationNumber != null) {
+      return false;
+    }
+    if (street != null ? !street.equals(company.street) : company.street != null) {
+      return false;
+    }
+    if (postalCode != null ? !postalCode.equals(company.postalCode) : company.postalCode != null) {
+      return false;
+    }
+    return town != null ? town.equals(company.town) : company.town == null;
   }
 
   @Override

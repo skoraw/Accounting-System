@@ -36,14 +36,14 @@ public class HibernateDatabase implements Database {
     }
     InvoiceHibernate invoiceHibernate = new InvoiceHibernate(invoice);
     InvoiceHibernate savedInvoice = invoiceRepository.save(invoiceHibernate);
-    return converterHibernate.getInvoiceObject(savedInvoice);
+    return converterHibernate.getInvoice(savedInvoice);
   }
 
   @Override
   public Collection<Invoice> getAllInvoices() throws DatabaseOperationException {
     Iterable<InvoiceHibernate> invoicesHibernate = invoiceRepository.findAll();
     return StreamSupport.stream(invoicesHibernate.spliterator(), false)
-        .map(converterHibernate::getInvoiceObject)
+        .map(converterHibernate::getInvoice)
         .collect(Collectors.toList());
   }
 
@@ -56,7 +56,7 @@ public class HibernateDatabase implements Database {
       throw new IllegalArgumentException("Id must be number Long type");
     }
     InvoiceHibernate invoiceHibernate = invoiceRepository.findById((Long) id).get();
-    return converterHibernate.getInvoiceObject(invoiceHibernate);
+    return converterHibernate.getInvoice(invoiceHibernate);
   }
 
   @Override
@@ -64,7 +64,7 @@ public class HibernateDatabase implements Database {
       throws DatabaseOperationException {
     Collection<InvoiceHibernate> invoiceHibernateList = invoiceRepository
         .findByIssueDateBetween(fromDate, toDate);
-    return invoiceHibernateList.stream().map(converterHibernate::getInvoiceObject)
+    return invoiceHibernateList.stream().map(converterHibernate::getInvoice)
         .collect(Collectors.toList());
   }
 

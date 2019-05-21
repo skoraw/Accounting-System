@@ -37,15 +37,21 @@ public class InvoiceController {
       return invoiceBook.getAllInvoices();
     }
 
-    LocalDate fromDateConverter = fromDate != null ? LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(fromDate)) : LocalDate.MIN;
-    LocalDate toDateConverter   = toDate   != null ? LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(toDate))   : LocalDate.MAX;
+    LocalDate fromDateConverter =
+        fromDate != null ? LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(fromDate))
+            : LocalDate.MIN;
+    LocalDate toDateConverter =
+        toDate != null ? LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(toDate))
+            : LocalDate.MAX;
 
     return invoiceBook.getInvoicesBetweenDates(fromDateConverter, toDateConverter);
   }
 
   @PutMapping("/invoice")
   @ApiOperation(value = "Insert or update an invoice")
-  public Invoice addInvoice(@ApiParam(value = "Invoice document", name = "Invoice") @RequestBody Invoice invoice) throws InvoiceBookException {
+  public Invoice addInvoice(
+      @ApiParam(value = "Invoice document", name = "Invoice") @RequestBody Invoice invoice)
+      throws InvoiceBookException {
     return invoiceBook.saveInvoice(invoice);
   }
 
