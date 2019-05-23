@@ -125,13 +125,11 @@
         <artifactId>jaxb2-maven-plugin</artifactId>
         <configuration>
           <clearOutputDir>false</clearOutputDir>
-          <outputDirectory>${project.basedir}/src/main/java/pl/coderstrust/model/soap/
-          </outputDirectory>
-          <packageName>pl.coderstrust</packageName>
           <sources>
             <source>src/main/resources/invoices.xsd</source>
             <source>src/main/resources/dummy.xsd</source>
           </sources>
+          <packageName>pl.coderstrust.invoices.model.soap</packageName>
         </configuration>
         <dependencies>
           <dependency>
