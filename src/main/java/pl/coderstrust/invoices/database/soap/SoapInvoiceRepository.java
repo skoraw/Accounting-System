@@ -7,9 +7,9 @@ import org.springframework.util.Assert;
 import pl.coderstrust.invoices.model.soap.Invoice;
 
 @Component
-public class InvoiceRepository {
+public class SoapInvoiceRepository {
 
-  private static final Map<String, Invoice> countries = new HashMap<>();
+  private static final Map<String, Invoice> invoices = new HashMap<>();
 
 //	@PostConstruct
 //	public void initData() {
@@ -40,6 +40,6 @@ public class InvoiceRepository {
 
   public Invoice findCountry(String name) {
     Assert.notNull(name, "The country's name must not be null");
-    return countries.get(name);
+    return invoices.get(name);
   }
 }

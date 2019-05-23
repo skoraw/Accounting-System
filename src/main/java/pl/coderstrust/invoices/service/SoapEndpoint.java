@@ -5,7 +5,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import pl.coderstrust.invoices.database.soap.InvoiceRepository;
+import pl.coderstrust.invoices.database.soap.SoapInvoiceRepository;
 import pl.coderstrust.invoices.model.soap.GetInvoiceRequest;
 import pl.coderstrust.invoices.model.soap.GetInvoiceResponse;
 
@@ -14,18 +14,18 @@ public class SoapEndpoint {
 
   private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
 
-  private InvoiceRepository invoiceRepository;
+  private SoapInvoiceRepository soapInvoiceRepository;
 
   @Autowired
-  public SoapEndpoint(InvoiceRepository invoiceRepository) {
-    this.invoiceRepository = invoiceRepository;
+  public SoapEndpoint(SoapInvoiceRepository soapInvoiceRepository) {
+    this.soapInvoiceRepository = soapInvoiceRepository;
   }
 
   @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getInvoiceRequest")
   @ResponsePayload
   public GetInvoiceResponse getCountry(@RequestPayload GetInvoiceRequest request) {
     GetInvoiceResponse response = new GetInvoiceResponse();
-    //response.setCountry(invoiceRepository.findCountry(request.getName()));
+    //response.setCountry(soapInvoiceRepository.findCountry(request.getName()));
 
     return response;
   }
