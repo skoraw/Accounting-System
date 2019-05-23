@@ -1,5 +1,6 @@
 package pl.coderstrust.invoices.model.soap.soapconverter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +87,7 @@ public class ConverterSoap {
       invoiceEntry.setAmount(soap.getAmount());
       invoiceEntry.setPrice(soap.getPrice());
       invoiceEntry.setVat(getVatInvoice(soap.getVat()));
+      invoiceEntry.setVat(getVatInvoice(soap.getVat()));
       invoiceEntryList.add(invoiceEntry);
     }
     return invoiceEntryList;
@@ -96,7 +98,17 @@ public class ConverterSoap {
   }
 
   private Vat getVatSoap(pl.coderstrust.invoices.model.Vat vat) {
-    return Vat.fromValue(vat.getValue().toString());
+    BigDecimal vatValue = vat.getValue();
+    if (vatValue.compareTo(BigDecimal.valueOf(0.23)) == 0) {
+      return Vat.getVat23();
+    } else if (vatValue.compareTo(BigDecimal.valueOf(0.08)) == 0) {
+      return Vat.getVat8();
+    } else if (vatValue.compareTo(BigDecimal.valueOf(0.05)) == 0) {
+      return Vat.getVat5();
+    } else if (vatValue.compareTo(BigDecimal.valueOf(0)) == 0) {
+      return Vat.getVat0();
+    }
+    return null;
   }
 
   private LocalDate convertStringToLocalDate(String date) {
