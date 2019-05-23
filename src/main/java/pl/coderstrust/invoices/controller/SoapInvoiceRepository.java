@@ -32,7 +32,8 @@ public class SoapInvoiceRepository {
   }
 
   Invoice removeInvoice(Object id) {
-    Invoice invoice = invoices.get((Integer) id);
+    Long idLong = (Long) id;
+    Invoice invoice = invoices.get(Math.toIntExact(idLong));
     invoices.remove(id);
     return invoice;
   }

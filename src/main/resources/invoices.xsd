@@ -2,22 +2,22 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   elementFormDefault="qualified" targetNamespace="http://spring.io/guides/gs-producing-web-service">
 
-  <xs:complexType name="invoice">
+  <xs:complexType name="InvoiceSoap">
     <xs:sequence>
       <xs:element name="id" type="xs:long"/>
       <xs:element name="number" type="xs:string"/>
       <xs:element name="issueDate" type="xs:string"/>
       <xs:element name="issuePlace" type="xs:string"/>
       <xs:element name="sellDate" type="xs:string"/>
-      <xs:element name="seller" type="tns:company"/>
-      <xs:element name="buyer" type="tns:company"/>
+      <xs:element name="seller" type="tns:CompanySoap"/>
+      <xs:element name="buyer" type="tns:CompanySoap"/>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" minOccurs="0" name="entries" type="tns:entry"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="entries" type="tns:EntrySoap"/>
       </xs:sequence>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="company">
+  <xs:complexType name="CompanySoap">
     <xs:sequence>
       <xs:element name="id" type="xs:long"/>
       <xs:element name="name" type="xs:string"/>
@@ -28,7 +28,7 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="entry">
+  <xs:complexType name="EntrySoap">
     <xs:sequence>
       <xs:element name="id" type="xs:long"/>
       <xs:element name="productName" type="xs:string"/>
@@ -46,9 +46,9 @@
         <xs:element name="issueDate" type="xs:string"/>
         <xs:element name="issuePlace" type="xs:string"/>
         <xs:element name="sellDate" type="xs:string"/>
-        <xs:element name="seller" type="tns:company"/>
-        <xs:element name="buyer" type="tns:company"/>
-        <xs:element name="entries" type="tns:entry"/>
+        <xs:element name="seller" type="tns:CompanySoap"/>
+        <xs:element name="buyer" type="tns:CompanySoap"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="entries" type="tns:EntrySoap"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -57,26 +57,35 @@
   <xs:element name="addInvoiceResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="invoice" type="tns:invoice"/>
+        <xs:element name="invoice" type="tns:InvoiceSoap"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
 
   <!-- add invoice response-->
-  <xs:element name="getAllInvoicesRequest">
-    <xs:complexType/>
-  </xs:element>
-
-  <!-- get all invoices request -->
   <xs:element name="getAllInvoicesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" minOccurs="0" name="invoices" type="tns:invoice"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="invoices" type="tns:InvoiceSoap"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
 
+  <!-- get all invoices request -->
+  <xs:element name="getAllInvoicesRequest">
+    <xs:complexType/>
+  </xs:element>
+
   <!-- get all invoices response -->
+  <xs:element name="getInvoiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="invoice" type="tns:InvoiceSoap"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- get single invoice request-->
   <xs:element name="getInvoiceRequest">
     <xs:complexType>
       <xs:sequence>
@@ -85,16 +94,16 @@
     </xs:complexType>
   </xs:element>
 
-  <!-- get single invoice request-->
-  <xs:element name="getInvoiceResponse">
+  <!-- get single invoice response -->
+  <xs:element name="getInvoicesBetweenDatesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="invoice" type="tns:invoice"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="invoices" type="tns:InvoiceSoap"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
 
-  <!-- get single invoice response -->
+  <!-- get invoices between dates request -->
   <xs:element name="getInvoicesBetweenDatesRequest">
     <xs:complexType>
       <xs:sequence>
@@ -104,29 +113,20 @@
     </xs:complexType>
   </xs:element>
 
-  <!-- get invoices between dates request -->
-  <xs:element name="getInvoicesBetweenDatesResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" minOccurs="0" name="invoices" type="tns:invoice"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-
   <!-- get invoices between dates response -->
-  <xs:element name="removeInvoiceRequest">
+  <xs:element name="removeInvoiceResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="id" type="xs:long"/>
+        <xs:element name="invoice" type="tns:InvoiceSoap"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
 
   <!-- remove invoice request-->
-  <xs:element name="removeInvoiceResponse">
+  <xs:element name="removeInvoiceRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="invoice" type="tns:invoice"/>
+        <xs:element name="id" type="xs:long"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -140,5 +140,4 @@
       <xs:enumeration value="VAT_0"/>
     </xs:restriction>
   </xs:simpleType>
-
 </xs:schema>
