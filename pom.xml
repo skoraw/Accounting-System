@@ -201,6 +201,12 @@
       <scope>runtime</scope>
       <version>1.2.1</version>
     </dependency>
+    <dependency>
+      <artifactId>spring-ws-test</artifactId>
+      <groupId>org.springframework.ws</groupId>
+      <scope>test</scope>
+      <version>2.4.0.RELEASE</version>
+    </dependency>
   </dependencies>
 
   <properties>
