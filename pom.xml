@@ -120,40 +120,6 @@
           </execution>
         </executions>
       </plugin>
-
-      <plugin>
-        <artifactId>jaxb2-maven-plugin</artifactId>
-        <configuration>
-          <clearOutputDir>false</clearOutputDir>
-          <sources>
-            <source>src/main/resources/invoices.xsd</source>
-            <source>src/main/resources/dummy.xsd</source>
-          </sources>
-          <packageName>pl.coderstrust.invoices.model.soap</packageName>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <artifactId>jaxb-xjc</artifactId>
-            <groupId>org.glassfish.jaxb</groupId>
-            <version>2.3.2</version>
-          </dependency>
-          <dependency>
-            <artifactId>jakarta.activation</artifactId>
-            <groupId>com.sun.activation</groupId>
-            <version>1.2.1</version>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <goals>
-              <goal>xjc</goal>
-            </goals>
-            <id>xjc</id>
-          </execution>
-        </executions>
-        <groupId>org.codehaus.mojo</groupId>
-        <version>2.4</version>
-      </plugin>
     </plugins>
   </build>
 
