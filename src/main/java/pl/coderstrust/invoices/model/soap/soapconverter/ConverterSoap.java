@@ -111,7 +111,7 @@ public class ConverterSoap {
     return null;
   }
 
-  private LocalDate convertStringToLocalDate(String date) {
+  public LocalDate convertStringToLocalDate(String date) {
     return LocalDate.parse(date);
   }
 

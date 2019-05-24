@@ -1,5 +1,9 @@
 package pl.coderstrust.invoices.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -9,8 +13,12 @@ import pl.coderstrust.invoices.database.InvoiceBookException;
 import pl.coderstrust.invoices.model.Invoice;
 import pl.coderstrust.invoices.model.soap.AddInvoiceRequest;
 import pl.coderstrust.invoices.model.soap.AddInvoiceResponse;
+import pl.coderstrust.invoices.model.soap.GetAllInvoicesRequest;
+import pl.coderstrust.invoices.model.soap.GetAllInvoicesResponse;
 import pl.coderstrust.invoices.model.soap.GetInvoiceRequest;
 import pl.coderstrust.invoices.model.soap.GetInvoiceResponse;
+import pl.coderstrust.invoices.model.soap.GetInvoicesBetweenDatesRequest;
+import pl.coderstrust.invoices.model.soap.GetInvoicesBetweenDatesResponse;
 import pl.coderstrust.invoices.model.soap.InvoiceSoap;
 import pl.coderstrust.invoices.model.soap.RemoveInvoiceRequest;
 import pl.coderstrust.invoices.model.soap.RemoveInvoiceResponse;
@@ -63,7 +71,6 @@ public class SoapEndpoint {
     return response;
   }
 
-
   @PayloadRoot(namespace = NAMESPACE_URI, localPart = "removeInvoiceRequest")
   @ResponsePayload
   public RemoveInvoiceResponse removeInvoice(@RequestPayload RemoveInvoiceRequest request)
@@ -73,6 +80,44 @@ public class SoapEndpoint {
     invoiceBook.removeInvoice(request.getId());
     InvoiceSoap invoiceSoap = converterSoap.getInvoiceSoap(invoice);
     response.setInvoice(invoiceSoap);
+    return response;
+  }
+
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllInvoicesRequest")
+  @ResponsePayload
+  public GetAllInvoicesResponse getAllInvoices(@RequestPayload GetAllInvoicesRequest request)
+      throws InvoiceBookException {
+    GetAllInvoicesResponse response = new GetAllInvoicesResponse();
+    List<InvoiceSoap> invoiceSoapList = new ArrayList<>();
+    List<Invoice> invoices = (List<Invoice>) invoiceBook.getAllInvoices();
+    invoiceSoapList = invoices.stream().map(invoice -> {
+      return converterSoap.getInvoiceSoap(invoice);
+    }).collect(Collectors.toList());
+    for (InvoiceSoap invoiceSoap : invoiceSoapList) {
+      response.getInvoices().add(invoiceSoap);
+    }
+    return response;
+  }
+
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getInvoicesBetweenDatesRequest")
+  @ResponsePayload
+  public GetInvoicesBetweenDatesResponse getInvoicesBetweenDates(
+      @RequestPayload GetInvoicesBetweenDatesRequest request)
+      throws InvoiceBookException {
+    GetInvoicesBetweenDatesResponse response = new GetInvoicesBetweenDatesResponse();
+    List<InvoiceSoap> invoiceSoapList = new ArrayList<>();
+    LocalDate ld1 = converterSoap.convertStringToLocalDate(request.getFromDate());
+    LocalDate ld2 = converterSoap.convertStringToLocalDate(request.getToDate());
+    System.out.println("Local Date 1 :" + ld1 + "Local Date 2 :" + ld2);
+    List<Invoice> invoices = (List<Invoice>) invoiceBook.getInvoicesBetweenDates(
+        ld1,
+        ld2);
+    invoiceSoapList = invoices.stream().map(invoice -> {
+      return converterSoap.getInvoiceSoap(invoice);
+    }).collect(Collectors.toList());
+    for (InvoiceSoap invoiceSoap : invoiceSoapList) {
+      response.getInvoices().add(invoiceSoap);
+    }
     return response;
   }
 }
