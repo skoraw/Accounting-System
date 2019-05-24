@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for vat.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
@@ -27,38 +27,37 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/restriction&gt;
  * &lt;/simpleType&gt;
  * </pre>
- * 
  */
 @XmlType(name = "vat")
 @XmlEnum
 public enum Vat {
 
-    VAT_23,
-    VAT_8,
-    VAT_5,
-    VAT_0;
+  VAT_23,
+  VAT_8,
+  VAT_5,
+  VAT_0;
 
-    public static Vat fromValue(String v) {
-        return valueOf(v);
-    }
+  public static Vat fromValue(String v) {
+    return valueOf(v);
+  }
 
-    public static Vat getVat23() {
-        return VAT_23;
-    }
+  public static Vat getVat23() {
+    return VAT_23;
+  }
 
-    public static Vat getVat8() {
-        return VAT_8;
-    }
+  public static Vat getVat8() {
+    return VAT_8;
+  }
 
-    public static Vat getVat5() {
-        return VAT_5;
-    }
+  public static Vat getVat5() {
+    return VAT_5;
+  }
 
-    public static Vat getVat0() {
-        return VAT_0;
-    }
+  public static Vat getVat0() {
+    return VAT_0;
+  }
 
-    public String value() {
-        return name();
-    }
+  public String value() {
+    return name();
+  }
 }

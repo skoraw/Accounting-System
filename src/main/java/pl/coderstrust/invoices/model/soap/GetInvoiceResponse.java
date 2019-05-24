@@ -17,9 +17,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType&gt;
  *   &lt;complexContent&gt;
@@ -31,8 +31,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -41,31 +39,25 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "getInvoiceResponse")
 public class GetInvoiceResponse {
 
-    @XmlElement(required = true)
-    protected InvoiceSoap invoice;
+  @XmlElement(required = true)
+  protected InvoiceSoap invoice;
 
-    /**
-     * Gets the value of the invoice property.
-     *
-     * @return
-     *     possible object is
-     *     {@link InvoiceSoap }
-     *     
-     */
-    public InvoiceSoap getInvoice() {
-        return invoice;
-    }
+  /**
+   * Gets the value of the invoice property.
+   *
+   * @return possible object is {@link InvoiceSoap }
+   */
+  public InvoiceSoap getInvoice() {
+    return invoice;
+  }
 
-    /**
-     * Sets the value of the invoice property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link InvoiceSoap }
-     *     
-     */
-    public void setInvoice(InvoiceSoap value) {
-        this.invoice = value;
-    }
+  /**
+   * Sets the value of the invoice property.
+   *
+   * @param value allowed object is {@link InvoiceSoap }
+   */
+  public void setInvoice(InvoiceSoap value) {
+    this.invoice = value;
+  }
 
 }

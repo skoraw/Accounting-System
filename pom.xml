@@ -77,6 +77,8 @@
             <exclude>pl/coderstrust/invoices/model/*.class</exclude>
             <exclude>pl/coderstrust/invoices/model/hibernate/*.class</exclude>
             <exclude>pl/coderstrust/invoices/database/*.class</exclude>
+            <exclude>pl/coderstrust/invoices/model/soap/*.class</exclude>
+            <exclude>pl/coderstrust/invoices/model/soap/soapconverter/*.class</exclude>
           </excludes>
         </configuration>
         <executions>
