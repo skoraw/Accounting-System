@@ -1,7 +1,5 @@
 package pl.coderstrust.invoices.controller;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,11 +86,9 @@ public class SoapEndpoint {
   public GetAllInvoicesResponse getAllInvoices(@RequestPayload GetAllInvoicesRequest request)
       throws InvoiceBookException {
     GetAllInvoicesResponse response = new GetAllInvoicesResponse();
-    List<InvoiceSoap> invoiceSoapList = new ArrayList<>();
     List<Invoice> invoices = (List<Invoice>) invoiceBook.getAllInvoices();
-    invoiceSoapList = invoices.stream().map(invoice -> {
-      return converterSoap.getInvoiceSoap(invoice);
-    }).collect(Collectors.toList());
+    List<InvoiceSoap> invoiceSoapList = invoices.stream()
+        .map(invoice -> converterSoap.getInvoiceSoap(invoice)).collect(Collectors.toList());
     for (InvoiceSoap invoiceSoap : invoiceSoapList) {
       response.getInvoices().add(invoiceSoap);
     }
@@ -105,16 +101,11 @@ public class SoapEndpoint {
       @RequestPayload GetInvoicesBetweenDatesRequest request)
       throws InvoiceBookException {
     GetInvoicesBetweenDatesResponse response = new GetInvoicesBetweenDatesResponse();
-    List<InvoiceSoap> invoiceSoapList = new ArrayList<>();
-    LocalDate ld1 = converterSoap.convertStringToLocalDate(request.getFromDate());
-    LocalDate ld2 = converterSoap.convertStringToLocalDate(request.getToDate());
-    System.out.println("Local Date 1 :" + ld1 + "Local Date 2 :" + ld2);
     List<Invoice> invoices = (List<Invoice>) invoiceBook.getInvoicesBetweenDates(
-        ld1,
-        ld2);
-    invoiceSoapList = invoices.stream().map(invoice -> {
-      return converterSoap.getInvoiceSoap(invoice);
-    }).collect(Collectors.toList());
+        converterSoap.convertStringToLocalDate(request.getFromDate()),
+        converterSoap.convertStringToLocalDate(request.getToDate()));
+    List<InvoiceSoap> invoiceSoapList = invoices.stream()
+        .map(invoice -> converterSoap.getInvoiceSoap(invoice)).collect(Collectors.toList());
     for (InvoiceSoap invoiceSoap : invoiceSoapList) {
       response.getInvoices().add(invoiceSoap);
     }
