@@ -1,6 +1,6 @@
-<xs:schema xmlns:tns="http://spring.io/guides/gs-producing-web-service"
+<xs:schema xmlns:tns="http://soap.invoice.pl"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  elementFormDefault="qualified" targetNamespace="http://spring.io/guides/gs-producing-web-service">
+  elementFormDefault="qualified" targetNamespace="http://soap.invoice.pl">
 
   <xs:complexType name="InvoiceSoap">
     <xs:sequence>

@@ -100,13 +100,13 @@ public class ConverterSoap {
   private Vat getVatSoap(pl.coderstrust.invoices.model.Vat vat) {
     BigDecimal vatValue = vat.getValue();
     if (vatValue.compareTo(BigDecimal.valueOf(0.23)) == 0) {
-      return Vat.getVat23();
+      return Vat.valueOf("VAT_23");
     } else if (vatValue.compareTo(BigDecimal.valueOf(0.08)) == 0) {
-      return Vat.getVat8();
+      return Vat.valueOf("VAT_8");
     } else if (vatValue.compareTo(BigDecimal.valueOf(0.05)) == 0) {
-      return Vat.getVat5();
+      return Vat.valueOf("VAT_5");
     } else if (vatValue.compareTo(BigDecimal.valueOf(0)) == 0) {
-      return Vat.getVat0();
+      return Vat.valueOf("VAT_0");
     }
     return null;
   }

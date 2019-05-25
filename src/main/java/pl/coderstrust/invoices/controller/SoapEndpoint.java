@@ -26,7 +26,7 @@ import pl.coderstrust.invoices.service.InvoiceBook;
 @Endpoint
 public class SoapEndpoint {
 
-  private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
+  private static final String NAMESPACE_URI = "http://soap.invoice.pl";
 
   private InvoiceBook invoiceBook;
   private ConverterSoap converterSoap;
