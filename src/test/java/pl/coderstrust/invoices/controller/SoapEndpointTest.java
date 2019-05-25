@@ -44,9 +44,31 @@ class SoapEndpointTest {
   void shouldAddInvoice() throws IOException {
 
     Resource requestPayload = applicationContext
-        .getResource("file:F:\\projects\\src\\test\\resources\\addInvoiceRequest.xml");
+        .getResource("classpath:SoapXMLRequests/addInvoiceRequest.xml");
     Resource responsePayload = applicationContext
-        .getResource("file:F:\\projects\\src\\test\\resources\\addInvoiceResponse.xml");
+        .getResource("classpath:SoapXMLResponses/addInvoiceResponse.xml");
+
+    mockClient
+        .sendRequest(withPayload(requestPayload))
+        .andExpect(noFault())
+        .andExpect(payload(responsePayload))
+        .andExpect(validPayload(xsdSchema));
+  }
+
+  @Test
+  void shouldGetInvoiceByGivenId() throws IOException {
+
+    Resource requestPayload = applicationContext
+        .getResource("classpath:SoapXMLRequests/addInvoiceRequest.xml");
+
+    mockClient
+        .sendRequest(withPayload(requestPayload))
+        .andExpect(noFault());
+
+    requestPayload = applicationContext
+        .getResource("classpath:SoapXMLRequests/getInvoiceByIdRequest.xml");
+    Resource responsePayload = applicationContext
+        .getResource("classpath:SoapXMLResponses/getInvoiceByIdResponse.xml");
 
     mockClient
         .sendRequest(withPayload(requestPayload))
