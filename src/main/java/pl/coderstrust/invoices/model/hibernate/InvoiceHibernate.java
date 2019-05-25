@@ -3,8 +3,8 @@ package pl.coderstrust.invoices.model.hibernate;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import pl.coderstrust.invoices.model.Company;
 import pl.coderstrust.invoices.model.Invoice;
+import pl.coderstrust.invoices.model.InvoiceEntry;
 
 @Entity
 @Table(name = "invoices")
@@ -62,12 +64,38 @@ public class InvoiceHibernate {
     this.issueDate = invoice.getIssueDate();
     this.issuePlace = invoice.getIssuePlace();
     this.sellDate = invoice.getSellDate();
-    this.seller = new CompanyHibernate(invoice.getSeller());
-    this.buyer = new CompanyHibernate(invoice.getBuyer());
-    this.entries = invoice.getEntries()
-        .stream()
-        .map(InvoiceEntryHibernate::new)
-        .collect(Collectors.toList());
+    this.seller = new CompanyHibernate(
+        Company.builder()
+            .id(null)
+            .name(invoice.getSeller().getName())
+            .postalCode(invoice.getSeller().getPostalCode())
+            .street(invoice.getSeller().getStreet())
+            .taxIdentificationNumber(invoice.getSeller().getTaxIdentificationNumber())
+            .town(invoice.getSeller().getTown())
+            .build());
+    this.buyer = new CompanyHibernate(Company.builder()
+        .id(null)
+        .name(invoice.getBuyer().getName())
+        .postalCode(invoice.getBuyer().getPostalCode())
+        .street(invoice.getBuyer().getStreet())
+        .taxIdentificationNumber(invoice.getBuyer().getTaxIdentificationNumber())
+        .town(invoice.getBuyer().getTown())
+        .build());
+//    this.entries = invoice.getEntries()
+//        .stream()
+//        .map(InvoiceEntryHibernate::new)
+//        .collect(Collectors.toList());
+    List<InvoiceEntryHibernate> invoiceEntryHibernateList = new ArrayList<>();
+    for (int i = 0; i < invoice.getEntries().size(); i++) {
+      InvoiceEntry invoiceEntry = new InvoiceEntry();
+      invoiceEntry.setId(null);
+      invoiceEntry.setProductName(invoice.getEntries().get(i).getProductName());
+      invoiceEntry.setAmount(invoice.getEntries().get(i).getAmount());
+      invoiceEntry.setPrice(invoice.getEntries().get(i).getPrice());
+      invoiceEntry.setVat(invoice.getEntries().get(i).getVat());
+      invoiceEntryHibernateList.add(new InvoiceEntryHibernate(invoiceEntry));
+    }
+    this.entries = invoiceEntryHibernateList;
   }
 
   public Long getId() {

@@ -53,7 +53,6 @@ public class SoapEndpoint {
       throws InvoiceBookException {
     AddInvoiceResponse response = new AddInvoiceResponse();
     InvoiceSoap invoiceSoap = new InvoiceSoap();
-    invoiceSoap.setId(request.getId());
     invoiceSoap.setNumber(request.getNumber());
     invoiceSoap.setIssueDate(request.getIssueDate());
     invoiceSoap.setIssuePlace(request.getIssuePlace());
@@ -64,9 +63,10 @@ public class SoapEndpoint {
       invoiceSoap.getEntries().add(request.getEntries().get(i));
     }
     Invoice invoice = converterSoap.getInvoice(invoiceSoap);
-    invoiceBook.saveInvoice(invoice);
-    response.setInvoice(invoiceSoap);
+    Invoice invoice1 = invoiceBook.saveInvoice(invoice);
+    response.setInvoice(converterSoap.getInvoiceSoap(invoice1));
     return response;
+
   }
 
   @PayloadRoot(namespace = NAMESPACE_URI, localPart = "removeInvoiceRequest")
