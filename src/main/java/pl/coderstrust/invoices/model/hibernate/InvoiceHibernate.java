@@ -64,9 +64,10 @@ public class InvoiceHibernate {
     this.issueDate = invoice.getIssueDate();
     this.issuePlace = invoice.getIssuePlace();
     this.sellDate = invoice.getSellDate();
+//    if (invoice.getSeller().getId())
     this.seller = new CompanyHibernate(
         Company.builder()
-            .id(null)
+            .id(invoice.getSeller().getId())
             .name(invoice.getSeller().getName())
             .postalCode(invoice.getSeller().getPostalCode())
             .street(invoice.getSeller().getStreet())
@@ -74,21 +75,17 @@ public class InvoiceHibernate {
             .town(invoice.getSeller().getTown())
             .build());
     this.buyer = new CompanyHibernate(Company.builder()
-        .id(null)
+        .id(invoice.getBuyer().getId())
         .name(invoice.getBuyer().getName())
         .postalCode(invoice.getBuyer().getPostalCode())
         .street(invoice.getBuyer().getStreet())
         .taxIdentificationNumber(invoice.getBuyer().getTaxIdentificationNumber())
         .town(invoice.getBuyer().getTown())
         .build());
-//    this.entries = invoice.getEntries()
-//        .stream()
-//        .map(InvoiceEntryHibernate::new)
-//        .collect(Collectors.toList());
     List<InvoiceEntryHibernate> invoiceEntryHibernateList = new ArrayList<>();
     for (int i = 0; i < invoice.getEntries().size(); i++) {
       InvoiceEntry invoiceEntry = new InvoiceEntry();
-      invoiceEntry.setId(null);
+      invoiceEntry.setId(invoice.getEntries().get(i).getId());
       invoiceEntry.setProductName(invoice.getEntries().get(i).getProductName());
       invoiceEntry.setAmount(invoice.getEntries().get(i).getAmount());
       invoiceEntry.setPrice(invoice.getEntries().get(i).getPrice());
