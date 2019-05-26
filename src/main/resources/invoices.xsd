@@ -4,7 +4,7 @@
 
   <xs:complexType name="InvoiceSoap">
     <xs:sequence>
-      <xs:element name="id" type="xs:anyType"/>
+      <xs:element name="id" type="xs:anySimpleType"/>
       <xs:element name="number" type="xs:string"/>
       <xs:element name="issueDate" type="xs:string"/>
       <xs:element name="issuePlace" type="xs:string"/>
@@ -19,7 +19,7 @@
 
   <xs:complexType name="CompanySoap">
     <xs:sequence>
-      <xs:element name="id" type="xs:anyType"/>
+      <xs:element name="id" type="xs:anySimpleType"/>
       <xs:element name="name" type="xs:string"/>
       <xs:element name="taxIdentificationNumber" type="xs:string"/>
       <xs:element name="street" type="xs:string"/>
@@ -30,7 +30,7 @@
 
   <xs:complexType name="EntrySoap">
     <xs:sequence>
-      <xs:element name="id" type="xs:anyType"/>
+      <xs:element name="id" type="xs:anySimpleType"/>
       <xs:element name="productName" type="xs:string"/>
       <xs:element name="amount" type="xs:string"/>
       <xs:element name="price" type="xs:decimal"/>
@@ -41,7 +41,7 @@
   <xs:element name="addInvoiceRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="id" type="xs:anyType"/>
+        <xs:element name="id" type="xs:anySimpleType"/>
         <xs:element name="number" type="xs:string"/>
         <xs:element name="issueDate" type="xs:string"/>
         <xs:element name="issuePlace" type="xs:string"/>
@@ -89,7 +89,7 @@
   <xs:element name="getInvoiceRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="id" type="xs:anyType"/>
+        <xs:element name="id" type="xs:anySimpleType"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -126,7 +126,7 @@
   <xs:element name="removeInvoiceRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="id" type="xs:anyType"/>
+        <xs:element name="id" type="xs:anySimpleType"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

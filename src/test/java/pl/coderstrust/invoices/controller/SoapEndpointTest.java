@@ -77,5 +77,72 @@ class SoapEndpointTest {
         .andExpect(validPayload(xsdSchema));
   }
 
+  @Test
+  void shouldGetAllInvoices() throws IOException {
+    Resource requestPayload = applicationContext
+        .getResource("classpath:SoapXMLRequests/addInvoiceRequest.xml");
+
+    for (int i = 0; i < 2; i++) {
+      mockClient
+          .sendRequest(withPayload(requestPayload))
+          .andExpect(noFault());
+    }
+
+    requestPayload = applicationContext
+        .getResource("classpath:SoapXMLRequests/getAllInvoicesRequest.xml");
+    Resource responsePayload = applicationContext
+        .getResource("classpath:SoapXMLResponses/getAllInvoicesResponse.xml");
+
+    mockClient
+        .sendRequest(withPayload(requestPayload))
+        .andExpect(noFault())
+        .andExpect(payload(responsePayload))
+        .andExpect(validPayload(xsdSchema));
+  }
+
+  @Test
+  void shouldGetInvoicesBeetweenDates() throws IOException {
+    Resource requestPayload = applicationContext
+        .getResource("classpath:SoapXMLRequests/addInvoiceRequest.xml");
+
+    for (int i = 0; i < 2; i++) {
+      mockClient
+          .sendRequest(withPayload(requestPayload))
+          .andExpect(noFault());
+    }
+
+    requestPayload = applicationContext
+        .getResource("classpath:SoapXMLRequests/getInvoicesBetweenDatesRequest.xml");
+    Resource responsePayload = applicationContext
+        .getResource("classpath:SoapXMLResponses/getInvoicesBetweenDatesResponse.xml");
+
+    mockClient
+        .sendRequest(withPayload(requestPayload))
+        .andExpect(noFault())
+        .andExpect(payload(responsePayload))
+        .andExpect(validPayload(xsdSchema));
+  }
+
+  @Test
+  void shouldRemoveInvoice() throws IOException {
+    Resource requestPayload = applicationContext
+        .getResource("classpath:SoapXMLRequests/addInvoiceRequest.xml");
+
+    mockClient
+        .sendRequest(withPayload(requestPayload))
+        .andExpect(noFault());
+
+    requestPayload = applicationContext
+        .getResource("classpath:SoapXMLRequests/removeInvoiceRequest.xml");
+    Resource responsePayload = applicationContext
+        .getResource("classpath:SoapXMLResponses/removeInvoiceResponse.xml");
+
+    mockClient
+        .sendRequest(withPayload(requestPayload))
+        .andExpect(noFault())
+        .andExpect(payload(responsePayload))
+        .andExpect(validPayload(xsdSchema));
+
+  }
 
 }
