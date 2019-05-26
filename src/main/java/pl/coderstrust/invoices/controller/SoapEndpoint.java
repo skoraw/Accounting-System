@@ -63,8 +63,8 @@ public class SoapEndpoint {
       invoiceSoap.getEntries().add(request.getEntries().get(i));
     }
     Invoice invoice = converterSoap.getInvoice(invoiceSoap);
-    Invoice invoice1 = invoiceBook.saveInvoice(invoice);
-    response.setInvoice(converterSoap.getInvoiceSoap(invoice1));
+    Invoice savedInvoice = invoiceBook.saveInvoice(invoice);
+    response.setInvoice(converterSoap.getInvoiceSoap(savedInvoice));
     return response;
 
   }
@@ -74,9 +74,8 @@ public class SoapEndpoint {
   public RemoveInvoiceResponse removeInvoice(@RequestPayload RemoveInvoiceRequest request)
       throws InvoiceBookException {
     RemoveInvoiceResponse response = new RemoveInvoiceResponse();
-    Invoice invoice = invoiceBook.getInvoice(request.getId());
-    invoiceBook.removeInvoice(request.getId());
-    InvoiceSoap invoiceSoap = converterSoap.getInvoiceSoap(invoice);
+    Invoice removedInvoice = invoiceBook.removeInvoice(request.getId());
+    InvoiceSoap invoiceSoap = converterSoap.getInvoiceSoap(removedInvoice);
     response.setInvoice(invoiceSoap);
     return response;
   }

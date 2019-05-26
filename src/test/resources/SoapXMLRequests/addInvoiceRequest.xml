@@ -1,0 +1,37 @@
+<soap:addInvoiceRequest xmlns:soap="http://soap.invoice.pl">
+  <soap:buyer>
+    <soap:id></soap:id>
+    <soap:name>Buyer</soap:name>
+    <soap:postalCode>22-222</soap:postalCode>
+    <soap:street>Street Buyer</soap:street>
+    <soap:taxIdentificationNumber>222</soap:taxIdentificationNumber>
+    <soap:town>Buyer Town</soap:town>
+  </soap:buyer>
+  <soap:entries>
+    <soap:amount>1</soap:amount>
+    <soap:id></soap:id>
+    <soap:price>1</soap:price>
+    <soap:productName>Produkt 1</soap:productName>
+    <soap:vat>VAT_23</soap:vat>
+  </soap:entries>
+  <soap:entries>
+    <soap:amount>2</soap:amount>
+    <soap:id></soap:id>
+    <soap:price>2</soap:price>
+    <soap:productName>Produkt 2</soap:productName>
+    <soap:vat>VAT_23</soap:vat>
+  </soap:entries>
+  <soap:id></soap:id>
+  <soap:issueDate>2019-05-24</soap:issueDate>
+  <soap:issuePlace>Miasto</soap:issuePlace>
+  <soap:number>1</soap:number>
+  <soap:sellDate>2019-05-24</soap:sellDate>
+  <soap:seller>
+    <soap:id></soap:id>
+    <soap:name>Seller</soap:name>
+    <soap:postalCode>11-111</soap:postalCode>
+    <soap:street>Street Seller</soap:street>
+    <soap:taxIdentificationNumber>111</soap:taxIdentificationNumber>
+    <soap:town>Town Seller</soap:town>
+  </soap:seller>
+</soap:addInvoiceRequest>
