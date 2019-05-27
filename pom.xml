@@ -187,6 +187,12 @@
       <artifactId>h2</artifactId>
       <groupId>com.h2database</groupId>
     </dependency>
+    <dependency>
+      <artifactId>itextpdf</artifactId>
+      <groupId>com.itextpdf</groupId>
+      <version>5.5.13</version>
+    </dependency>
+
   </dependencies>
 
   <properties>
