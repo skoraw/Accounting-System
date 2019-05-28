@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiParam;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,6 +71,14 @@ public class InvoiceController {
       @PathVariable("id") @ApiParam(value = "Invoice ID", example = "2") Long id)
       throws InvoiceBookException {
     return invoiceBook.getInvoice(id);
+  }
+
+  @GetMapping(value = "/pdf/{id}")
+  @ApiOperation(value = "Returns invoice in pdf format")
+  public ResponseEntity<InputStreamResource> invoiceToPdf(@PathVariable("id") Long id)
+      throws InvoiceBookException {
+//    return PDFCreator.getPdf(getInvoice(id));
+    return null;
   }
 
 }

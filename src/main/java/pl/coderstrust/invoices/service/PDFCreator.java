@@ -82,7 +82,7 @@ public class PDFCreator {
     pdfCreator.getPdf(invoice);
   }
 
-  public ByteArrayInputStream getPdf(Invoice invoice) {
+  public static ByteArrayInputStream getPdf(Invoice invoice) {
     Document document = new Document();
     try {
       PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("HelloWorld.pdf"));
