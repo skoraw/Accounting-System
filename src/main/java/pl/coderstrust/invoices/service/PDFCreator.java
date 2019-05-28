@@ -7,6 +7,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -24,14 +25,57 @@ import pl.coderstrust.invoices.model.Vat;
 @Service
 public class PDFCreator {
 
-  private static final Font BLUE_FONT = FontFactory
-      .getFont(FontFactory.HELVETICA, 32, Font.NORMAL, new CMYKColor(255, 0, 0, 0));
-  private ByteArrayOutputStream generatedPdf = new ByteArrayOutputStream();
+  private static final Font INVOICE_FONT = FontFactory
+      .getFont(BaseFont.HELVETICA, BaseFont.CP1250, 28, Font.BOLD, new CMYKColor(255, 0, 0, 0));
+  private static final Font POLISH_FONT = FontFactory
+      .getFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+  private static final Font TOTAL_FONT = FontFactory
+      .getFont(BaseFont.HELVETICA_BOLD, 12, new CMYKColor(0, 0, 0, 75));
+  private static final Font SECTION_HEADER_FONT = FontFactory
+      .getFont(BaseFont.HELVETICA, 14, new CMYKColor(255, 0, 0, 0));
+  private static final Font DEFAULT_FONT = FontFactory
+      .getFont(BaseFont.HELVETICA, 8, new CMYKColor(0, 255, 0, 0));
+
+  private static float cellPadding = 2;
+  private static float padding = 5;
+
+  public static ByteArrayInputStream getPdf(Invoice invoice) {
+    Document document = new Document();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    try {
+      PdfWriter writer = PdfWriter.getInstance(document, out);
+      document.open();
+
+      document.addAuthor("project-10-tomasz-wiktor");
+      document.addCreationDate();
+      document.addCreator("Accounting System");
+      document.addTitle("Invoices");
+      document.addSubject("PDF");
+
+      document.add(new Paragraph("Invoice", INVOICE_FONT));
+      document.add(new Paragraph(""));
+      document.add(Chunk.NEWLINE);
+      document.add(getInvoiceHeader(invoice));
+      document.add(getInvoiceCompanies(invoice.getSeller(), invoice.getBuyer()));
+      document.add(new Paragraph("Invoice products", SECTION_HEADER_FONT));
+      document.add(getInvoiceEntries(invoice.getEntries()));
+
+      document.close();
+      writer.close();
+    } catch (DocumentException exception) {
+      exception.printStackTrace();
+    }
+    return new ByteArrayInputStream(out.toByteArray());
+  }
 
   private static PdfPCell getCell(Paragraph paragraph) {
     PdfPCell cell = new PdfPCell(paragraph);
     cell.setVerticalAlignment(Element.ALIGN_LEFT);
     cell.setBorder(0);
+    cell.setPaddingLeft(cellPadding);
+    cell.setPaddingRight(cellPadding);
+    cell.setPaddingTop(cellPadding);
+    cell.setPaddingBottom(padding);
     return cell;
   }
 
@@ -39,7 +83,15 @@ public class PDFCreator {
     PdfPCell cell = new PdfPCell(paragraph);
     cell.setVerticalAlignment(Element.ALIGN_CENTER);
     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    cell.setPaddingLeft(cellPadding);
+    cell.setPaddingRight(cellPadding);
+    cell.setPaddingTop(cellPadding);
+    cell.setPaddingBottom(padding);
     return cell;
+  }
+
+  private static Paragraph getParagraph(String content) {
+    return new Paragraph(content);
   }
 
   private static PdfPTable getInvoiceHeader(Invoice invoice) throws DocumentException {
@@ -56,7 +108,7 @@ public class PDFCreator {
     table.addCell(getCell(new Paragraph("")));
     table.addCell(getCell(new Paragraph("")));
     table.addCell(getCell(new Paragraph("Issue place: ")));
-    table.addCell(getCell(new Paragraph(invoice.getIssuePlace())));
+    table.addCell(getCell(new Paragraph(invoice.getIssuePlace(), POLISH_FONT)));
     table.addCell(getCell(new Paragraph("")));
     table.addCell(getCell(new Paragraph("")));
     table.addCell(getCell(new Paragraph("Sell date: ")));
@@ -67,36 +119,36 @@ public class PDFCreator {
 
   private static PdfPTable getInvoiceCompanies(Company seller, Company buyer)
       throws DocumentException {
-    PdfPTable table = new PdfPTable(4);
+    PdfPTable table = new PdfPTable(2);
 
     table.setWidthPercentage(100);
-    float[] columnWidths = {1f, 2f, 1f, 2f};
+    float[] columnWidths = {1f, 2f};
     table.setWidths(columnWidths);
 
-    table.addCell(getCell(new Paragraph("Seller: ")));
-    table.addCell(getCell(new Paragraph("")));
-    table.addCell(getCell(new Paragraph("Buyer: ")));
+    table.addCell(getCell(new Paragraph("Seller: ", SECTION_HEADER_FONT)));
     table.addCell(getCell(new Paragraph("")));
     table.addCell(getCell(new Paragraph("Name: ")));
-    table.addCell(getCell(new Paragraph(seller.getName())));
-    table.addCell(getCell(new Paragraph("Name: ")));
-    table.addCell(getCell(new Paragraph(buyer.getName())));
+    table.addCell(getCell(new Paragraph(seller.getName(), POLISH_FONT)));
     table.addCell(getCell(new Paragraph("Tax identyfication number: ")));
     table.addCell(getCell(new Paragraph(seller.getTaxIdentificationNumber())));
-    table.addCell(getCell(new Paragraph("Tax identyfication number: ")));
-    table.addCell(getCell(new Paragraph(buyer.getTaxIdentificationNumber())));
-    table.addCell(getCell(new Paragraph("Stret: ")));
-    table.addCell(getCell(new Paragraph(seller.getStreet())));
     table.addCell(getCell(new Paragraph("Street: ")));
-    table.addCell(getCell(new Paragraph(buyer.getStreet())));
+    table.addCell(getCell(new Paragraph(seller.getStreet(), POLISH_FONT)));
     table.addCell(getCell(new Paragraph("Postal code: ")));
     table.addCell(getCell(new Paragraph(seller.getPostalCode())));
+    table.addCell(getCell(new Paragraph("Town: ")));
+    table.addCell(getCell(new Paragraph(seller.getTown(), POLISH_FONT)));
+    table.addCell(getCell(new Paragraph("Buyer: ", SECTION_HEADER_FONT)));
+    table.addCell(getCell(new Paragraph("")));
+    table.addCell(getCell(new Paragraph("Name: ")));
+    table.addCell(getCell(new Paragraph(buyer.getName(), POLISH_FONT)));
+    table.addCell(getCell(new Paragraph("Tax identyfication number: ")));
+    table.addCell(getCell(new Paragraph(buyer.getTaxIdentificationNumber())));
+    table.addCell(getCell(new Paragraph("Street: ")));
+    table.addCell(getCell(new Paragraph(buyer.getStreet(), POLISH_FONT)));
     table.addCell(getCell(new Paragraph("Postal code: ")));
     table.addCell(getCell(new Paragraph(buyer.getPostalCode())));
     table.addCell(getCell(new Paragraph("Town: ")));
-    table.addCell(getCell(new Paragraph(seller.getTown())));
-    table.addCell(getCell(new Paragraph("Town: ")));
-    table.addCell(getCell(new Paragraph(buyer.getTown())));
+    table.addCell(getCell(new Paragraph(buyer.getTown(), POLISH_FONT)));
 
     return table;
   }
@@ -104,10 +156,11 @@ public class PDFCreator {
   private static PdfPTable getInvoiceEntries(java.util.List<InvoiceEntry> invoiceEntryList)
       throws DocumentException {
 
-    PdfPTable table = new PdfPTable(8);
+    PdfPTable table = new PdfPTable(7);
     table.setWidthPercentage(100);
-    float[] columnWidths = {1f, 4f, 1f, 1f, 1f, 1f, 1f, 1f};
+    float[] columnWidths = {6f, 2f, 2f, 2f, 2f, 2f, 2f};
     table.setWidths(columnWidths);
+    table.setSpacingBefore(padding);
 
     BigDecimal amountTotal = BigDecimal.ZERO;
     BigDecimal netPriceTotal = BigDecimal.ZERO;
@@ -115,7 +168,6 @@ public class PDFCreator {
     BigDecimal vatAmountTotal = BigDecimal.ZERO;
     BigDecimal grossAmountTotal = BigDecimal.ZERO;
 
-    table.addCell(getEntryCell(new Paragraph("Lp")));
     table.addCell(getEntryCell(new Paragraph("Product name")));
     table.addCell(getEntryCell(new Paragraph("Amount")));
     table.addCell(getEntryCell(new Paragraph("Net price")));
@@ -140,8 +192,8 @@ public class PDFCreator {
       BigDecimal grossAmount = netAmount.add(vatAmount).setScale(2, RoundingMode.CEILING);
       grossAmountTotal = grossAmountTotal.add(grossAmount);
 
-      table.addCell(getEntryCell(new Paragraph(String.valueOf(i + 1))));
-      table.addCell(getEntryCell(new Paragraph(invoiceEntryList.get(i).getProductName())));
+      table.addCell(getEntryCell(new Paragraph(invoiceEntryList.get(i).getProductName(),
+          POLISH_FONT)));
       table.addCell(getEntryCell(new Paragraph(String.valueOf(amount))));
       table.addCell(getEntryCell(new Paragraph(String.valueOf(netPrice))));
       table.addCell(getEntryCell(new Paragraph(String.valueOf(netAmount))));
@@ -149,45 +201,14 @@ public class PDFCreator {
       table.addCell(getEntryCell(new Paragraph(String.valueOf(vatAmount))));
       table.addCell(getEntryCell(new Paragraph(String.valueOf(grossAmount))));
     }
-    table.addCell(getEntryCell(new Paragraph("Total")));
+    table.addCell(getEntryCell(new Paragraph("Total", TOTAL_FONT)));
+    table.addCell(getEntryCell(new Paragraph(String.valueOf(amountTotal), TOTAL_FONT)));
+    table.addCell(getEntryCell(new Paragraph(String.valueOf(netPriceTotal), TOTAL_FONT)));
+    table.addCell(getEntryCell(new Paragraph(String.valueOf(netAmountTotal), TOTAL_FONT)));
     table.addCell(getEntryCell(new Paragraph("")));
-    table.addCell(getEntryCell(new Paragraph(String.valueOf(amountTotal))));
-    table.addCell(getEntryCell(new Paragraph(String.valueOf(netPriceTotal))));
-    table.addCell(getEntryCell(new Paragraph(String.valueOf(netAmountTotal))));
-    table.addCell(getEntryCell(new Paragraph("")));
-    table.addCell(getEntryCell(new Paragraph(String.valueOf(vatAmountTotal))));
-    table.addCell(getEntryCell(new Paragraph(String.valueOf(grossAmountTotal))));
+    table.addCell(getEntryCell(new Paragraph(String.valueOf(vatAmountTotal), TOTAL_FONT)));
+    table.addCell(getEntryCell(new Paragraph(String.valueOf(grossAmountTotal), TOTAL_FONT)));
 
     return table;
-  }
-
-  public static ByteArrayInputStream getPdf(Invoice invoice) {
-    Document document = new Document();
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    try {
-      PdfWriter writer = PdfWriter.getInstance(document, out);
-      document.open();
-
-      document.addAuthor("project-10-tomasz-wiktor");
-      document.addCreationDate();
-      document.addCreator("Accounting System");
-      document.addTitle("Invoices");
-      document.addSubject("PDF");
-
-      document.add(new Paragraph("Invoice", BLUE_FONT));
-      document.add(new Paragraph(""));
-      document.add(Chunk.NEWLINE);
-      document.add(getInvoiceHeader(invoice));
-      document.add(Chunk.NEWLINE);
-      document.add(getInvoiceCompanies(invoice.getSeller(), invoice.getBuyer()));
-      document.add(Chunk.NEWLINE);
-      document.add(getInvoiceEntries(invoice.getEntries()));
-
-      document.close();
-      writer.close();
-    } catch (DocumentException exception) {
-      exception.printStackTrace();
-    }
-    return new ByteArrayInputStream(out.toByteArray());
   }
 }
