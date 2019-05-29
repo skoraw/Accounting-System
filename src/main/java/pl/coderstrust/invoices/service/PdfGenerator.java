@@ -46,7 +46,7 @@ public class PdfGenerator {
       .getFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.EMBEDDED, 10, 0,
           new CMYKColor(0, 0, 0, 255));
 
-  private static final float padding = 2;
+  private static final float padding = 5;
   private static final float paddingTop = 5;
   private static final float paddingBottom = 5;
   private static final float paddingLeft = 5;
