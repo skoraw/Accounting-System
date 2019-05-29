@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.invoices.database.InvoiceBookException;
 import pl.coderstrust.invoices.model.Invoice;
 import pl.coderstrust.invoices.service.InvoiceBook;
-import pl.coderstrust.invoices.service.PDFCreator;
+import pl.coderstrust.invoices.service.PdfGenerator;
 
 @RestController
 @Api(tags = "Invoices", description = "Available operations")
@@ -83,7 +83,7 @@ public class InvoiceController {
       throws InvoiceBookException {
     Invoice invoice = getInvoice(id);
 
-    ByteArrayInputStream bis = PDFCreator.getPdf(invoice);
+    ByteArrayInputStream bis = PdfGenerator.getPdf(invoice);
 
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Disposition", "inline; filename=invoice.pdf");
