@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.invoices.database.InvoiceBookException;
 import pl.coderstrust.invoices.model.Invoice;
 import pl.coderstrust.invoices.service.InvoiceBook;
+import pl.coderstrust.invoices.service.mail.EmailService;
 
 @RestController
 @Api(tags = "Invoices", description = "Available operations")
 public class InvoiceController {
 
   private final InvoiceBook invoiceBook;
+
+  @Autowired
+  private EmailService emailService;
 
   public InvoiceController(InvoiceBook invoiceBook) {
     this.invoiceBook = invoiceBook;
@@ -52,6 +57,7 @@ public class InvoiceController {
   public Invoice addInvoice(
       @ApiParam(value = "Invoice document", name = "Invoice") @RequestBody Invoice invoice)
       throws InvoiceBookException {
+    emailService.sendEmail(invoice);
     return invoiceBook.saveInvoice(invoice);
   }
 
