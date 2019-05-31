@@ -11,6 +11,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,10 +72,27 @@ public class InvoiceController {
 
   @GetMapping("/invoice/{id}")
   @ApiOperation(value = "Get the invoice")
+  @Produces
   public Invoice getInvoice(
       @PathVariable("id") @ApiParam(value = "Invoice ID", example = "2") Long id)
       throws InvoiceBookException {
-    return invoiceBook.getInvoice(id);
+
+    Invoice invoice = invoiceBook.getInvoice(id);
+    HttpHeaders headers = new HttpHeaders();
+    ClientHttpRequest request = id.
+    if (headers.getContentType().includes(MediaType.APPLICATION_PDF)) {
+      ByteArrayInputStream bis = PdfGenerator.getPdf(invoice);
+
+//    headers.add("Content-Disposition", "inline; filename=invoice.pdf");
+
+      return ResponseEntity
+          .ok()
+          .headers(headers)
+          .contentType(MediaType.APPLICATION_PDF)
+          .body(new InputStreamResource(bis));
+    } else {
+      return invoice;
+    }
   }
 
   @GetMapping(value = "/pdf/{id}")
@@ -83,15 +101,5 @@ public class InvoiceController {
       throws InvoiceBookException {
     Invoice invoice = getInvoice(id);
 
-    ByteArrayInputStream bis = PdfGenerator.getPdf(invoice);
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Content-Disposition", "inline; filename=invoice.pdf");
-
-    return ResponseEntity
-        .ok()
-        .headers(headers)
-        .contentType(MediaType.APPLICATION_PDF)
-        .body(new InputStreamResource(bis));
-  }
 }
