@@ -3,26 +3,20 @@ package pl.coderstrust.invoices.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.invoices.database.InvoiceBookException;
 import pl.coderstrust.invoices.model.Invoice;
 import pl.coderstrust.invoices.service.InvoiceBook;
-import pl.coderstrust.invoices.service.PdfGenerator;
 
 @RestController
 @Api(tags = "Invoices", description = "Available operations")
@@ -70,36 +64,13 @@ public class InvoiceController {
     return invoiceBook.removeInvoice(id);
   }
 
-  @GetMapping("/invoice/{id}")
+  @GetMapping(value = "/invoice/{id}", produces = {"application/json", "application/pdf"})
   @ApiOperation(value = "Get the invoice")
-  @Produces
+  @ResponseBody
   public Invoice getInvoice(
       @PathVariable("id") @ApiParam(value = "Invoice ID", example = "2") Long id)
       throws InvoiceBookException {
-
-    Invoice invoice = invoiceBook.getInvoice(id);
-    HttpHeaders headers = new HttpHeaders();
-    ClientHttpRequest request = id.
-    if (headers.getContentType().includes(MediaType.APPLICATION_PDF)) {
-      ByteArrayInputStream bis = PdfGenerator.getPdf(invoice);
-
-//    headers.add("Content-Disposition", "inline; filename=invoice.pdf");
-
-      return ResponseEntity
-          .ok()
-          .headers(headers)
-          .contentType(MediaType.APPLICATION_PDF)
-          .body(new InputStreamResource(bis));
-    } else {
-      return invoice;
-    }
+    return invoiceBook.getInvoice(id);
   }
-
-  @GetMapping(value = "/pdf/{id}")
-  @ApiOperation(value = "Returns invoice in pdf format")
-  public ResponseEntity<InputStreamResource> invoiceToPdf(@PathVariable("id") Long id)
-      throws InvoiceBookException {
-    Invoice invoice = getInvoice(id);
-
 
 }
