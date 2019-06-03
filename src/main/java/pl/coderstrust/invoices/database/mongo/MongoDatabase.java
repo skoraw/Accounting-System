@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,7 @@ public class MongoDatabase implements Database {
   private InvoiceRepositoryMongo invoiceRepositoryMongo;
   private ConverterMongo converterMongo;
 
+  @Autowired
   public MongoDatabase(
       InvoiceRepositoryMongo invoiceRepositoryMongo,
       ConverterMongo converterMongo) {
@@ -77,7 +79,7 @@ public class MongoDatabase implements Database {
     }
     Invoice tempInvoice = getInvoice(id);
     if (tempInvoice == null) {
-      throw new DatabaseOperationException("Invoice cannot be null");
+      throw new DatabaseOperationException(String.format("Invoice for id=[%s] is not exists.", id));
     }
     invoiceRepositoryMongo.deleteById((String) id);
     return tempInvoice;

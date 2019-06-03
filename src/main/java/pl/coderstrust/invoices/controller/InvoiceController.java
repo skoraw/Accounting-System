@@ -70,5 +70,4 @@ public class InvoiceController {
       throws InvoiceBookException {
     return invoiceBook.getInvoice(id);
   }
-
 }

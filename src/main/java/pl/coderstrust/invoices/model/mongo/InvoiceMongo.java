@@ -105,8 +105,8 @@ public class InvoiceMongo {
     }
   }
 
-  public static Invoice.InvoiceBuilder builder() {
-    return new Invoice.InvoiceBuilder();
+  public static MongoInvoiceBuilder builder() {
+    return new MongoInvoiceBuilder();
   }
 
   public String getId() {
