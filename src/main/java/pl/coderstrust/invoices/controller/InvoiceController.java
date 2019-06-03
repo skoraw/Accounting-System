@@ -69,17 +69,17 @@ public class InvoiceController {
     return invoiceBook.removeInvoice(id);
   }
 
-  @GetMapping(value = "/invoice/{id}", produces = "application/json")
+  @GetMapping(value = "/invoice/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(value = "Get the invoice")
-  public Invoice getInvoice(
+  public Invoice getInvoiceAsJson(
       @PathVariable("id") @ApiParam(value = "Invoice ID", example = "2") Long id)
       throws InvoiceBookException {
     return invoiceBook.getInvoice(id);
   }
 
-  @GetMapping(value = "/invoice/{id}", produces = "application/pdf")
+  @GetMapping(value = "/invoice/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
   @ApiOperation(value = "Get the invoice")
-  public ResponseEntity<InputStreamResource> invoiceToPdf(@PathVariable("id") Long id)
+  public ResponseEntity<InputStreamResource> getInvoiceAsPdf(@PathVariable("id") Long id)
       throws InvoiceBookException {
     Invoice invoice = invoiceBook.getInvoice(id);
 

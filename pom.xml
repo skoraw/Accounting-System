@@ -192,25 +192,6 @@
       <groupId>com.itextpdf</groupId>
       <version>5.5.13</version>
     </dependency>
-    <dependency>
-      <artifactId>spring-webmvc</artifactId>
-      <groupId>org.springframework</groupId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>javax.servlet-api</artifactId>
-      <groupId>javax.servlet</groupId>
-    </dependency>
-    <dependency>
-      <artifactId>jstl</artifactId>
-      <groupId>javax.servlet</groupId>
-      <version>${jstl.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>itext</artifactId>
-      <groupId>com.lowagie</groupId>
-      <version>4.2.2</version>
-    </dependency>
   </dependencies>
 
   <properties>
