@@ -16,16 +16,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.web.servlet.view.document.AbstractPdfView;
+import org.springframework.stereotype.Service;
 import pl.coderstrust.invoices.model.Company;
 import pl.coderstrust.invoices.model.Invoice;
 import pl.coderstrust.invoices.model.InvoiceEntry;
 import pl.coderstrust.invoices.model.Vat;
 
-public class PdfView extends AbstractPdfView {
+@Service
+public class PdfGenerator {
 
   private static final Font HEADER_FONT = FontFactory
       .getFont(BaseFont.HELVETICA, 28, Font.BOLD, new CMYKColor(255, 0, 0, 0));
@@ -54,13 +52,11 @@ public class PdfView extends AbstractPdfView {
   private static final float paddingLeft = 5;
   private static final float paddingRight = 5;
 
-  protected void buildPdfDocument(Map model, Document document, PdfWriter writer,
-      HttpServletRequest req,
-      HttpServletResponse resp) throws Exception {
+  public static ByteArrayInputStream getPdf(Invoice invoice) {
+    Document document = new Document();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     try {
-
-      Invoice invoice = (Invoice) model.get(Invo);
+      PdfWriter writer = PdfWriter.getInstance(document, out);
       document.open();
 
       document.addAuthor("project-10-tomasz-wiktor");
@@ -80,10 +76,6 @@ public class PdfView extends AbstractPdfView {
 
       document.close();
       writer.close();
-    }
-
-    public static ByteArrayInputStream getPdf(Invoice invoice) {
-
     } catch (DocumentException exception) {
       exception.printStackTrace();
     }
