@@ -16,6 +16,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.invoices.model.Company;
 import pl.coderstrust.invoices.model.Invoice;
@@ -24,6 +26,8 @@ import pl.coderstrust.invoices.model.Vat;
 
 @Service
 public class PdfGenerator {
+
+  private static Logger logger = LoggerFactory.getLogger(PdfGenerator.class);
 
   private static final Font HEADER_FONT = FontFactory
       .getFont(BaseFont.HELVETICA, 28, Font.BOLD, new CMYKColor(255, 0, 0, 0));
@@ -77,7 +81,7 @@ public class PdfGenerator {
       document.close();
       writer.close();
     } catch (DocumentException exception) {
-      exception.printStackTrace();
+      logger.warn("Pdf with invoice cannot be generated");
     }
     return new ByteArrayInputStream(out.toByteArray());
   }

@@ -69,41 +69,6 @@ public class InvoiceController {
     return invoiceBook.removeInvoice(id);
   }
 
-  //  @GetMapping("/invoice/{id}")
-//  @ApiOperation(value = "Get the invoice")
-//  public Invoice getInvoice(
-//      @PathVariable("id") @ApiParam(value = "Invoice ID", example = "2") Long id,
-//      HttpServletRequest request,
-//      HttpServletResponse response)
-//      throws InvoiceBookException, IOException {
-//    Invoice invoice = invoiceBook.getInvoice(id);
-//
-//    String accept = request.getHeader("Accept");
-//    System.out.println("Accept: " + accept);
-//
-//    if (accept.equals(MediaType.APPLICATION_JSON_VALUE)) {
-//      return invoice;
-//    } else if (accept.equals(MediaType.APPLICATION_PDF_VALUE)) {
-//
-////      byte[] pdf = invoiceToPdf(invoice);
-//      response.set
-//      invoiceToPdf(invoice);
-//    }
-//    return invoice;
-//  }
-//
-//  private ResponseEntity<InputStreamResource> invoiceToPdf(Invoice invoice) {
-//    ByteArrayInputStream bis = PdfGenerator.getPdf(invoice);
-//
-//    HttpHeaders headers = new HttpHeaders();
-//    headers.add("Content-Disposition", "inline; filename=invoice.pdf");
-//
-//    return ResponseEntity
-//        .ok()
-//        .headers(headers)
-//        .contentType(MediaType.APPLICATION_PDF)
-//        .body(new InputStreamResource(bis));
-//  }
   @GetMapping(value = "/invoice/{id}", produces = "application/json")
   @ApiOperation(value = "Get the invoice")
   public Invoice getInvoice(
