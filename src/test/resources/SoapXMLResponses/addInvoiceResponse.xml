@@ -1,0 +1,54 @@
+<ns2:addInvoiceResponse xmlns:ns2="http://soap.invoice.pl">
+  <ns2:invoice>
+    <ns2:buyer>
+      <ns2:id xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:type="xs:long">1
+      </ns2:id>
+      <ns2:name>Buyer</ns2:name>
+      <ns2:postalCode>22-222</ns2:postalCode>
+      <ns2:street>Street Buyer</ns2:street>
+      <ns2:taxIdentificationNumber>222</ns2:taxIdentificationNumber>
+      <ns2:town>Buyer Town</ns2:town>
+    </ns2:buyer>
+    <ns2:entries>
+      <ns2:amount>1</ns2:amount>
+      <ns2:id xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:type="xs:long">1
+      </ns2:id>
+      <ns2:price>1</ns2:price>
+      <ns2:productName>Produkt 1</ns2:productName>
+      <ns2:vat>VAT_23</ns2:vat>
+    </ns2:entries>
+    <ns2:entries>
+      <ns2:amount>2</ns2:amount>
+      <ns2:id xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:type="xs:long">2
+      </ns2:id>
+      <ns2:price>2</ns2:price>
+      <ns2:productName>Produkt 2</ns2:productName>
+      <ns2:vat>VAT_23</ns2:vat>
+    </ns2:entries>
+    <ns2:id xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:type="xs:long">1
+    </ns2:id>
+    <ns2:issueDate>2019-5-24</ns2:issueDate>
+    <ns2:issuePlace>Miasto</ns2:issuePlace>
+    <ns2:number>1</ns2:number>
+    <ns2:sellDate>2019-5-24</ns2:sellDate>
+    <ns2:seller>
+      <ns2:id xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:type="xs:long">2
+      </ns2:id>
+      <ns2:name>Seller</ns2:name>
+      <ns2:postalCode>11-111</ns2:postalCode>
+      <ns2:street>Street Seller</ns2:street>
+      <ns2:taxIdentificationNumber>111</ns2:taxIdentificationNumber>
+      <ns2:town>Town Seller</ns2:town>
+    </ns2:seller>
+  </ns2:invoice>
+</ns2:addInvoiceResponse>
