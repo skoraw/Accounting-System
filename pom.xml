@@ -224,6 +224,9 @@
       <groupId>com.h2database</groupId>
     </dependency>
     <dependency>
+      <artifactId>itextpdf</artifactId>
+      <groupId>com.itextpdf</groupId>
+      <version>5.5.13</version>
       <artifactId>spring-boot-starter-web-services</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
