@@ -38,8 +38,8 @@ public class EmailService {
       helper.setTo(mailProperties.getProperties().get("receiver"));
       helper.setReplyTo(mailProperties.getUsername());
       helper.setFrom(mailProperties.getUsername());
-      helper.setSubject("Accounting System - added/updated Invoice");
-      helper.setText("This mail was generated, because Invoice was added or updated to database");
+      helper.setSubject("Accounting System - changes in Invoice database");
+      helper.setText("This mail was generated, because there where changes in Invoice repository");
       javaMailSender.send(mail);
     } catch (MessagingException exception) {
       logger.error("Couldn't send mail with Invoice.", exception);

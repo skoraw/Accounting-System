@@ -66,6 +66,7 @@ public class InvoiceController {
   public Invoice removeInvoice(
       @PathVariable("id") @ApiParam(value = "Invoice ID", example = "2") Long id)
       throws InvoiceBookException {
+    emailService.sendEmail(getInvoice(id));
     return invoiceBook.removeInvoice(id);
   }
 
