@@ -6,11 +6,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.coderstrust.invoices.database.Database;
 import pl.coderstrust.invoices.database.DatabaseOperationException;
 import pl.coderstrust.invoices.model.Invoice;
 
 public class InFileDatabase implements Database {
+
+  private static Logger logger = LoggerFactory.getLogger(InFileDatabase.class);
 
   private InvoiceConverter invoiceConverter;
   private FileHelper fileHelper;
@@ -29,13 +33,16 @@ public class InFileDatabase implements Database {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
     if (!(invoice.getId() instanceof Integer)) {
+      logger.error("Save invoice failed. Unsupported type of invoice id (%s). Invoice id must be Long.", invoice.getClass());
       throw new IllegalArgumentException("Incorrect type of Invoice Id");
     }
     Invoice copiedInvoice = new Invoice(invoice);
     try {
       if (isInvoiceExist(copiedInvoice.getId())) {
+        logger.info("Updated invoice. Id = [%d]", invoice.getId());
         return updateInvoice(copiedInvoice);
       } else {
+        logger.info("Added new invoice. Id = [%d]", invoice.getId());
         return addInvoice(copiedInvoice);
       }
     } catch (IOException exception) {
@@ -84,6 +91,7 @@ public class InFileDatabase implements Database {
       throw new IllegalArgumentException("Id cannot be null");
     }
     if (!(id instanceof Integer)) {
+      logger.error("Save invoice failed. Unsupported type of invoice id (%s). Invoice id must be Long.");
       throw new IllegalArgumentException("Incorrect type of Invoice Id");
     }
     try {

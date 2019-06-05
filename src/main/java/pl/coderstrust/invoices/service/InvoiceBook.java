@@ -28,7 +28,7 @@ public class InvoiceBook {
       logger.info("Getting all invoices in database");
       return database.getAllInvoices();
     } catch (DatabaseOperationException exception) {
-      logger.error("Invoice base doesn't exist");
+      logger.warn("Invoice base doesn't exist");
       throw new InvoiceBookException("Invoice Base doesn't exist", exception);
     }
   }
@@ -41,7 +41,7 @@ public class InvoiceBook {
     try {
       return database.saveInvoice(invoice);
     } catch (DatabaseOperationException exception) {
-      logger.error("Couldn't save or update invoice");
+      logger.warn("Couldn't save or update invoice");
       throw new InvoiceBookException("Couldn't save Invoice", exception);
     }
   }
@@ -55,7 +55,7 @@ public class InvoiceBook {
       logger.info("Invoice with id = {} removed", id);
       return database.removeInvoice(id);
     } catch (DatabaseOperationException exception) {
-      logger.error("No invoice to remove with id = {}", id);
+      logger.warn("No invoice to remove with id = {}", id);
       throw new InvoiceBookException("No invoice with given id to remove", exception);
     }
   }
@@ -69,7 +69,7 @@ public class InvoiceBook {
       logger.info("Getting invoice");
       return database.getInvoice(id);
     } catch (DatabaseOperationException exception) {
-      logger.error("Invoice for id = {} does not exist", id);
+      logger.warn("Invoice for id = {} does not exist", id);
       throw new InvoiceBookException("No invoice with id", exception);
     }
   }

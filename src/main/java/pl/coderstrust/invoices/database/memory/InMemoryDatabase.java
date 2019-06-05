@@ -27,7 +27,7 @@ public class InMemoryDatabase implements Database {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
     if (invoice.getId() != null && !(invoice.getId() instanceof Long)) {
-      logger.warn("Use long or int type ID");
+      logger.error("Save invoice failed. Unsupported type of invoice id (%s). Invoice id must be Long.", invoice.getClass());
       throw new IllegalArgumentException("Id must be number Long type");
     }
     Invoice cloneInvoice = new Invoice(invoice);
@@ -36,10 +36,10 @@ public class InMemoryDatabase implements Database {
       Long id = lastId;
       cloneInvoice.setId(id);
       invoices.put(id, cloneInvoice);
-      logger.info("Adding new invoice");
+      logger.info("Added new invoice. Id = [%d]", invoice.getId());
       return new Invoice(cloneInvoice);
     }
-    logger.info("Updating new invoice");
+    logger.info("Updated invoice. Id = [%d]", invoice.getId());
     invoices.put((Long) invoice.getId(), invoice);
     return new Invoice(invoice);
   }
@@ -56,7 +56,7 @@ public class InMemoryDatabase implements Database {
       throw new IllegalArgumentException("Id cannot be null");
     }
     if (!(id instanceof Long)) {
-      logger.warn("Use long or int type ID");
+      logger.error("Save invoice failed. Unsupported type of invoice id (%s). Invoice id must be Long.");
       throw new IllegalArgumentException("Id must be number Long type");
     }
     if (!invoices.containsKey(id)) {
@@ -78,6 +78,7 @@ public class InMemoryDatabase implements Database {
         invoicesByDate.add(new Invoice(invoice));
       }
     }
+    logger.info("Getting invoices between dates.{} {}", fromDate, toDate);
     return invoicesByDate;
   }
 
@@ -87,7 +88,7 @@ public class InMemoryDatabase implements Database {
       throw new IllegalArgumentException("Id cannot be null");
     }
     if (!(id instanceof Long)) {
-      logger.warn("Use long or int type ID");
+      logger.error("Save invoice failed. Unsupported type of invoice id (%s). Invoice id must be Long.");
       throw new IllegalArgumentException("Id must be number Long type");
     }
     if (invoices.isEmpty()) {
