@@ -6,14 +6,19 @@ import org.springframework.stereotype.Repository;
 import pl.coderstrust.invoices.database.Database;
 import pl.coderstrust.invoices.database.DatabaseOperationException;
 import pl.coderstrust.invoices.model.Invoice;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Repository;
+import pl.coderstrust.invoices.database.Database;
+import pl.coderstrust.invoices.database.DatabaseOperationException;
+import pl.coderstrust.invoices.model.Invoice;
 
 @Repository
+@ConditionalOnProperty(name = "database.type", havingValue = "in-memory")
 public class InMemoryDatabase implements Database {
 
   private static Logger logger = LoggerFactory.getLogger(InMemoryDatabase.class);

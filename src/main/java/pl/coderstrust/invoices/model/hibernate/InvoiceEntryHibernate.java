@@ -1,50 +1,40 @@
-package pl.coderstrust.invoices.model;
+package pl.coderstrust.invoices.model.hibernate;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import pl.coderstrust.invoices.model.InvoiceEntry;
+import pl.coderstrust.invoices.model.Vat;
 
-@ApiModel(value = "Invoice entry", description = "Describes an invoice entry")
-public class InvoiceEntry {
+@Entity
+public class InvoiceEntryHibernate {
 
-  @ApiModelProperty(value = "Invoice Entry ID", dataType = "java.lang.Long", example = "3")
-  private Object id;
-
-  @ApiModelProperty(value = "Product name", example = "MTB bike")
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   private String productName;
-
-  @ApiModelProperty(value = "Amount", example = "2")
   private String amount;
-
-  @ApiModelProperty(value = "Price", example = "3499.99")
   private BigDecimal price;
-
-  @ApiModelProperty(value = "TAX", example = "VAT_23")
   private Vat vat;
 
-  public InvoiceEntry() {
+  public InvoiceEntryHibernate() {
   }
 
-  @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-  public InvoiceEntry(@JsonProperty("id") Object id,
-      @JsonProperty("productName") String productName,
-      @JsonProperty("amount") String amount,
-      @JsonProperty("price") BigDecimal price,
-      @JsonProperty("vat") Vat vat) {
-    this.id = id;
-    this.productName = productName;
-    this.amount = amount;
-    this.price = price;
-    this.vat = vat;
+  public InvoiceEntryHibernate(InvoiceEntry invoiceEntry) {
+    this.id = (Long) invoiceEntry.getId();
+    this.productName = invoiceEntry.getProductName();
+    this.amount = invoiceEntry.getAmount();
+    this.price = invoiceEntry.getPrice();
+    this.vat = invoiceEntry.getVat();
   }
 
-  public Object getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Object id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -89,7 +79,7 @@ public class InvoiceEntry {
       return false;
     }
 
-    InvoiceEntry that = (InvoiceEntry) obj;
+    InvoiceEntryHibernate that = (InvoiceEntryHibernate) obj;
 
     if (id != null ? !id.equals(that.id) : that.id != null) {
       return false;

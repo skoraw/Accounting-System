@@ -1,0 +1,4 @@
+<soap:getInvoicesBetweenDatesRequest xmlns:soap="http://soap.invoice.pl">
+  <soap:fromDate>2019-05-23</soap:fromDate>
+  <soap:toDate>2019-05-25</soap:toDate>
+</soap:getInvoicesBetweenDatesRequest>
