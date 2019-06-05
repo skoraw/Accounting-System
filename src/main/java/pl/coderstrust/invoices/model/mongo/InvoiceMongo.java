@@ -1,41 +1,28 @@
-package pl.coderstrust.invoices.model;
+package pl.coderstrust.invoices.model.mongo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.data.annotation.Id;
+import pl.coderstrust.invoices.model.Company;
+import pl.coderstrust.invoices.model.Invoice;
+import pl.coderstrust.invoices.model.InvoiceEntry;
 
-@ApiModel(value = "Invoice", description = "Describes an invoice")
-public class Invoice {
+public class InvoiceMongo {
 
-  @ApiModelProperty(value = "Invoice ID", dataType = "java.lang.Object", example = "3")
-  private Object id;
-
-  @ApiModelProperty(value = "Tax identification number", example = "1/5/2019")
+  @Id
+  private String id;
   private String number;
-
-  @ApiModelProperty(value = "Issue date", example = "2019-12-05")
   private LocalDate issueDate;
-
-  @ApiModelProperty(value = "Issue place", example = "Kraków")
   private String issuePlace;
-
-  @ApiModelProperty(value = "Sell date", example = "2019-12-05")
   private LocalDate sellDate;
-
-  @ApiModelProperty(value = "Seller", example = "John Industries")
   private Company seller;
-
-  @ApiModelProperty(value = "Buyer", example = "Januszex Z O. O.")
   private Company buyer;
-
-  @ApiModelProperty(value = "List of entries")
   private List<InvoiceEntry> entries;
 
   @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-  public Invoice(@JsonProperty("id") Object id,
+  public InvoiceMongo(@JsonProperty("id") String id,
       @JsonProperty("number") String number,
       @JsonProperty("issueDate") LocalDate issueDate,
       @JsonProperty("issuePlace") String issuePlace,
@@ -53,18 +40,18 @@ public class Invoice {
     this.entries = entries;
   }
 
-  public Invoice() {
+  public InvoiceMongo() {
   }
 
-  public Invoice(Invoice invoice) {
-    this(invoice.getId(), invoice.getNumber(), invoice.getIssueDate(),
+  public InvoiceMongo(Invoice invoice) {
+    this((String) invoice.getId(), invoice.getNumber(), invoice.getIssueDate(),
         invoice.getIssuePlace(), invoice.getSellDate(), invoice.getSeller(),
         invoice.getBuyer(), invoice.getEntries());
   }
 
-  public static class InvoiceBuilder {
+  public static class MongoInvoiceBuilder {
 
-    private Object id;
+    private String id;
     private String number;
     private LocalDate issueDate;
     private String issuePlace;
@@ -73,60 +60,60 @@ public class Invoice {
     private Company buyer;
     private List<InvoiceEntry> entries;
 
-    public InvoiceBuilder id(Object id) {
+    public InvoiceMongo.MongoInvoiceBuilder id(String id) {
       this.id = id;
       return this;
     }
 
-    public InvoiceBuilder number(String number) {
+    public InvoiceMongo.MongoInvoiceBuilder number(String number) {
       this.number = number;
       return this;
     }
 
-    public InvoiceBuilder issueDate(LocalDate issueDate) {
+    public InvoiceMongo.MongoInvoiceBuilder issueDate(LocalDate issueDate) {
       this.issueDate = issueDate;
       return this;
     }
 
-    public InvoiceBuilder issuePlace(String issuePlace) {
+    public InvoiceMongo.MongoInvoiceBuilder issuePlace(String issuePlace) {
       this.issuePlace = issuePlace;
       return this;
     }
 
-    public InvoiceBuilder sellDate(LocalDate sellDate) {
+    public InvoiceMongo.MongoInvoiceBuilder sellDate(LocalDate sellDate) {
       this.sellDate = sellDate;
       return this;
     }
 
-    public InvoiceBuilder seller(Company seller) {
+    public InvoiceMongo.MongoInvoiceBuilder seller(Company seller) {
       this.seller = seller;
       return this;
     }
 
-    public InvoiceBuilder buyer(Company buyer) {
+    public InvoiceMongo.MongoInvoiceBuilder buyer(Company buyer) {
       this.buyer = buyer;
       return this;
     }
 
-    public InvoiceBuilder entries(List<InvoiceEntry> entries) {
+    public InvoiceMongo.MongoInvoiceBuilder entries(List<InvoiceEntry> entries) {
       this.entries = entries;
       return this;
     }
 
-    public Invoice build() {
-      return new Invoice(id, number, issueDate, issuePlace, sellDate, seller, buyer, entries);
+    public InvoiceMongo build() {
+      return new InvoiceMongo(id, number, issueDate, issuePlace, sellDate, seller, buyer, entries);
     }
   }
 
-  public static InvoiceBuilder builder() {
-    return new InvoiceBuilder();
+  public static MongoInvoiceBuilder builder() {
+    return new MongoInvoiceBuilder();
   }
 
-  public Object getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(Object id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -187,38 +174,38 @@ public class Invoice {
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
+  public boolean equals(Object o) {
+    if (this == o) {
       return true;
     }
-    if (obj == null || getClass() != obj.getClass()) {
+    if (o == null || getClass() != o.getClass()) {
       return false;
     }
 
-    Invoice invoice = (Invoice) obj;
+    InvoiceMongo that = (InvoiceMongo) o;
 
-    if (id != null ? !id.equals(invoice.id) : invoice.id != null) {
+    if (id != null ? !id.equals(that.id) : that.id != null) {
       return false;
     }
-    if (number != null ? !number.equals(invoice.number) : invoice.number != null) {
+    if (number != null ? !number.equals(that.number) : that.number != null) {
       return false;
     }
-    if (issueDate != null ? !issueDate.equals(invoice.issueDate) : invoice.issueDate != null) {
+    if (issueDate != null ? !issueDate.equals(that.issueDate) : that.issueDate != null) {
       return false;
     }
-    if (issuePlace != null ? !issuePlace.equals(invoice.issuePlace) : invoice.issuePlace != null) {
+    if (issuePlace != null ? !issuePlace.equals(that.issuePlace) : that.issuePlace != null) {
       return false;
     }
-    if (sellDate != null ? !sellDate.equals(invoice.sellDate) : invoice.sellDate != null) {
+    if (sellDate != null ? !sellDate.equals(that.sellDate) : that.sellDate != null) {
       return false;
     }
-    if (seller != null ? !seller.equals(invoice.seller) : invoice.seller != null) {
+    if (seller != null ? !seller.equals(that.seller) : that.seller != null) {
       return false;
     }
-    if (buyer != null ? !buyer.equals(invoice.buyer) : invoice.buyer != null) {
+    if (buyer != null ? !buyer.equals(that.buyer) : that.buyer != null) {
       return false;
     }
-    return entries != null ? entries.equals(invoice.entries) : invoice.entries == null;
+    return entries != null ? entries.equals(that.entries) : that.entries == null;
   }
 
   @Override
@@ -236,15 +223,15 @@ public class Invoice {
 
   @Override
   public String toString() {
-    return "Invoice{"
-        + "id=" + id
-        + "number='" + number + '\''
-        + ", issueDate=" + issueDate
-        + ", issuePlace='" + issuePlace + '\''
-        + ", sellDate=" + sellDate
-        + ", seller=" + seller
-        + ", buyer=" + buyer
-        + ", entries=" + entries
-        + '}';
+    return "InvoiceMongo{" +
+        "id='" + id + '\'' +
+        ", number='" + number + '\'' +
+        ", issueDate=" + issueDate +
+        ", issuePlace='" + issuePlace + '\'' +
+        ", sellDate=" + sellDate +
+        ", seller=" + seller +
+        ", buyer=" + buyer +
+        ", entries=" + entries +
+        '}';
   }
 }

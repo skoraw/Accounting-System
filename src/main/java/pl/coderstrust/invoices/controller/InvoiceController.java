@@ -64,7 +64,7 @@ public class InvoiceController {
   @DeleteMapping("/invoice/{id}")
   @ApiOperation(value = "Remove the invoice")
   public Invoice removeInvoice(
-      @PathVariable("id") @ApiParam(value = "Invoice ID", example = "2") Long id)
+      @PathVariable("id") @ApiParam(value = "Invoice ID", example = "2") Object id)
       throws InvoiceBookException {
     return invoiceBook.removeInvoice(id);
   }
