@@ -227,6 +227,8 @@
       <artifactId>itextpdf</artifactId>
       <groupId>com.itextpdf</groupId>
       <version>5.5.13</version>
+    </dependency>
+    <dependency>
       <artifactId>spring-boot-starter-web-services</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
