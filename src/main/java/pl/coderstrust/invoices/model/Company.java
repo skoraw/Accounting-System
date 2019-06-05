@@ -136,7 +136,7 @@ public class Company {
     private String postalCode;
     private String town;
 
-    public CompanyBuilder id(Long id) {
+    public CompanyBuilder id(Object id) {
       this.id = id;
       return this;
     }

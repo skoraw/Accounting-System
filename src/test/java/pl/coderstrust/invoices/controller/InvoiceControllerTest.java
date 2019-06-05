@@ -4,6 +4,8 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -72,7 +74,9 @@ public class InvoiceControllerTest {
 
   @Test
   public void shouldReturnEmptyArray() throws Exception {
-    mvc.perform(get("/invoices"))
+    mvc.perform(get("/invoices")
+        .with(httpBasic("admin", "admin")))
+        .andExpect(authenticated())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(0)));
   }
@@ -81,7 +85,9 @@ public class InvoiceControllerTest {
   public void shouldReturnArrayOfInvoicesWithTwoInvoices() throws Exception {
     when(invoiceBook.getAllInvoices()).thenReturn(Arrays.asList(invoice, invoice2nd));
 
-    mvc.perform(get("/invoices"))
+    mvc.perform(get("/invoices")
+        .with(httpBasic("admin", "admin")))
+        .andExpect(authenticated())
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
@@ -95,7 +101,9 @@ public class InvoiceControllerTest {
   public void shouldAddInvoiceToDatabase() throws Exception {
     when(invoiceBook.saveInvoice(invoice2nd)).thenReturn(invoice2nd);
 
-    mvc.perform(put("/invoice").content(toJson(invoice2nd))
+    mvc.perform(put("/invoice")
+        .with(httpBasic("admin","admin"))
+        .content(toJson(invoice2nd))
         .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
   }
@@ -104,7 +112,8 @@ public class InvoiceControllerTest {
   public void shouldDeleteInvoice() throws Exception {
     when(invoiceBook.removeInvoice(2L)).thenReturn(invoice2nd);
 
-    mvc.perform(delete("/invoice/{id}", 2))
+    mvc.perform(delete("/invoice/{id}", 2)
+        .with(httpBasic("admin","admin")))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(2)));
 
@@ -116,6 +125,7 @@ public class InvoiceControllerTest {
     when(invoiceBook.getInvoice(2L)).thenReturn(invoice2nd);
 
     mvc.perform(get("/invoice/{id}", 2)
+        .with(httpBasic("admin","admin"))
         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(2)));
@@ -129,6 +139,7 @@ public class InvoiceControllerTest {
         .thenReturn(Arrays.asList(invoice, invoice2nd));
 
     mvc.perform(get("/invoices")
+        .with(httpBasic("admin","admin"))
         .param("fromDate", "2015-05-21")
         .param("toDate", "2019-05-21"))
         .andDo(print())
