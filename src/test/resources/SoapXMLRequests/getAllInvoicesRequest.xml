@@ -1,0 +1,2 @@
+<soap:getAllInvoicesRequest xmlns:soap="http://soap.invoice.pl">
+</soap:getAllInvoicesRequest>
