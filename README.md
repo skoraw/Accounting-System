@@ -1,1 +1,1 @@
-# project-10-tomasz-wiktor
+# Accounting System - still in progress
