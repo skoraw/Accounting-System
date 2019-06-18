@@ -7,9 +7,10 @@ It' a simple app that helps manage invoices, designed to be easy extendable. Cho
 * Apache Maven 3.x
 
 ## Build and Run
+```
     mvn clean package
     mvn exec:java 
-    
+```
 ##Setup
 ###Database
 To setup database go to `application.properties`. You can choose from in-memory, in-file and hibernate databases.
