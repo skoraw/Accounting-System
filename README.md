@@ -10,8 +10,8 @@ It' a simple app that helps manage invoices, designed to be easy extendable. Cho
     mvn clean package
     mvn exec:java 
     
-##Setup
-####Database
+### Setup
+#### Database
 To setup database go to `application.properties`. You can choose from in-memory, in-file and hibernate databases.
 ```
 pl.coderstrust.database=in-memory
@@ -19,21 +19,21 @@ pl.coderstrust.database=in-file
 pl.coderstrust.database=hibernate
 pl.coderstrust.databas=mongo
 ```
-####Security
+#### Security
 ```
 spring.security.user.name=Login
 spring.security.user.password=Password
 ```
-####Email Service
+#### Email Service
 To receive notification by email, change adress int `application.properties`:
 ```
 spring.mail.properties.receiver=coderstrust.gr10@gmail.com
 ```
-###API
+### API
 Application is available on localhost:8080. Use `http://localhost:8080/swagger-ui.html` to explore REST API using Swagger. You have to log in with login and password.
 
 To test SOAP use Postman or SoapUI. Send requests to `http://localhost:8080/soap/invoices/invoices.wsdl`.
-##Used Tech
+## Used Tech
 <p float="left">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Spring_Framework_Logo_2018.svg/320px-Spring_Framework_Logo_2018.svg.png" alt="spring" width="200"/>&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="https://www.ixpole.com/wp-content/uploads/2018/05/Swagger-logo-300x106.png" alt="swagger" width="200"/>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -48,5 +48,5 @@ To test SOAP use Postman or SoapUI. Send requests to `http://localhost:8080/soap
 <img src="https://1.bp.blogspot.com/-6YJ9_NHn6ao/V1GiFoQ7RSI/AAAAAAAASes/4Nhlho624yQhymyGSB8Wf2h_IwePx3cdgCLcB/s1600/log.png" alt="slf4j" width="200"/>
 </p>
 
-##Authors
+## Authors
 Project was created as part of Junior Java Developer - First Project course in CodersTrust by Tomasz W. and Wiktor S. under care by Łukasz R. - years of experience as professional java dev.
