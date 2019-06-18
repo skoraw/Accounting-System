@@ -11,7 +11,7 @@ It' a simple app that helps manage invoices, designed to be easy extendable. Cho
     mvn exec:java 
     
 ##Setup
-####Database
+###Database
 To setup database go to `application.properties`. You can choose from in-memory, in-file and hibernate databases.
 ```
 pl.coderstrust.database=in-memory
@@ -19,17 +19,17 @@ pl.coderstrust.database=in-file
 pl.coderstrust.database=hibernate
 pl.coderstrust.databas=mongo
 ```
-####Security
+###Security
 ```
 spring.security.user.name=Login
 spring.security.user.password=Password
 ```
-####Email Service
+###Email Service
 To receive notification by email, change adress int `application.properties`:
 ```
 spring.mail.properties.receiver=coderstrust.gr10@gmail.com
 ```
-###API
+##API
 Application is available on localhost:8080. Use `http://localhost:8080/swagger-ui.html` to explore REST API using Swagger. You have to log in with login and password.
 
 To test SOAP use Postman or SoapUI. Send requests to `http://localhost:8080/soap/invoices/invoices.wsdl`.
