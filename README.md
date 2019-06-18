@@ -8,8 +8,8 @@ It' a simple app that helps manage invoices, designed to be easy extendable. Cho
 
 ## Build and Run
 ```
-    mvn clean package
-    mvn exec:java 
+mvn clean package
+mvn exec:java 
 ```
 ##Setup
 ###Database
@@ -34,6 +34,7 @@ spring.mail.properties.receiver=coderstrust.gr10@gmail.com
 Application is available on localhost:8080. Use `http://localhost:8080/swagger-ui.html` to explore REST API using Swagger. You have to log in with login and password.
 
 To test SOAP use Postman or SoapUI. Send requests to `http://localhost:8080/soap/invoices/invoices.wsdl`.
+
 ##Used Tech
 <p float="left">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Spring_Framework_Logo_2018.svg/320px-Spring_Framework_Logo_2018.svg.png" alt="spring" width="200"/>&nbsp;&nbsp;&nbsp;&nbsp;
