@@ -50,3 +50,6 @@ To test SOAP use Postman or SoapUI. Send requests to `http://localhost:8080/soap
 
 ## Authors
 Project was created as part of Junior Java Developer - First Project course in CodersTrust by Tomasz W. and Wiktor S. under care by Łukasz R. - years of experience as professional java dev.
+
+## P.S.
+Basic frontend version in React in progress.
